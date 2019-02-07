@@ -1,0 +1,5 @@
+k:
+  str: "String"
+  f: 123.4
+  i: a: 1
+camelCase: 77

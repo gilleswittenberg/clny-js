@@ -5,8 +5,10 @@ const {
 const comment = require("../../parsers/comment")
 
 test("eol", () => {
+  /* eslint-disable indent */
 const content = `#comment
 5`
+  /* eslint-enable */
   expect(toValue(parse(comment)(content))[1]).toBe("comment")
 })
 
@@ -21,9 +23,11 @@ test("closed", () => {
 })
 
 test("multiline", () => {
+  /* eslint-disable indent */
 const content = `# comment
   multiline
   line 3
 expression`
+  /* eslint-enable */
   expect(toValue(parse(comment)(content))[1]).toBe(" comment\n  multiline\n  line 3")
 })

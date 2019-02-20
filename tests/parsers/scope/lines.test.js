@@ -11,12 +11,14 @@ test("semicolon", () => {
 })
 
 test("semicolon", () => {
+  /* eslint-disable indent */
 const content = `
 # comment
 kk
   ll: 89
   mm: 90
 `
+  /* eslint-enable */
   const value = toValue(parse(lines)(content))
   expect(value.length).toBe(3)
 })

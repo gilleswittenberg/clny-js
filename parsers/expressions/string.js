@@ -18,7 +18,7 @@ const {
 
 const charsToString = require("../../utils/charsToString")
 
-const escapedQuote = str(`\\"`)
+const escapedQuote = str(`\\"`) // eslint-disable-line quotes
 
 const string = pipeParsers([
   sequenceOf([

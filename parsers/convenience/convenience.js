@@ -2,7 +2,6 @@ const {
   anythingExcept,
   many,
   str,
-  composeParsers,
   choice,
   between
 } = require("arcsecond")

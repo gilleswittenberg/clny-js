@@ -6,20 +6,20 @@ class Type {
 
     this.name = name != null ? name :
       notEmpty(options) ? optionsToName(options) :
-      notEmpty(types) || notEmpty(inputTypes) ? typesToName(types, inputTypes) :
-      null
+        notEmpty(types) || notEmpty(inputTypes) ? typesToName(types, inputTypes) :
+          null
 
     this.options =
       isEmpty(options) ? [this] :
-      toArray(options).map(nameToType)
+        toArray(options).map(nameToType)
     this.types =
       isEmpty(types) ? this.options :
-      toArray(types).map(nameToType)
+        toArray(types).map(nameToType)
     this.isPlural = this.types.length > 1
 
     this.inputTypes =
       notEmpty(inputTypes) ? toArray(inputTypes).map(nameToType) :
-      []
+        []
     this.isFunction = this.inputTypes > 0
 
     this.keys = toArray(keys)

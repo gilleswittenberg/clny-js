@@ -2,7 +2,6 @@ const {
   pipeParsers,
   sequenceOf,
   many1,
-  choice,
   mapTo
 } = require("arcsecond")
 
@@ -19,7 +18,6 @@ const {
 } = require("../convenience/convenience")
 
 const key = require("./key")
-const expression = require("../expressions/expression")
 const expressions = require("../expressions/expressions")
 
 const Assignment = require("../../tree/Assignment")

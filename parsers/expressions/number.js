@@ -49,14 +49,14 @@ const arithmatic = pipeParsers([
   mapTo(([left, operator, right]) => {
     // @TODO: Clean up strings to parser
     switch (operator) {
-      case "+":
-        return left + right
-      case "-":
-        return left - right
-      case "*":
-        return left * right
-      case "/":
-        return left / right
+    case "+":
+      return left + right
+    case "-":
+      return left - right
+    case "*":
+      return left * right
+    case "/":
+      return left / right
     }
   })
 ])

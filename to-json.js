@@ -2,7 +2,6 @@ const fs = require("fs")
 const { parse, toPromise } = require("arcsecond")
 
 const scope = require("./parsers/scope/scope")
-const Assignment = require("./tree/Assignment")
 const Expression = require("./tree/Expression")
 
 // read file
@@ -37,7 +36,7 @@ function toObject (expressions) {
 }
 
 const evaluate = ast => toObject(ast)
-const output = result => console.log(result)
+const output = result => console.info(result)
 
 const onSuccess = ast => {
   output(evaluate(ast))

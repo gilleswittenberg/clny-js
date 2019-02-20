@@ -4,8 +4,7 @@ const {
   possibly,
   many,
   choice,
-  between,
-  composeParsers
+  between
 } = require("arcsecond")
 
 const {
@@ -47,7 +46,6 @@ module.exports = {
   whitespaced,
   whitespaceAndNewline,
   whitespaceAndNewlined,
-  newline,
   eol,
   indent,
   dashedIndent,

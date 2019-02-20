@@ -3,14 +3,8 @@ const {
   sequenceOf,
   possibly,
   choice,
-  between,
   mapTo,
 } = require("arcsecond")
-
-const {
-  leftParens,
-  rightParens
-} = require("../convenience/tokens")
 
 const {
   whitespace
@@ -24,7 +18,7 @@ const nullParser = require("./null")
 const boolean = require("./boolean")
 const number = require("./number")
 const string = require("./string")
-const type = require("../types/typeLiteral")
+const typeLiteral = require("../types/typeLiteral")
 
 const Expression = require("../../tree/Expression")
 
@@ -34,7 +28,7 @@ const expression = pipeParsers([
       possibly(
         pipeParsers([
           sequenceOf([
-            type,
+            typeLiteral,
             whitespace
           ]),
           mapTo(([type]) => type)
@@ -48,7 +42,7 @@ const expression = pipeParsers([
       ])
     ])
   ),
-  mapTo(([type, expression]) => new Expression(expression))
+  mapTo(([,, expression]) => new Expression(expression))
 ])
 
 module.exports = expression

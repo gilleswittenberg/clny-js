@@ -1,7 +1,3 @@
-const {
-  toValue,
-  parse
-} = require("arcsecond")
 const Type = require("../../tree/Type")
 
 test("Null", () => {

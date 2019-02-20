@@ -2,12 +2,7 @@ const {
   pipeParsers,
   sequenceOf,
   possibly,
-  choice,
   mapTo,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
 
 const {

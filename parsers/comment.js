@@ -3,7 +3,6 @@ const {
   choice,
   pipeParsers,
   mapTo,
-  str,
   many,
   anythingExcept,
   everythingUntil,

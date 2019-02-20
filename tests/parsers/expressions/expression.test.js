@@ -22,8 +22,8 @@ test("number", () => {
 })
 
 test("string", () => {
-  expect(toValue(parse(expression)(`"ab"`)).value.type).toBe("String")
-  expect(toValue(parse(expression)(`( "ab" )`)).value.value).toBe("ab")
+  expect(toValue(parse(expression)(`"ab"`)).value.type).toBe("String") // eslint-disable-line quotes
+  expect(toValue(parse(expression)(`( "ab" )`)).value.value).toBe("ab") // eslint-disable-line quotes
 })
 
 test("type", () => {

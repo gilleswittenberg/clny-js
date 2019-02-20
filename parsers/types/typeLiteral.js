@@ -4,13 +4,8 @@ const {
   pipeParsers,
   sequenceOf,
   possibly,
-  mapTo,
-
-  // tests
-  parse,
-  toValue
+  mapTo
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const uppercase = regex(/^[A-Z]/)
 const typeLiteral = pipeParsers([
@@ -22,6 +17,3 @@ const typeLiteral = pipeParsers([
 ])
 
 module.exports = typeLiteral
-
-assert.equal(toValue(parse(typeLiteral)("K")), "K")
-assert.equal(toValue(parse(typeLiteral)("Capitalized")), "Capitalized")

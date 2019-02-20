@@ -5,12 +5,7 @@ const {
   possibly,
   pipeParsers,
   mapTo,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const lowercase = regex(/^[a-z]/)
 const key = pipeParsers([
@@ -22,6 +17,3 @@ const key = pipeParsers([
 ])
 
 module.exports = key
-
-assert.equal(toValue(parse(key)("k")), "k")
-assert.equal(toValue(parse(key)("camelCase")), "camelCase")

@@ -15,6 +15,7 @@ const slash = char("/")
 const colon = char(":")
 const semicolon = char(";")
 const doubleQuote = char("\"")
+// @TODO: Rename to number
 const numberSign = char("#")
 const backslash = char("\\")
 const leftParens = char("(")

@@ -5,12 +5,7 @@ const {
   choice,
   between,
   mapTo,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const {
   leftParens,
@@ -57,20 +52,3 @@ const expression = pipeParsers([
 ])
 
 module.exports = expression
-
-// tests
-assert.equal(toValue(parse(expression)("null")).value.type, "Null")
-assert.equal(toValue(parse(expression)("( null ) ")).value.value, null)
-
-assert.equal(toValue(parse(expression)("true")).value.type, "Boolean")
-assert.equal(toValue(parse(expression)("( true ) ")).value.value, true)
-
-assert.equal(toValue(parse(expression)("5")).value.type, "Number")
-assert.equal(toValue(parse(expression)("5")).value.value, 5)
-assert.equal(toValue(parse(expression)("(5)")).value.value, 5)
-assert.equal(toValue(parse(expression)("( 5 ) ")).value.value, 5)
-
-assert.equal(toValue(parse(expression)(`"ab"`)).value.type, "String")
-assert.equal(toValue(parse(expression)(`( "ab" )`)).value.value, "ab")
-
-assert.equal(toValue(parse(expression)("Number 5")).value.value, 5)

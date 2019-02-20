@@ -51,10 +51,4 @@ const typeAssignment = wrappedInParentheses(
   ])
 )
 
-// tests
-
-const assert = require("assert").strict
-
-assert.deepEqual(toValue(parse(typeAssignment)("type Null")), ["Null"])
-assert.deepEqual(toValue(parse(typeAssignment)("False")), ["False"])
-assert.deepEqual(toValue(parse(typeAssignment)("Boolean: False | True")), ["Boolean", [[null, ["False", "True"]]]])
+module.exports = typeAssignment

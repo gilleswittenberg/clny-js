@@ -5,12 +5,8 @@ const {
   many,
   possibly,
   mapTo,
-
-  // tests
-  parse,
-  toValue
+  parse
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const {
   eol,
@@ -68,27 +64,4 @@ const lines = pipeParsers([
   })
 ])
 
-
-// tests
-
-// lines
-const linesContentSemicolon = "kk: 78; ll: 89"
-const linesSeperatedBySemicolon = toValue(parse(lines)(linesContentSemicolon))
-assert.equal(linesSeperatedBySemicolon.length, 2)
-
-const linesContentEOL = `kk: 78
-ll: 89
-mm: 90
-`
-const linesSeperatedByEOL = toValue(parse(lines)(linesContentEOL))
-assert.equal(linesSeperatedByEOL.length, 3)
-
-// indention
-const linesContentIndented = `
-# comment
-kk
-  ll: 89
-  mm: 90
-`
-const linesIndented = toValue(parse(lines)(linesContentIndented))
-assert.equal(linesIndented.length, 3)
+module.exports = lines

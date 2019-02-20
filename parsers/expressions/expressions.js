@@ -4,12 +4,7 @@ const {
   many,
   mapTo,
   sepBy1,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const {
   wrappedInParentheses
@@ -40,15 +35,3 @@ const expressions = wrappedInParentheses(
 )
 
 module.exports = expressions
-
-
-// tests
-
-const single = toValue(parse(expressions)("5"))
-assert.equal(single.length, 1)
-
-const list = toValue(parse(expressions)("6, 7, 8"))
-assert.equal(list.length, 3)
-
-const listParens = toValue(parse(expressions)("(7, 8, 9, 10 )"))
-assert.equal(listParens.length, 4)

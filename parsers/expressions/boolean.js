@@ -3,12 +3,7 @@ const {
   str,
   mapTo,
   choice,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const falseString = "false"
 const trueString = "true"
@@ -27,6 +22,3 @@ const boolean = pipeParsers([
 ])
 
 module.exports = boolean
-
-assert.equal(toValue(parse(boolean)("false")), false)
-assert.equal(toValue(parse(boolean)("true")), true)

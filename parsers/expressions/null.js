@@ -2,12 +2,7 @@ const {
   pipeParsers,
   str,
   mapTo,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const nullParser = pipeParsers([
   str("null"),
@@ -15,5 +10,3 @@ const nullParser = pipeParsers([
 ])
 
 module.exports = nullParser
-
-assert.equal(toValue(parse(nullParser)("null")), null)

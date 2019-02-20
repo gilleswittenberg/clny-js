@@ -7,10 +7,6 @@ const {
   possibly,
   mapTo,
   sepBy1,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
 
 const {
@@ -77,7 +73,7 @@ const functionType = pipeParsers([
     whitespaced(arrow),
     types
   ]),
-  mapTo(([arguments,,types]) => ([arguments, types]))
+  mapTo(([args,,types]) => ([args, types]))
 ])
 
 const type = choice([
@@ -86,17 +82,3 @@ const type = choice([
 ])
 
 module.exports = type
-
-
-// tests
-
-const assert = require("assert").strict
-
-assert.deepEqual(toValue(parse(type)("k: K")), [["k", ["K"]]])
-assert.deepEqual(toValue(parse(type)("sum: Number | Boolean")), [ ["sum", ["Number", "Boolean"] ] ])
-assert.deepEqual(toValue(parse(type)("product: String, String")), [ ["product", ["String"] ], [null, ["String"] ] ])
-assert.deepEqual(toValue(parse(type)("tuple: (String, String)")), ["tuple", [ [null, ["String"] ], [null, ["String"] ] ] ])
-
-const functionTypeValue = toValue(parse(type)("a: String, b: Bool -> Number"))
-assert.deepEqual(functionTypeValue[0], [ ["a", ["String"] ], ["b", ["Bool"] ] ])
-assert.deepEqual(functionTypeValue[1], [ [null, ["Number"] ] ])

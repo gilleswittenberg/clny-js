@@ -8,10 +8,6 @@ const {
   anythingExcept,
   everythingUntil,
   lookAhead,
-
-  // tests
-  toValue,
-  parse
 } = require("arcsecond")
 
 const {
@@ -68,22 +64,3 @@ const comment = choice([
 ])
 
 module.exports = comment
-
-// tests
-const assert = require("assert").strict
-
-const contentEOL = `#comment
-5`
-assert.equal(toValue(parse(comment)(contentEOL))[1], "comment")
-
-const contentEOLSemicolon = "# comment; "
-assert.equal(toValue(parse(comment)(contentEOLSemicolon))[1], " comment; ")
-
-const contentClosed = "# comment \\# expression"
-assert.equal(toValue(parse(comment)(contentClosed))[1], " comment ")
-
-const contentMultiline = `# comment
-  multiline
-  line 3
-expression`
-assert.equal(toValue(parse(comment)(contentMultiline))[1], " comment\n  multiline\n  line 3")

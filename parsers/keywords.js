@@ -1,11 +1,6 @@
 const {
-  str,
-
-  // tests
-  parse,
-  toValue
+  str
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const keywords = [
   "type",
@@ -26,5 +21,3 @@ const keywords = [
 const parsers = {}
 keywords.map(s => parsers[s] = str(s))
 module.exports = parsers
-
-assert.equal(toValue(parse(parsers.type)("type")), "type")

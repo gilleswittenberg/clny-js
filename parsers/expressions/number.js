@@ -5,12 +5,7 @@ const {
   choice,
   pipeParsers,
   mapTo,
-
-  // tests
-  parse,
-  toValue
 } = require("arcsecond")
-const assert = require("assert").strict
 
 const {
   minus,
@@ -69,21 +64,3 @@ const arithmatic = pipeParsers([
 const number = choice([arithmatic, numberLiteral])
 
 module.exports = number
-
-// int
-assert.equal(toValue(parse(int)("5")), 5)
-assert.equal(toValue(parse(int)("523")), 523)
-//assert.throws(toValue(parse(int)("a")))
-
-// float
-assert.equal(toValue(parse(float)("1.2")), 1.2)
-
-// negative numbers
-assert.equal(toValue(parse(numberLiteral)("-9")), -9)
-assert.equal(toValue(parse(numberLiteral)("-1.2")), -1.2)
-
-// arithmatic
-assert.equal(toValue(parse(arithmatic)("6 + 7")), 13)
-assert.equal(toValue(parse(arithmatic)("6 - 7")), -1)
-assert.equal(toValue(parse(arithmatic)("6 * 7")), 42)
-assert.equal(toValue(parse(arithmatic)("6 / 2")), 3)

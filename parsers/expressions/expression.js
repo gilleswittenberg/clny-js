@@ -22,8 +22,8 @@ const typeLiteral = require("../types/typeLiteral")
 
 const Expression = require("../../tree/Expression")
 
-const expression = pipeParsers([
-  wrappedInParentheses(
+const expression = wrappedInParentheses(
+  pipeParsers([
     sequenceOf([
       possibly(
         pipeParsers([
@@ -40,9 +40,9 @@ const expression = pipeParsers([
         number,
         string
       ])
-    ])
-  ),
-  mapTo(([,, expression]) => new Expression(expression))
-])
+    ]),
+    mapTo(([, expression]) => new Expression(expression))
+  ])
+)
 
 module.exports = expression

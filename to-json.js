@@ -1,13 +1,14 @@
 const fs = require("fs")
+const assert = require("assert").strict
 const { parse, toPromise } = require("arcsecond")
+
 
 const scope = require("./parsers/scope/scope")
 const Expression = require("./tree/Expression")
 
 // read file
-const filename = process.argv[2] + ".clny"
-const dir = "sources"
-const path = dir + "/" + filename
+assert.ok(process.argv[2], "Supply file: `node to-json.js --file`")
+const path = process.argv[2]
 
 // @TODO: Error handling
 const fileContent = fs.readFileSync(path).toString()

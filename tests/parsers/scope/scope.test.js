@@ -132,6 +132,21 @@ two:
   expect(value[1].keys).toEqual(["two"])
 })
 
+test("indented scope, assignments", () => {
+  /* eslint-disable indent */
+const content = `scope:
+  k: 6
+assignment: 7
+three:
+  l: 8
+`
+  /* eslint-enable */
+  const value = toValue(parse(scope)(content))
+  expect(value[0].keys).toEqual(["scope"])
+  expect(value[1].keys).toEqual(["assignment"])
+  expect(value[2].keys).toEqual(["three"])
+})
+
 test("indented scope semicolon", () => {
   /* eslint-disable indent */
 const content = `scope:

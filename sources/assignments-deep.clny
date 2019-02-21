@@ -3,3 +3,6 @@ k:
   f: 123.4
   i: a: 1
 camelCase: 77
+arrayWithKeys:
+  78
+  79

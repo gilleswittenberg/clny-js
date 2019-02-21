@@ -79,7 +79,13 @@ const createScope = depth => {
             ]),
             mapTo(([key, scope]) => new Assignment([key], scope))
           ]),
-          scopeContent(depth)
+          pipeParsers([
+            sequenceOf([
+              scopeContent(depth),
+              possibly(indentedNewline(depth))
+            ]),
+            mapTo(([scope]) => scope)
+          ])
         ])
       ),
       mapTo(objects => objects.flat())

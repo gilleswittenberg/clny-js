@@ -45,7 +45,7 @@ const namedType = type => pipeParsers([
     ),
     type
   ]),
-  mapTo(([key,type]) => ([key, type]))
+  mapTo(([key,type]) => [key, type])
   //mapTo(([key,type]) => (new Type(null, type, null, null, key)))
 ])
 
@@ -72,7 +72,7 @@ const functionType = pipeParsers([
     whitespaced(arrow),
     types
   ]),
-  mapTo(([args,,types]) => ([args, types]))
+  mapTo(([args,,types]) => [args, types])
 ])
 
 const type = choice([

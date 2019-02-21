@@ -62,7 +62,7 @@ const scopeContent = indents => {
         mapTo(([,expressions]) => expressions)
       ])
     ),
-    mapTo((expressions) => expressions.flat())
+    mapTo(expressions => expressions.flat())
   ])
 }
 

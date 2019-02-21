@@ -32,6 +32,14 @@
         "semi": [
             "error",
             "never"
+        ],
+        "no-extra-parens": [
+            "error",
+            "all"
+        ],
+        "arrow-parens": [
+            "error",
+            "as-needed"
         ]
     }
 }

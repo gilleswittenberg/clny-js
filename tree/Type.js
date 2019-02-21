@@ -41,4 +41,4 @@ const typesToName = (types, inputTypes) => {
   return (notEmpty(inputTypes) ? join(inputTypes, sep) + arrow : "") + join(types, sep)
 }
 
-const nameToType = name => (new Type(name))
+const nameToType = name => new Type(name)

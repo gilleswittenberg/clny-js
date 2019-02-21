@@ -4,5 +4,11 @@ k:
   i: a: 1
 camelCase: 77
 arrayWithKeys:
-  78
+  a: 78
   79
+arrayObjectDeep:
+  a:
+    1
+    b: 12, 13
+  1
+  c: 22

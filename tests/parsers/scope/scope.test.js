@@ -59,6 +59,21 @@ const content = `arrayMD:
   expect(value[0].expressions[1].value.value).toBe(10)
 })
 
+test("multiline array, assignments and expressions", () => {
+  /* eslint-disable indent */
+const content = `array:
+  ka: 10
+  11
+`
+  /* eslint-enable */
+  const value = toValue(parse(scope)(content))
+  expect(value[0].keys).toEqual(["array"])
+  expect(value[0].expressions[0].keys).toEqual(["ka"])
+  expect(value[0].expressions[0].expressions[0].value.value).toBe(10)
+  expect(value[0].expressions[1].value.value).toBe(11)
+})
+
+
 // @TODO: Fix alias to scope
 /*
 test("named array", () => {

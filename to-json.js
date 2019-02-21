@@ -1,10 +1,13 @@
 const fs = require("fs")
 const assert = require("assert").strict
+const util = require("util")
+
 const { parse, toPromise } = require("arcsecond")
 
 
 const scope = require("./parsers/scope/scope")
 const Expression = require("./tree/Expression")
+const Assignment = require("./tree/Assignment")
 
 // read file
 assert.ok(process.argv[2], "Supply file: `node to-json.js --file`")
@@ -17,10 +20,22 @@ const fileContent = fs.readFileSync(path).toString()
 
 function toObject (expressions) {
 
-  const isPlural = expressions.length > 1
-  const isExpression = expressions.every(expr => expr instanceof Expression)
-  const toValue = expr => expr.value.value
-  if (isExpression) {
+  const isExpression = value => value instanceof Expression
+  const isAssignment = value => value instanceof Assignment
+
+  const toValue = expr => {
+    if (isExpression(expr)) {
+      return expr.value.value
+    }
+    if (isAssignment(expr)) {
+      return toObject([expr])
+    }
+    // @TODO: ? throw / default case
+  }
+
+  const isValue = expressions.some(isExpression)
+  if (isValue) {
+    const isPlural = expressions.length > 1
     return isPlural ? expressions.map(toValue) : toValue(expressions[0])
   }
 
@@ -37,12 +52,12 @@ function toObject (expressions) {
 }
 
 const evaluate = ast => toObject(ast)
-const output = result => console.info(result)
+const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
 
 const onSuccess = ast => {
   output(evaluate(ast))
 }
-const onError = () => console.error("parse Error")
+const onError = err => console.error(err)
 
 toPromise(parse(scope)(fileContent))
   .then(onSuccess)

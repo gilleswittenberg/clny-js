@@ -68,14 +68,14 @@ const scientific = pipeParsers([
 ])
 
 const operator = choice([plus, minus, asterisk, slash])
-const arithmatic = pipeParsers([
+const arithmetic = pipeParsers([
   sequenceOf([
     numberLiteral,
     whitespaced(operator),
     numberLiteral
   ]),
   mapTo(([left, operator, right]) => {
-    // @TODO: Clean up strings to parser
+    // @TODO: move evaluation to Expression
     switch (operator) {
     case "+":
       return left + right
@@ -89,7 +89,7 @@ const arithmatic = pipeParsers([
   })
 ])
 
-const number = choice([arithmatic, scientific, numberLiteral])
+const number = choice([arithmetic, scientific, numberLiteral])
 
 module.exports = {
   int,

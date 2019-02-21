@@ -4,3 +4,5 @@ str: "Abc String"
 b: true
 n: Number 8
 range: rangeAlias: -1,,5
+arithmetic: 1 + 2
+castToString: String 5

@@ -18,7 +18,8 @@ const nullParser = require("./null")
 const boolean = require("./boolean")
 const { number } = require("./number")
 const string = require("./string")
-const typeLiteral = require("../types/typeLiteral")
+//const typeLiteral = require("../types/typeLiteral")
+const jsonType = require("../types/jsonType")
 
 const Expression = require("../../tree/Expression")
 
@@ -28,7 +29,9 @@ const expression = wrappedInParentheses(
       possibly(
         pipeParsers([
           sequenceOf([
-            typeLiteral,
+            // @TODO: Allow user assigned types
+            //typeLiteral,
+            jsonType,
             whitespace
           ]),
           mapTo(([type]) => type)
@@ -41,7 +44,7 @@ const expression = wrappedInParentheses(
         string
       ])
     ]),
-    mapTo(([, expression]) => new Expression(expression))
+    mapTo(([type, expression]) => new Expression(expression, type))
   ])
 )
 

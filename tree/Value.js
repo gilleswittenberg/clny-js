@@ -1,10 +1,10 @@
+const types = require("./types")
+
 class Value {
 
-  constructor (value) {
+  constructor (value, castToType) {
 
-    this.value = value // subset of Javascript primitive values (non Undefined, non Symbol) + RegExp
-
-    const type =
+    let type =
       // Null
       value == null ? "Null" :
         // Boolean
@@ -18,6 +18,34 @@ class Value {
                 // default
                 (() => { throw "Value cannot be of type other than Null / Boolean / Number / String / RegExp" })()
 
+    if (castToType && type != castToType) {
+      if (types.includes(castToType) === false) {
+        throw "Not a valid type: " + castToType
+      }
+      switch (castToType) {
+      case "Null":
+        value = null
+        break
+      case "Boolean":
+        value = Boolean(value)
+        type = "Boolean"
+        break
+      case "Number":
+        value = parseFloat(value)
+        type = "Number"
+        break
+      case "String":
+        value = String(value)
+        break
+      case "RegExp":
+        // @TODO: Flags
+        value = new RegExp(String(value))
+        break
+      }
+      type = castToType
+    }
+
+    this.value = value // subset of Javascript primitive values (non Undefined, non Symbol) + RegExp
     this.type = type // Null / Boolean / Number / String / RegExp
   }
 }

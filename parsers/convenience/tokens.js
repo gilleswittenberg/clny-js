@@ -14,6 +14,7 @@ const asterisk = char("*")
 const slash = char("/")
 const colon = char(":")
 const semicolon = char(";")
+const underscore = char("_")
 const doubleQuote = char("\"")
 // @TODO: Rename to number
 const numberSign = char("#")
@@ -36,6 +37,7 @@ module.exports = {
   slash,
   colon,
   semicolon,
+  underscore,
   doubleQuote,
   numberSign,
   backslash,

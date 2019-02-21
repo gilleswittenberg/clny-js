@@ -1,6 +1,7 @@
 const {
-  digits,
+  digit,
   sequenceOf,
+  many,
   possibly,
   choice,
   anyOfString,
@@ -13,7 +14,8 @@ const {
   plus,
   asterisk,
   slash,
-  dot
+  dot,
+  underscore
 } = require("../convenience/tokens")
 
 const {
@@ -24,7 +26,18 @@ const parseNumber = (...parts) => parseFloat(parts.join(""))
 
 const numberPrefix = choice([minus, plus])
 
-// @TODO: underscored thousands (1_000_000)
+const digits = pipeParsers([
+  sequenceOf([
+    digit,
+    many(
+      choice([
+        underscore,
+        digit
+      ])
+    )
+  ]),
+  mapTo(([f, cs]) => parseNumber(f, ...cs.filter(c => c !== "_")))
+])
 const int = pipeParsers([digits, mapTo(n => parseInt(n))])
 
 const floatParser = sequenceOf([digits, dot, digits])
@@ -46,7 +59,7 @@ const scientific = pipeParsers([
     pipeParsers([
       sequenceOf([
         possibly(numberPrefix),
-        int
+        digits
       ]),
       mapTo(([prefix, value]) => parseNumber(prefix, value))
     ])

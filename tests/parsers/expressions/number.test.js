@@ -7,12 +7,15 @@ const number = require("../../../parsers/expressions/number")
 test("int", () => {
   expect(toValue(parse(number)("5"))).toBe(5)
   expect(toValue(parse(number)("523"))).toBe(523)
+  expect(toValue(parse(number)("1_000_000"))).toBe(1000000)
+  expect(toValue(parse(number)("1_______"))).toBe(1)
 })
 
 test("float", () => {
   expect(toValue(parse(number)("1.2"))).toBe(1.2)
   expect(toValue(parse(number)("0.1"))).toBe(0.1)
   expect(toValue(parse(number)("3."))).toBe(3)
+  expect(toValue(parse(number)("3_0_.2_5_"))).toBe(30.25)
 })
 
 test("leading zeros", () => {

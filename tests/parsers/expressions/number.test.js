@@ -11,6 +11,12 @@ test("int", () => {
 
 test("float", () => {
   expect(toValue(parse(number)("1.2"))).toBe(1.2)
+  expect(toValue(parse(number)("0.1"))).toBe(0.1)
+})
+
+test("leading zeros", () => {
+  expect(toValue(parse(number)("06"))).toBe(6)
+  expect(toValue(parse(number)("000.23"))).toBe(0.23)
 })
 
 test("negative", () => {

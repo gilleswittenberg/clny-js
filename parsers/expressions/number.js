@@ -27,7 +27,6 @@ const numberPrefix = choice([minus, plus])
 // @TODO: underscored thousands (1_000_000)
 const int = pipeParsers([digits, mapTo(n => parseInt(n))])
 
-// @TODO: possibly trailing digits e.g. (5. = 5)
 const floatParser = sequenceOf([digits, dot, digits])
 const float = pipeParsers([floatParser, mapTo(([n,,n1]) => parseNumber(n, ".", n1))])
 

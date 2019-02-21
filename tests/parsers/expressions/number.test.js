@@ -24,6 +24,12 @@ test("negative", () => {
   expect(toValue(parse(number)("-1.2"))).toBe(-1.2)
 })
 
+test("scientific", () => {
+  expect(toValue(parse(number)("1e1"))).toBe(10)
+  expect(toValue(parse(number)("-1.2e-1"))).toBe(-0.12)
+  expect(toValue(parse(number)("12E2"))).toBe(1200)
+})
+
 test("arithmatic", () => {
   expect(toValue(parse(number)("6 + 7"))).toBe(13)
   expect(toValue(parse(number)("6 - 7"))).toBe(-1)

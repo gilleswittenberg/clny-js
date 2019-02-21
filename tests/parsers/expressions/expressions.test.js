@@ -15,3 +15,7 @@ test("list", () => {
 test("list parens", () => {
   expect(toValue(parse(expressions)("(7, 8, 9, 10 )")).length).toBe(4)
 })
+
+test("range", () => {
+  expect(toValue(parse(expressions)("1,,5")).length).toBe(5)
+})

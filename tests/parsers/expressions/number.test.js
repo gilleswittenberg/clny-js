@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const number = require("../../../parsers/expressions/number")
+const { number } = require("../../../parsers/expressions/number")
 
 test("int", () => {
   expect(toValue(parse(number)("5"))).toBe(5)

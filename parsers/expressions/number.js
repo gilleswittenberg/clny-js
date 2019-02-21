@@ -91,4 +91,8 @@ const arithmatic = pipeParsers([
 
 const number = choice([arithmatic, scientific, numberLiteral])
 
-module.exports = number
+module.exports = {
+  int,
+  numberLiteral,
+  number
+}

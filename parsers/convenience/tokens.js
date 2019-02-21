@@ -25,6 +25,7 @@ const pipe = char("|")
 
 // multchar tokens
 const arrow = str("->")
+const rangeDelimiter = str(",,")
 
 module.exports = {
   space,
@@ -45,5 +46,6 @@ module.exports = {
   rightParens,
   pipe,
 
-  arrow
+  arrow,
+  rangeDelimiter 
 }

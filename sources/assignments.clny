@@ -1,5 +1,6 @@
 k: 6
 camelCase: alias: 77
-str: "String"
+str: "Abc String"
 b: true
 n: Number 8
+range: rangeAlias: -1,,5

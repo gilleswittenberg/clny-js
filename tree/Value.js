@@ -1,4 +1,4 @@
-const types = require("./types")
+const { types } = require("./types")
 
 class Value {
 
@@ -19,7 +19,7 @@ class Value {
                 (() => { throw "Value cannot be of type other than Null / Boolean / Number / String / RegExp" })()
 
     if (castToType && type != castToType) {
-      if (types.includes(castToType) === false) {
+      if (types.flat().includes(castToType) === false) {
         throw "Not a valid type: " + castToType
       }
       switch (castToType) {

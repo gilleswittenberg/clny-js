@@ -6,3 +6,4 @@ n: Number 8
 range: rangeAlias: -1,,5
 arithmetic: 1 + 2
 castToString: String 5
+castToPlural: Strings 55, 66, 77

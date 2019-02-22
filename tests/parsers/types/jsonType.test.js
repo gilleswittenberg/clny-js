@@ -2,8 +2,12 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const jsonType = require("../../../parsers/types/jsonType")
+const { jsonType, jsonTypePlural } = require("../../../parsers/types/jsonType")
 
-test("Boolean", () => {
+test("single", () => {
   expect(toValue(parse(jsonType)("Boolean"))).toEqual("Boolean")
+})
+
+test("plural", () => {
+  expect(toValue(parse(jsonTypePlural)("Strings"))).toEqual("Strings")
 })

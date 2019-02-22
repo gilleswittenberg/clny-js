@@ -5,8 +5,15 @@ class Expression extends Object {
 
   constructor (expression, type = null) {
     super()
-    this.value = evaluate(expression, type)
+    this.expression = expression
+    this.castTo(type)
     //this.kinds = ["Impure", "Optional", "Throwable", "Async", "Mutable"]
+  }
+
+  // @TODO: Make immutable
+  castTo (type) {
+    this.value = evaluate(this.expression, type)
+    return this
   }
 }
 

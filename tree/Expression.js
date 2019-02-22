@@ -3,17 +3,22 @@ const Object = require("./Object")
 
 class Expression extends Object {
 
-  constructor (expression, type = null) {
+  constructor (expression, type) {
     super()
-    this.expression = expression
-    this.castTo(type)
-    //this.kinds = ["Impure", "Optional", "Throwable", "Async", "Mutable"]
+    this.expression = expression // String
+    this.type = type
+    this.value = null
+    this.isEvaluated = false
   }
 
-  // @TODO: Make immutable
+  evaluate () {
+    this.value = evaluate(this.expression, this.type)
+    this.isEvaluated = true
+    return this.value
+  }
+
   castTo (type) {
-    this.value = evaluate(this.expression, type)
-    return this
+    return new Expression(this.expression, type)
   }
 }
 

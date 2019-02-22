@@ -4,7 +4,7 @@ const {
 } = require("arcsecond")
 const range = require("../../../parsers/expressions/range")
 
-const toNumbers = arr => arr.map(expression => expression.value.value)
+const toNumbers = arr => arr.map(expression => expression.evaluate().value)
 
 test("range", () => {
   expect(toNumbers(toValue(parse(range)("1,,2")))).toEqual([1,2])

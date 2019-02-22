@@ -4,9 +4,11 @@ module.exports = class Assignment extends Object {
 
   constructor (keys, expressions) {
     super()
-    const isAssignment = expressions instanceof Assignment
-    this.keys = isAssignment ? keys.concat(expressions.keys) : keys
-    this.expressions = isAssignment ? expressions.expressions : expressions
-    this.kinds = ["Impure"]
+    this.keys = keys
+    this.expressions = expressions
+  }
+
+  evaluate () {
+    this.expressions.forEach(expression => expression.evaluate())
   }
 }

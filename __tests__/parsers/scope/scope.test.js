@@ -7,15 +7,15 @@ const scope = require("../../../parsers/scope/scope")
 test("expression", () => {
   const content = "3"
   const value = toValue(parse(scope)(content))
-  expect(value[0].value.value).toBe(3)
-  expect(value[0].value.type).toBe("Number")
+  expect(value[0].evaluate().value).toBe(3)
+  expect(value[0].evaluate().type).toBe("Number")
 })
 
 test("assignment", () => {
   const content = "k: 4"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["k"])
-  expect(value[0].expressions[0].value.value).toBe(4)
+  expect(value[0].expressions[0].evaluate().value).toBe(4)
 })
 
 test("assignment", () => {
@@ -28,8 +28,8 @@ test("array", () => {
   const content = "arr: 5, 6"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["arr"])
-  expect(value[0].expressions[0].value.value).toBe(5)
-  expect(value[0].expressions[1].value.value).toBe(6)
+  expect(value[0].expressions[0].evaluate().value).toBe(5)
+  expect(value[0].expressions[1].evaluate().value).toBe(6)
 })
 
 test("multiline array", () => {
@@ -42,8 +42,8 @@ const content = `array:
   /* eslint-enable */
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["array"])
-  expect(value[0].expressions[0].value.value).toBe(7)
-  expect(value[0].expressions[1].value.value).toBe(8)
+  expect(value[0].expressions[0].evaluate().value).toBe(7)
+  expect(value[0].expressions[1].evaluate().value).toBe(8)
 })
 
 test("multiline indented array", () => {
@@ -55,8 +55,8 @@ const content = `arrayMD:
   /* eslint-enable */
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["arrayMD"])
-  expect(value[0].expressions[0].value.value).toBe(9)
-  expect(value[0].expressions[1].value.value).toBe(10)
+  expect(value[0].expressions[0].evaluate().value).toBe(9)
+  expect(value[0].expressions[1].evaluate().value).toBe(10)
 })
 
 test("multiline array, assignments and expressions", () => {
@@ -69,8 +69,8 @@ const content = `array:
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["array"])
   expect(value[0].expressions[0].keys).toEqual(["ka"])
-  expect(value[0].expressions[0].expressions[0].value.value).toBe(10)
-  expect(value[0].expressions[1].value.value).toBe(11)
+  expect(value[0].expressions[0].expressions[0].evaluate().value).toBe(10)
+  expect(value[0].expressions[1].evaluate().value).toBe(11)
 })
 
 
@@ -80,8 +80,8 @@ test("named array", () => {
   const content = "array: k: 7, l: 8"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["array"])
-  expect(value[0].expressions[0].value.value).toBe(7)
-  expect(value[1].expressions[0].value.value).toBe(8)
+  expect(value[0].expressions[0].evaluate().value).toBe(7)
+  expect(value[1].expressions[0].evaluate().value).toBe(8)
 })
 */
 
@@ -131,7 +131,7 @@ const content = `scope:
   expect(value[0].expressions[1].keys).toEqual(["deeptwo"])
   expect(value[0].expressions[2].keys).toEqual(["deepthree"])
   expect(value[0].expressions[2].expressions[0].keys).toEqual(["s"])
-  expect(value[0].expressions[2].expressions[0].expressions[0].expressions[0].value.value).toBe(9)
+  expect(value[0].expressions[2].expressions[0].expressions[0].expressions[0].evaluate().value).toBe(9)
 })
 
 test("indented scope root", () => {
@@ -190,5 +190,5 @@ const content = `scope:
   expect(value[0].expressions[1].keys).toEqual(["deeptwo"])
   expect(value[0].expressions[2].keys).toEqual(["deepthree"])
   expect(value[0].expressions[2].expressions[0].keys).toEqual(["s"])
-  expect(value[0].expressions[2].expressions[0].expressions[0].expressions[0].value.value).toBe(9)
+  expect(value[0].expressions[2].expressions[0].expressions[0].expressions[0].evaluate().value).toBe(9)
 })

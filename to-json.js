@@ -25,7 +25,7 @@ function toObject (expressions) {
 
   const toValue = expr => {
     if (isExpression(expr)) {
-      return expr.value.value
+      return expr.evaluate().value
     }
     if (isAssignment(expr)) {
       return toObject([expr])

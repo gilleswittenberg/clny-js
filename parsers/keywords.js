@@ -19,5 +19,5 @@ const keywords = [
 
 // @TODO: Use Object.fromEntries when available in Node.js
 const parsers = {}
-keywords.map(s => parsers[s] = str(s))
+keywords.forEach(keyword => parsers[keyword] = str(keyword))
 module.exports = parsers

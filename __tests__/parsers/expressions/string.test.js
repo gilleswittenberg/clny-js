@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const { string, stringConcatination } = require("../../../parsers/expressions/string")
+const { string, stringConcatenation } = require("../../../parsers/expressions/string")
 
 test("string", () => {
   /* eslint-disable quotes */
@@ -16,7 +16,7 @@ test("string", () => {
 
 test("string concatination", () => {
   /* eslint-disable quotes */
-  expect(toValue(parse(stringConcatination)(`"Abc" + "def"`)).evaluate().value).toBe("Abcdef")
-  expect(toValue(parse(stringConcatination)(`"ABc" + "Def" + "GHI"`)).evaluate().value).toBe("ABcDefGHI")
+  expect(toValue(parse(stringConcatenation)(`"Abc" + "def"`)).evaluate().value).toBe("Abcdef")
+  expect(toValue(parse(stringConcatenation)(`"ABc" + "Def" + "GHI"`)).evaluate().value).toBe("ABcDefGHI")
   /* eslint-enable */
 })

@@ -20,7 +20,7 @@ const {
 
 const charsToString = require("../../utils/charsToString")
 const Expression = require("../../tree/Expression")
-const StringConcatination = require("../../tree/StringConcatination")
+const StringConcatenation = require("../../tree/StringConcatenation")
 
 const escapedQuote = str(`\\"`) // eslint-disable-line quotes
 
@@ -51,7 +51,7 @@ const string = pipeParsers([
   })
 ])
 
-const stringConcatination = pipeParsers([
+const stringConcatenation = pipeParsers([
   sequenceOf([
     string,
     whitespaced(plus),
@@ -66,10 +66,10 @@ const stringConcatination = pipeParsers([
       ])
     )
   ]),
-  mapTo(([str,,str1, additional]) => new StringConcatination([str, str1].concat(additional)))
+  mapTo(([str,,str1, additional]) => new StringConcatenation([str, str1].concat(additional)))
 ])
 
 module.exports = {
   string,
-  stringConcatination
+  stringConcatenation
 }

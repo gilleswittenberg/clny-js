@@ -1,7 +1,7 @@
 const Expression = require("./Expression")
 const Value = require("./Value")
 
-class StringConcatination extends Expression {
+class StringConcatenation extends Expression {
 
   constructor (expressions) {
     super()
@@ -19,6 +19,6 @@ class StringConcatination extends Expression {
   }
 }
 
-module.exports = StringConcatination
+module.exports = StringConcatenation
 
 const concatStrings = (...str) => str.reduce((acc, cur) => acc + cur, "")

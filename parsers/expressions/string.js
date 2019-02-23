@@ -9,15 +9,18 @@ const {
 } = require("arcsecond")
 
 const {
-  doubleQuote
+  doubleQuote,
+  plus
 } = require("../convenience/tokens")
 
 const {
-  newline
+  newline,
+  whitespaced
 } = require("../convenience/whitespace")
 
 const charsToString = require("../../utils/charsToString")
 const Expression = require("../../tree/Expression")
+const StringConcatination = require("../../tree/StringConcatination")
 
 const escapedQuote = str(`\\"`) // eslint-disable-line quotes
 
@@ -48,4 +51,25 @@ const string = pipeParsers([
   })
 ])
 
-module.exports = string
+const stringConcatination = pipeParsers([
+  sequenceOf([
+    string,
+    whitespaced(plus),
+    string,
+    many(
+      pipeParsers([
+        sequenceOf([
+          whitespaced(plus),
+          string
+        ]),
+        mapTo(([,str]) => str)
+      ])
+    )
+  ]),
+  mapTo(([str,,str1, additional]) => new StringConcatination([str, str1].concat(additional)))
+])
+
+module.exports = {
+  string,
+  stringConcatination
+}

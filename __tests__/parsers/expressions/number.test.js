@@ -36,9 +36,12 @@ test("scientific", () => {
   expect(evaluatedValue(parse(number)("12E2"))).toBe(1200)
 })
 
-test("arithmatic", () => {
+test("arithmetic", () => {
   expect(evaluatedValue(parse(number)("6 + 7"))).toBe(13)
   expect(evaluatedValue(parse(number)("6 - 7"))).toBe(-1)
   expect(evaluatedValue(parse(number)("6 * 7"))).toBe(42)
   expect(evaluatedValue(parse(number)("6 / 2"))).toBe(3)
+
+  expect(evaluatedValue(parse(number)("6e1 + 2"))).toBe(62)
+  expect(evaluatedValue(parse(number)("7e2 / 1e1"))).toBe(70)
 })

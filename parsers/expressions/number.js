@@ -80,9 +80,15 @@ const scientific = pipeParsers([
 const operator = choice([plus, minus, asterisk, slash])
 const arithmetic = pipeParsers([
   sequenceOf([
-    numberLiteralExpression,
+    choice([
+      scientific,
+      numberLiteralExpression,
+    ]),
     whitespaced(operator),
-    numberLiteralExpression
+    choice([
+      scientific,
+      numberLiteralExpression
+    ])
   ]),
   mapTo(([left, operator, right]) => new Arithmetic(left, right, operator))
 ])

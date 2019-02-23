@@ -1,5 +1,7 @@
 const { types } = require("./types")
 
+const parseNumber = value => parseFloat(String(value).replace(/_/g, ""))
+
 class Value {
 
   constructor (value, castToType) {
@@ -27,12 +29,10 @@ class Value {
         value = null
         break
       case "Boolean":
-        value = Boolean(value)
-        type = "Boolean"
+        value = value === true || value === "true"
         break
       case "Number":
-        value = parseFloat(value)
-        type = "Number"
+        value = parseNumber(value)
         break
       case "String":
         value = String(value)

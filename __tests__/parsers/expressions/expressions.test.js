@@ -4,6 +4,8 @@ const {
 } = require("arcsecond")
 const expressions = require("../../../parsers/expressions/expressions")
 
+//const evaluateExpressions = expressions => expressions.map(expression.evaluate())
+
 test("single", () => {
   expect(toValue(parse(expressions)("5")).length).toBe(1)
 })

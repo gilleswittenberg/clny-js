@@ -22,11 +22,13 @@ const {
   whitespaced
 } = require("../convenience/whitespace")
 
-const parseNumber = (...parts) => parseFloat(parts.join(""))
+const charsToString = require("../../utils/charsToString")
+const Expression = require("../../tree/Expression")
+const Arithmetic = require("../../tree/Arithmetic")
 
 const numberPrefix = choice([minus, plus])
 
-const digits = pipeParsers([
+const int = pipeParsers([
   sequenceOf([
     digit,
     many(
@@ -36,19 +38,33 @@ const digits = pipeParsers([
       ])
     )
   ]),
-  mapTo(([f, cs]) => parseNumber(f, ...cs.filter(c => c !== "_")))
+  mapTo(([f, cs]) => f + charsToString(cs))
 ])
-const int = pipeParsers([digits, mapTo(n => parseInt(n))])
 
-const floatParser = sequenceOf([digits, dot, digits])
-const float = pipeParsers([floatParser, mapTo(([n,,n1]) => parseNumber(n, ".", n1))])
+const prefixedInt = pipeParsers([
+  sequenceOf([
+    possibly(numberPrefix),
+    int
+  ]),
+  mapTo(([prefix, value]) => (prefix || "") + value)
+])
+
+const float = pipeParsers([
+  sequenceOf([int, dot, int]),
+  mapTo(([n, dot, n1]) => n + dot + n1)
+])
 
 const numberLiteral = pipeParsers([
   sequenceOf([
     possibly(numberPrefix),
     choice([float, int])
   ]),
-  mapTo(([prefix, value]) => parseNumber(prefix, value))
+  mapTo(([prefix, value]) => (prefix || "") + value)
+])
+
+const numberLiteralExpression = pipeParsers([
+  numberLiteral,
+  mapTo(str => new Expression(str, "Number"))
 ])
 
 const e = anyOfString("eE")
@@ -56,43 +72,28 @@ const scientific = pipeParsers([
   sequenceOf([
     numberLiteral,
     e,
-    pipeParsers([
-      sequenceOf([
-        possibly(numberPrefix),
-        digits
-      ]),
-      mapTo(([prefix, value]) => parseNumber(prefix, value))
-    ])
+    prefixedInt
   ]),
-  mapTo(([m,,n]) => parseNumber(m + "e" + n))
+  mapTo(([n,, n1]) => new Expression(n + "e" + n1, "Number"))
 ])
 
 const operator = choice([plus, minus, asterisk, slash])
 const arithmetic = pipeParsers([
   sequenceOf([
-    numberLiteral,
+    numberLiteralExpression,
     whitespaced(operator),
-    numberLiteral
+    numberLiteralExpression
   ]),
-  mapTo(([left, operator, right]) => {
-    // @TODO: move evaluation to Expression
-    switch (operator) {
-    case "+":
-      return left + right
-    case "-":
-      return left - right
-    case "*":
-      return left * right
-    case "/":
-      return left / right
-    }
-  })
+  mapTo(([left, operator, right]) => new Arithmetic(left, right, operator))
 ])
 
-const number = choice([arithmetic, scientific, numberLiteral])
+const number = choice([
+  arithmetic,
+  scientific,
+  numberLiteralExpression
+])
 
 module.exports = {
-  int,
   numberLiteral,
   number
 }

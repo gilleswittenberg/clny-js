@@ -11,6 +11,7 @@ const { numberLiteral } = require("./number")
 
 const Expression = require("../../tree/Expression")
 
+// @TODO: Move to (Range extends Expression)
 const createRange = (start, end) => {
   const isAscending = start <= end ? true : false
   const next = n => isAscending ? n + 1 : n - 1
@@ -32,7 +33,7 @@ const range = pipeParsers([
     whitespaced(rangeDelimiter),
     numberLiteral
   ]),
-  mapTo(([start,, end]) => createRange(start, end).map(n => new Expression(n)))
+  mapTo(([start,, end]) => createRange(parseInt(start), parseInt(end)).map(n => new Expression(n)))
 ])
 
 module.exports = range

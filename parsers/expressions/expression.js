@@ -21,8 +21,6 @@ const string = require("./string")
 //const typeLiteral = require("../types/typeLiteral")
 const { jsonType } = require("../types/jsonType")
 
-const Expression = require("../../tree/Expression")
-
 const expression = wrappedInParentheses(
   pipeParsers([
     sequenceOf([
@@ -44,7 +42,7 @@ const expression = wrappedInParentheses(
         string
       ])
     ]),
-    mapTo(([type, expression]) => new Expression(expression, type))
+    mapTo(([type, expression]) => type != null ? expression.castTo(type) : expression)
   ])
 )
 

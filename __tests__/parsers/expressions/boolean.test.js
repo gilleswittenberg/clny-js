@@ -5,9 +5,15 @@ const {
 const boolean = require("../../../parsers/expressions/boolean")
 
 test("false", () => {
-  expect(toValue(parse(boolean)("false"))).toBe(false)
+  const expression = toValue(parse(boolean)("false"))
+  expect(expression.expression).toBe("false")
+  expect(expression.type).toBe("Boolean")
+  expect(expression.evaluate().value).toBe(false)
 })
 
 test("true", () => {
-  expect(toValue(parse(boolean)("true"))).toBe(true)
+  const expression = toValue(parse(boolean)("true"))
+  expect(expression.expression).toBe("true")
+  expect(expression.type).toBe("Boolean")
+  expect(expression.evaluate().value).toBe(true)
 })

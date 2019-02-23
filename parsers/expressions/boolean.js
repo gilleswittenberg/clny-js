@@ -5,20 +5,14 @@ const {
   choice,
 } = require("arcsecond")
 
-const falseString = "false"
-const trueString = "true"
-const pFalse = str(falseString)
-const pTrue = str(trueString)
+const Expression = require("../../tree/Expression")
 
 const boolean = pipeParsers([
   choice([
-    pFalse,
-    pTrue
+    str("false"),
+    str("true")
   ]),
-  mapTo(chars => {
-    if (chars === falseString) return false
-    if (chars === trueString) return true
-  })
+  mapTo(str => new Expression(str, "Boolean"))
 ])
 
 module.exports = boolean

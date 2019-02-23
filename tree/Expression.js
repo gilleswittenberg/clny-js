@@ -5,9 +5,8 @@ class Expression extends Object {
 
   constructor (expression, type) {
     super()
-    this.expression = expression // String
+    this.expression = expression // String | Expression
     this.type = type
-    this.value = null
     this.isEvaluated = false
   }
 
@@ -29,7 +28,7 @@ function evaluate (expression, type = null) {
     return expression
   }
   if (expression instanceof Expression) {
-    return evaluate(expression.value, type)
+    return evaluate(expression.expression, type)
   }
   return new Value(expression, type)
 }

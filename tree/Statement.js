@@ -5,6 +5,7 @@ module.exports = class Statement extends Object {
   constructor (name, expressions) {
     super()
     this.name = name
+    // @TODO: pluralize single expression
     this.expressions = expressions
     this.isEvaluated = false
   }

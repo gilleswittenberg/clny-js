@@ -1,7 +1,7 @@
 const {
   pipeParsers,
   sequenceOf,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const { whitespaced } = require("../convenience/whitespace")

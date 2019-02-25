@@ -3,7 +3,7 @@ const {
   sequenceOf,
   possibly,
   choice,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const {

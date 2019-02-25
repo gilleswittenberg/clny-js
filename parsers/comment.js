@@ -6,7 +6,7 @@ const {
   many,
   anythingExcept,
   everythingUntil,
-  lookAhead,
+  lookAhead
 } = require("arcsecond")
 
 const {

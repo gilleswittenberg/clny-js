@@ -1,7 +1,7 @@
 const {
   pipeParsers,
   str,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const Expression = require("../../tree/Expression")

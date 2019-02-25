@@ -6,7 +6,7 @@ const {
   choice,
   anyOfString,
   pipeParsers,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const {
@@ -82,7 +82,7 @@ const arithmetic = pipeParsers([
   sequenceOf([
     choice([
       scientific,
-      numberLiteralExpression,
+      numberLiteralExpression
     ]),
     whitespaced(operator),
     choice([

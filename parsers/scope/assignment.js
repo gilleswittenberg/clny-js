@@ -29,7 +29,7 @@ const assignment = wrappedInParentheses(
         pipeParsers([
           sequenceOf([
             key,
-            whitespaced(colon),
+            whitespaced(colon)
           ]),
           mapTo(([key]) => key)
         ])

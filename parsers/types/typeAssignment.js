@@ -2,7 +2,7 @@ const {
   pipeParsers,
   sequenceOf,
   possibly,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const {

@@ -5,7 +5,7 @@ const {
   mapTo,
   many,
   choice,
-  anythingExcept,
+  anythingExcept
 } = require("arcsecond")
 
 const {

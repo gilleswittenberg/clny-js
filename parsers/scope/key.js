@@ -4,7 +4,7 @@ const {
   sequenceOf,
   possibly,
   pipeParsers,
-  mapTo,
+  mapTo
 } = require("arcsecond")
 
 const lowercase = regex(/^[a-z]/)

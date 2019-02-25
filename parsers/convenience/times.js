@@ -1,5 +1,5 @@
 const {
-  composeParsers,
+  composeParsers
 } = require("arcsecond")
 
 const times = (parser, n) => {

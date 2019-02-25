@@ -5,7 +5,7 @@ const {
   sequenceOf,
   possibly,
   mapTo,
-  sepBy1,
+  sepBy1
 } = require("arcsecond")
 
 const {
@@ -38,7 +38,7 @@ const namedType = type => pipeParsers([
       pipeParsers([
         sequenceOf([
           key,
-          whitespaced(colon),
+          whitespaced(colon)
         ]),
         mapTo(([key]) => key)
       ])

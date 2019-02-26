@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const { number } = require("../../../parsers/expressions/number")
+const number = require("../../../../parsers/expressions/numbers/number")
 
 const evaluatedValue = result => toValue(result).evaluate().value
 
@@ -25,23 +25,8 @@ test("leading zeros", () => {
   expect(evaluatedValue(parse(number)("000.23"))).toBe(0.23)
 })
 
-test("negative", () => {
-  expect(evaluatedValue(parse(number)("-9"))).toBe(-9)
-  expect(evaluatedValue(parse(number)("-1.2"))).toBe(-1.2)
-})
-
 test("scientific", () => {
   expect(evaluatedValue(parse(number)("1e1"))).toBe(10)
-  expect(evaluatedValue(parse(number)("-1.2e-1"))).toBe(-0.12)
+  expect(evaluatedValue(parse(number)("1.2e-1"))).toBe(0.12)
   expect(evaluatedValue(parse(number)("12E2"))).toBe(1200)
-})
-
-test("arithmetic", () => {
-  expect(evaluatedValue(parse(number)("6 + 7"))).toBe(13)
-  expect(evaluatedValue(parse(number)("6 - 7"))).toBe(-1)
-  expect(evaluatedValue(parse(number)("6 * 7"))).toBe(42)
-  expect(evaluatedValue(parse(number)("6 / 2"))).toBe(3)
-
-  expect(evaluatedValue(parse(number)("6e1 + 2"))).toBe(62)
-  expect(evaluatedValue(parse(number)("7e2 / 1e1"))).toBe(70)
 })

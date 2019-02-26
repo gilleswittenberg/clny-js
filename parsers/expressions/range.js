@@ -7,7 +7,7 @@ const {
 const { whitespaced } = require("../convenience/whitespace")
 const { rangeDelimiter } = require("../convenience/tokens")
 // @TODO: Allow only ints
-const { numberLiteral } = require("./number")
+const arithmetic = require("./numbers/arithmetic")
 
 const Expression = require("../../tree/Expression")
 
@@ -29,11 +29,15 @@ const createRange = (start, end) => {
 // @TODO: floats, alphabetical, steps
 const range = pipeParsers([
   sequenceOf([
-    numberLiteral,
+    arithmetic,
     whitespaced(rangeDelimiter),
-    numberLiteral
+    arithmetic
   ]),
-  mapTo(([start,, end]) => createRange(parseInt(start), parseInt(end)).map(n => new Expression(n)))
+  mapTo(([start,,end]) => {
+    const startValue = start.evaluate().value
+    const endValue = end.evaluate().value
+    return createRange(startValue, endValue).map(n => new Expression(n))
+  })
 ])
 
 module.exports = range

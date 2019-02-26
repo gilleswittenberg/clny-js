@@ -1,10 +1,6 @@
 const {
-  isString,
-  isArray
+  isString
 } = require("./is")
 
-module.exports = chars => {
-  if (isArray(chars)) return chars.join("")
-  if (isString(chars)) return chars
-  return ""
-}
+module.exports = (...chars) =>
+  chars.flat(Infinity).filter(isString).join("")

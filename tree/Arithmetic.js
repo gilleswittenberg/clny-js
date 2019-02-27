@@ -3,19 +3,21 @@ const Value = require("./Value")
 
 class Arithmetic extends Expression {
 
-  constructor (expression, expression1, operator) {
+  constructor (operator, ...expressions) {
     super()
-    this.expressions = [expression, expression1].filter(expr => expr != null)
     this.operator = operator
+    // @TODO: Throw when expressions.length = 0
+    this.expressions = expressions
     this.type = "Number"
     this.isEvaluated = false
   }
 
   evaluate () {
     this.expressions.forEach(expression => expression.evaluate())
-    const left = this.expressions.length > 1 ? this.expressions[0].value.value : null
-    const right = this.expressions.length > 1 ? this.expressions[1].value.value : this.expressions[0].value.value
-    const result = applyArithmetic(left, right, this.operator)
+    const operator = this.operator
+    const left = this.expressions[0].value.value
+    const right = this.expressions.length > 1 ? this.expressions[1].value.value : null
+    const result = operator != null ? applyArithmetic(operator, left, right) : left
     this.value = new Value(result, "Number")
     this.isEvaluated = true
     return this.value
@@ -24,13 +26,18 @@ class Arithmetic extends Expression {
 
 module.exports = Arithmetic
 
-const applyArithmetic = (left, right, operator) => {
+const applyArithmetic = (operator, left, right) => {
   switch (operator) {
   case "+":
+    // positive
+    if (right == null) return left
+    // addition
     return left + right
   case "-":
-    // negate or subtraction
-    return (left != null ? left : 0) - right
+    // negation
+    if (right == null) return -left
+    // subtraction
+    return left - right
   case "*":
     return left * right
   case "/":

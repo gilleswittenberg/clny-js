@@ -8,7 +8,7 @@ const mapPrefixToArithmetic = expression => {
     const operator = expression[0]
     const snd = expression[1]
     const value = Array.isArray(snd) ? evaluate(snd) : snd
-    return new Arithmetic(null, value, operator)
+    return new Arithmetic(operator, value)
   }
   return evaluate(expression)
 }
@@ -21,7 +21,7 @@ const mapToArithmetic = expression => {
     const value1 = expression[2]
     const operand = Array.isArray(value) ? evaluate(value) : value
     const operand1 = Array.isArray(value1) ? evaluate(value1) : value1
-    return new Arithmetic(operand, operand1, operator)
+    return new Arithmetic(operator, operand, operand1)
   }
   return evaluate(expression)
 }

@@ -47,6 +47,7 @@ const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
   mapTo(args => {
     const flat = args.flat(Infinity)
     // @TODO: Can we use Array.reduce here?
+    // @TODO: It seems leftAssociative are also parser results are also being mapped through here
     while (flat.length >= 3) {
       const operand1 = flat.pop()
       const operator = flat.pop()
@@ -69,14 +70,18 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
   ]),
   mapTo(args => {
     const flat = args.flat(Infinity)
-    // @TODO: Can we use Array.reduce here?
-    while (flat.length >= 3) {
-      const operand = flat.shift()
-      const operator = flat.shift()
-      const operand1 = flat.shift()
-      flat.unshift([operator, operand, operand1])
-    }
-    return mapToFunc(flat.flat())
+    const operations = flat.reduce((acc, cur) => {
+      if (acc.length === 3) {
+        return [cur, acc]
+      } else if (acc.length === 2) {
+        return acc.concat(cur)
+      } else if (acc.length === 1) {
+        return [cur].concat(acc)
+      } else if (acc.length === 0) {
+        return [cur]
+      }
+    }, [])
+    return mapToFunc(operations)
   })
 ])
 

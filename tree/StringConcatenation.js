@@ -14,7 +14,7 @@ class StringConcatenation extends Expression {
   evaluate () {
     this.expressions.forEach(expression => expression.evaluate())
     const strings = this.expressions.map(expression => expression.value.value)
-    this.value = new Value(concatStrings(...strings), "String")
+    this.value = new Value(concatStrings(...strings), this.type)
     this.isEvaluated = true
     return this.value
   }

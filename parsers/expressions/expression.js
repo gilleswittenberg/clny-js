@@ -15,9 +15,9 @@ const {
 } = require("../convenience/convenience")
 
 const nullParser = require("./null")
-const boolean = require("./boolean")
+const boolean = require("./booleans/booleanLogic")
 const number = require("./numbers/arithmetic")
-const string = require("./strings/string")
+const string = require("./strings/stringConcatenation")
 //const typeLiteral = require("../types/typeLiteral")
 const { jsonType } = require("../types/jsonType")
 

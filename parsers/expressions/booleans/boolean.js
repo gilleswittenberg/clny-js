@@ -5,7 +5,7 @@ const {
   choice
 } = require("arcsecond")
 
-const Expression = require("../../tree/Expression")
+const Expression = require("../../../tree/Expression")
 
 const boolean = pipeParsers([
   choice([

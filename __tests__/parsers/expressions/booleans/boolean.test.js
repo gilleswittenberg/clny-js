@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const boolean = require("../../../parsers/expressions/boolean")
+const boolean = require("../../../../parsers/expressions/booleans/boolean")
 
 test("false", () => {
   const expression = toValue(parse(boolean)("false"))

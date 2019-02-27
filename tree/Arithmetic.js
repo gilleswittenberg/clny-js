@@ -18,7 +18,7 @@ class Arithmetic extends Expression {
     const left = this.expressions[0].value.value
     const right = this.expressions.length > 1 ? this.expressions[1].value.value : null
     const result = operator != null ? applyArithmetic(operator, left, right) : left
-    this.value = new Value(result, "Number")
+    this.value = new Value(result, this.type)
     this.isEvaluated = true
     return this.value
   }

@@ -14,12 +14,13 @@ const {
   wrappedInParentheses
 } = require("../convenience/convenience")
 
+//const typeLiteral = require("../types/typeLiteral")
+const { jsonType } = require("../types/jsonType")
+
 const nullParser = require("./null")
 const boolean = require("./booleans/booleanLogic")
 const number = require("./numbers/arithmetic")
 const string = require("./strings/stringConcatenation")
-//const typeLiteral = require("../types/typeLiteral")
-const { jsonType } = require("../types/jsonType")
 
 const expression = wrappedInParentheses(
   pipeParsers([

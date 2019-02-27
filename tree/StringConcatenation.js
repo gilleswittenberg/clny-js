@@ -3,8 +3,9 @@ const Value = require("./Value")
 
 class StringConcatenation extends Expression {
 
-  constructor (expressions) {
+  constructor (...expressions) {
     super()
+    // @TODO: Check expressions.length >= 1
     this.expressions = expressions
     this.type = "String"
     this.isEvaluated = false

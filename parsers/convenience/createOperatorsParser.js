@@ -63,7 +63,7 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
     expression,
     many(
       sequenceOf([
-        whitespaced(anyOfString(operators.join(""))),
+        whitespaced(choice(operators.map(op => str(op)))),
         expression
       ])
     )

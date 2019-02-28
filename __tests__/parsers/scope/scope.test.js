@@ -19,7 +19,7 @@ test("assignment", () => {
 })
 
 test("assignment", () => {
-  const content = "m: 8; n:9"
+  const content = "m: 8; n: 9"
   const value = toValue(parse(scope)(content))
   expect(value.length).toBe(2)
 })

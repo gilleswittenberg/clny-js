@@ -1,4 +1,15 @@
+const {
+  choice
+} = require("arcsecond")
+
 const boolean = require("./boolean")
+const identity = require("../identity")
+
+const basic = choice([
+  boolean,
+  identity
+])
+
 const BooleanLogic = require("../../../tree/BooleanLogic")
 
 const createOperatorsParser = require("../../convenience/createOperatorsParser")

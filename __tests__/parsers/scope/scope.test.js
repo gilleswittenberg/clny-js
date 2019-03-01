@@ -18,7 +18,7 @@ test("assignment", () => {
   expect(value[0].expressions[0].evaluate().value).toBe(4)
 })
 
-test("assignment", () => {
+test("assignments", () => {
   const content = "m: 8; n: 9"
   const value = toValue(parse(scope)(content))
   expect(value.length).toBe(2)

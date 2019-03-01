@@ -9,7 +9,7 @@ const {
   assignment: assignmentParser
 } = require("../../../parsers/scope/assignments_operators")
 
-const log = require("../../../utils/dev/log")
+//const log = require("../../../utils/dev/log")
 
 // single
 test("key, values", () => {
@@ -67,7 +67,7 @@ test("key, single named identity", () => {
 
 test("key, plural named values", () => {
 
-   // (named: ((k: 9), (l: 10)))
+  // (named: ((k: 9), (l: 10)))
   const assignment = toValue(parse(assignmentParser)("named: k: 9, l: 10"))
 
   expect(assignment.key).toBe("named")

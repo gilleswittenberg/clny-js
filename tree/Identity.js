@@ -1,5 +1,4 @@
 const Expression = require("./Expression")
-const Value = require("./Value")
 
 class Identity extends Expression {
 

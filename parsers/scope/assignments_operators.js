@@ -3,7 +3,6 @@ const {
   recursiveParser,
   choice,
   sequenceOf,
-  many1,
   sepBy1,
   pipeParsers,
   mapTo,
@@ -11,8 +10,6 @@ const {
   takeLeft,
   possibly
 } = require("arcsecond")
-
-const log = require("../../utils/dev/log")
 
 const {
   colon,
@@ -81,10 +78,12 @@ const assignment = pipeParsers([
   mapTo(([key, objects]) => key != null ? new Assignment(key, objects) : objects)
 ])
 
+/*
 const assignmentOrObjects = choice([
   assignment,
   objects
 ])
+*/
 
 module.exports = {
   Expression,

@@ -7,7 +7,6 @@ const {
   sequenceOf,
   many,
   choice,
-  anyOfString,
   pipeParsers,
   recursiveParser,
   between,
@@ -24,6 +23,7 @@ const prefix = (operators, expression, mapToFunc) => pipeParsers([
     expression
   ]),
   mapTo(([operators, expression]) => {
+    //console.log("== prefix ==")
     if (operators.length > 0) {
       const arr = operators.reduce((acc, operator) => {
         return acc == null ? [operator, expression] : [operator, acc]
@@ -44,8 +44,10 @@ const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
       ])
     )
   ]),
-  mapTo(args => {
-    const flat = args.flat(Infinity)
+  mapTo(([expression, expressions]) => {
+    //console.log("== rightAssociative ==")
+    if (expressions.length === 0) return expression
+    const flat = [expression, expressions].flat(Infinity)
     // @TODO: Can we use Array.reduce here?
     // @TODO: It seems leftAssociative are also parser results are also being mapped through here
     while (flat.length >= 3) {
@@ -68,8 +70,10 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
       ])
     )
   ]),
-  mapTo(args => {
-    const flat = args.flat(Infinity)
+  mapTo(([expression, expressions]) => {
+    //console.log("== leftAssociative ==")
+    if (expressions.length === 0) return expression
+    const flat = [expression, expressions].flat(Infinity)
     const operations = flat.reduce((acc, cur) => {
       if (acc.length === 3) {
         return [cur, acc]
@@ -85,11 +89,29 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
   })
 ])
 
+const keysValue = (operators, expression, mapToFunc, key) => pipeParsers([
+  sequenceOf([
+    many(
+      sequenceOf([
+        key,
+        whitespaced(choice(operators.map(op => str(op))))
+      ])
+    ),
+    expression
+  ]),
+  mapTo(([keys, expression]) => {
+    if (keys.length === 0) return expression
+    const flat = [keys, expression].flat(Infinity)
+    return mapToFunc(flat)
+  })
+])
+
 const mapTypeToFunctionName = {
   "PRE": prefix,
   //"POST": postfix,
   "RIGHT": rightAssociative,
-  "LEFT": leftAssociative
+  "LEFT": leftAssociative,
+  "KEYS_VALUE": keysValue
 }
 
 // type table: [ {
@@ -113,10 +135,11 @@ const createOperatorsParser = (table, baseExpression) => {
   const parser = table.reduce((parser, level) => {
     const func = mapTypeToFunctionName[level.type]
     const operators = Array.isArray(level.operators) ? level.operators : [level.operators]
-    return func(operators, parser, level.mapTo)
+    return func(operators, parser, level.mapTo, level.keyParser)
   }, expression)
 
   return parser
 }
+
 
 module.exports = createOperatorsParser

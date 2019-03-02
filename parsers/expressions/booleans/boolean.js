@@ -5,14 +5,14 @@ const {
   choice
 } = require("arcsecond")
 
-const Expression = require("../../../tree/Expression")
+const Boolean = require("../../../tree/expressions/scalars/Boolean")
 
 const boolean = pipeParsers([
   choice([
     str("false"),
     str("true")
   ]),
-  mapTo(str => new Expression(str, "Boolean"))
+  mapTo(str => new Boolean(null, str))
 ])
 
 module.exports = boolean

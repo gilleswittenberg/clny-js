@@ -1,4 +1,4 @@
-const Expression = require("./Expression")
+const Expression = require("./expressions/Expression")
 const Assignment = require("./Assignment")
 const Statement = require("./Statement")
 
@@ -62,7 +62,7 @@ class Scope {
       }
       return scope
     }, initialScope)
-    
+
     return evaluatedScope.returnValue
   }
 

@@ -11,13 +11,9 @@ module.exports = class Statement extends Object {
   }
 
   evaluate () {
-    if (this.isEvaluated) return this.values()
+    if (this.isEvaluated) return this.expressions
     this.expressions.forEach(expression => expression.evaluate())
     this.isEvaluated = true
-    return this.values()
-  }
-
-  values () {
-    return this.expressions.map(expression => expression.value.value)
+    return this.expressions
   }
 }

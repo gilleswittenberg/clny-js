@@ -1,5 +1,5 @@
 const number = require("./number")
-const Arithmetic = require("../../../tree/Arithmetic")
+const Arithmetic = require("../../../tree/expressions/operations/Arithmetic")
 
 const createOperatorsParser = require("../../convenience/createOperatorsParser")
 

@@ -4,7 +4,7 @@ const {
 } = require("arcsecond")
 const number = require("../../../../parsers/expressions/numbers/number")
 
-const evaluatedValue = result => toValue(result).evaluate().value
+const evaluatedValue = result => toValue(result).evaluate()
 
 test("int", () => {
   expect(evaluatedValue(parse(number)("5"))).toBe(5)

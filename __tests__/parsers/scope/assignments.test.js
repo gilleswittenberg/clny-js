@@ -9,7 +9,7 @@ test("single", () => {
   assignments.forEach(assignment => assignment.evaluate())
   expect(assignments.length).toBe(1)
   expect(assignments[0].keys).toEqual(["k"])
-  expect(assignments[0].expressions[0].value.value).toBe(5)
+  expect(assignments[0].expressions[0].value).toBe(5)
 })
 
 test("plural", () => {
@@ -17,9 +17,9 @@ test("plural", () => {
   assignments.forEach(assignment => assignment.evaluate())
   expect(assignments.length).toBe(2)
   expect(assignments[0].keys).toEqual(["l"])
-  expect(assignments[0].expressions[0].value.value).toBe(6)
+  expect(assignments[0].expressions[0].value).toBe(6)
   expect(assignments[1].keys).toEqual(["m"])
-  expect(assignments[1].expressions[0].value.value).toBe(7)
+  expect(assignments[1].expressions[0].value).toBe(7)
 })
 
 test("plural parens", () => {

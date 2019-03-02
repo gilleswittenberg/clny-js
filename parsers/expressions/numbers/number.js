@@ -17,7 +17,7 @@ const {
 } = require("../../convenience/tokens")
 
 const charsToString = require("../../../utils/charsToString")
-const Expression = require("../../../tree/Expression")
+const Number = require("../../../tree/expressions/scalars/Number")
 
 const int = pipeParsers([
   sequenceOf([
@@ -65,7 +65,7 @@ const number = pipeParsers([
     float,
     int
   ]),
-  mapTo(number => new Expression(number, "Number"))
+  mapTo(number => new Number(null, number))
 ])
 
 module.exports = number

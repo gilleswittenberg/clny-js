@@ -6,7 +6,7 @@ const nullParser = require("../../../parsers/expressions/null")
 
 test("null", () => {
   const expression = toValue(parse(nullParser)("null"))
-  expect(expression.expression).toBe("null")
+  expect(expression.literal).toBe("null")
   expect(expression.type).toBe("Null")
-  expect(expression.evaluate().value).toBe(null)
+  expect(expression.value).toBe(null)
 })

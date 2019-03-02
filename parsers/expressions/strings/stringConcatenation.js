@@ -1,5 +1,5 @@
 const string = require("./string")
-const StringConcatenation = require("../../../tree/StringConcatenation")
+const StringConcatenation = require("../../../tree/expressions/operations/StringConcatenation")
 
 const createOperatorsParser = require("../../convenience/createOperatorsParser")
 

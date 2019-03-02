@@ -23,7 +23,6 @@ const prefix = (operators, expression, mapToFunc) => pipeParsers([
     expression
   ]),
   mapTo(([operators, expression]) => {
-    //console.log("== prefix ==")
     if (operators.length > 0) {
       const arr = operators.reduce((acc, operator) => {
         return acc == null ? [operator, expression] : [operator, acc]
@@ -45,7 +44,6 @@ const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
     )
   ]),
   mapTo(([expression, expressions]) => {
-    //console.log("== rightAssociative ==")
     if (expressions.length === 0) return expression
     const flat = [expression, expressions].flat(Infinity)
     // @TODO: Can we use Array.reduce here?
@@ -71,7 +69,6 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
     )
   ]),
   mapTo(([expression, expressions]) => {
-    //console.log("== leftAssociative ==")
     if (expressions.length === 0) return expression
     const flat = [expression, expressions].flat(Infinity)
     const operations = flat.reduce((acc, cur) => {
@@ -140,6 +137,5 @@ const createOperatorsParser = (table, baseExpression) => {
 
   return parser
 }
-
 
 module.exports = createOperatorsParser

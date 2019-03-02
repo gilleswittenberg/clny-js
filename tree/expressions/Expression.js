@@ -1,5 +1,4 @@
-const Value = require("./Value")
-const Object = require("./Object")
+const Object = require("../Object")
 
 class Expression extends Object {
 
@@ -11,6 +10,7 @@ class Expression extends Object {
   }
 
   evaluate () {
+    if (this.isEvaluated) return this.value
     this.value = evaluate(this.expression, this.type)
     this.isEvaluated = true
     return this.value
@@ -24,11 +24,7 @@ class Expression extends Object {
 module.exports = Expression
 
 function evaluate (expression, type = null) {
-  if (expression instanceof Value) {
-    return expression
-  }
   if (expression instanceof Expression) {
     return evaluate(expression.expression, type)
   }
-  return new Value(expression, type)
 }

@@ -7,12 +7,13 @@ const {
 const { whitespaced } = require("../convenience/whitespace")
 const { rangeDelimiter } = require("../convenience/tokens")
 // @TODO: Allow only ints
-const arithmetic = require("./numbers/arithmetic")
+const number = require("./numbers/number")
 
-const Expression = require("../../tree/Expression")
+const Number = require("../../tree/expressions/scalars/Number")
 
 // @TODO: Move to (Range extends Expression)
 const createRange = (start, end) => {
+  if (start == null || end == null) throw "Invalid Range start or end"
   const isAscending = start <= end ? true : false
   const next = n => isAscending ? n + 1 : n - 1
   const hasEnded = n => isAscending ? n >= end : n <= end
@@ -29,14 +30,15 @@ const createRange = (start, end) => {
 // @TODO: floats, alphabetical, steps
 const range = pipeParsers([
   sequenceOf([
-    arithmetic,
+    number,
     whitespaced(rangeDelimiter),
-    arithmetic
+    number
   ]),
   mapTo(([start,,end]) => {
-    const startValue = start.evaluate().value
-    const endValue = end.evaluate().value
-    return createRange(startValue, endValue).map(n => new Expression(n))
+    const startValue = start.evaluate()
+    const endValue = end.evaluate()
+    const range = createRange(startValue, endValue).map(n => new Number(n))
+    return range
   })
 ])
 

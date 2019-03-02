@@ -9,5 +9,5 @@ test("return", () => {
   const value = toValue(parse(scope)(content))
   expect(value.name).toBe("return")
   expect(value.evaluate().length).toBe(1)
-  expect(value.evaluate()[0]).toBe(3)
+  expect(value.evaluate()[0].value).toBe(3)
 })

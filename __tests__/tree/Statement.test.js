@@ -1,8 +1,8 @@
-const Expression = require("../../tree/Expression")
+const Number = require("../../tree/expressions/scalars/Number")
 const Statement = require("../../tree/Statement")
 
 test("single", () => {
-  const expression = new Expression(5, "Number")
+  const expression = new Number(5)
   const statement = new Statement("return", [expression])
-  expect(statement.evaluate()).toEqual([5])
+  expect(statement.evaluate().map(number => number.value)).toEqual([5])
 })

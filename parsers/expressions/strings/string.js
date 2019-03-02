@@ -17,7 +17,7 @@ const {
 } = require("../../convenience/whitespace")
 
 const charsToString = require("../../../utils/charsToString")
-const Expression = require("../../../tree/Expression")
+const String = require("../../../tree/expressions/scalars/String")
 
 const escapedQuote = str(`\\"`) // eslint-disable-line quotes
 
@@ -44,7 +44,7 @@ const string = pipeParsers([
   mapTo(([,s, closingChar]) => {
     const shouldTrimEnd = closingChar !== "\""
     const str = shouldTrimEnd ? s.trimEnd() : s
-    return new Expression(str, "String")
+    return new String(str)
   })
 ])
 

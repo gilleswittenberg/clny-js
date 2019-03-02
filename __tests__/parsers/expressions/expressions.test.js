@@ -22,13 +22,13 @@ test("range", () => {
   expect(toValue(parse(expressions)("1,,5")).length).toBe(5)
 })
 
-test("one plural type", () => {
+xtest("one plural type", () => {
   const strings = toValue(parse(expressions)("Strings 5"))
   expect(strings.length).toEqual(1)
   expect(strings[0].evaluate().value).toEqual("5")
 })
 
-test("multi plural type", () => {
+xtest("multi plural type", () => {
   const strings = toValue(parse(expressions)("Strings 6, 7, 89"))
   expect(strings.length).toEqual(3)
   expect(strings[0].evaluate().value).toEqual("6")

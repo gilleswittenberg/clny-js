@@ -4,7 +4,7 @@ const {
 } = require("arcsecond")
 
 const key = require("../scope/key")
-const Identity = require("../../tree/Identity")
+const Identity = require("../../tree/expressions/Identity")
 
 const identity = pipeParsers([
   key,

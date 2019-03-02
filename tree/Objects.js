@@ -2,17 +2,17 @@ const Object = require("./Object")
 
 class Objects extends Object {
 
-  constructor (expressions) {
+  constructor (objects) {
     super()
-    this.expressions = expressions // Objects
+    this.objects = objects // Objects
     this.type = "Plural"
     this.isEvaluated = false
   }
 
   evaluate () {
-    this.expressions.forEach(expression => expression.evaluate())
+    this.objects.forEach(object => object.evaluate())
     this.isEvaluated = true
-    return this.expressions
+    return this.objects
   }
 }
 

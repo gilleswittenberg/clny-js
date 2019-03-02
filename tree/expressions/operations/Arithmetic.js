@@ -1,24 +1,21 @@
-const Expression = require("./Expression")
-const Value = require("./Value")
+const Operation = require("./Operation")
+const Number = require("../scalars/Number")
 
-class Arithmetic extends Expression {
+class Arithmetic extends Operation {
 
-  constructor (operator, ...expressions) {
-    super()
-    this.operator = operator
-    // @TODO: Throw when expressions.length = 0
-    this.expressions = expressions
+  constructor (operator, ...operands) {
+    const fix = operands.length > 1 ? "INFIX" : "PREFIX"
+    super(fix, operator, ...operands)
     this.type = "Number"
-    this.isEvaluated = false
   }
 
   evaluate () {
-    this.expressions.forEach(expression => expression.evaluate())
+    this.operands.forEach(operand => operand.evaluate())
     const operator = this.operator
-    const left = this.expressions[0].value.value
-    const right = this.expressions.length > 1 ? this.expressions[1].value.value : null
+    const left = this.operands[0].value
+    const right = this.operands.length > 1 ? this.operands[1].value : null
     const result = operator != null ? applyArithmetic(operator, left, right) : left
-    this.value = new Value(result, this.type)
+    this.value = new Number(result)
     this.isEvaluated = true
     return this.value
   }

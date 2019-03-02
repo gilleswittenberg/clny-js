@@ -4,27 +4,27 @@ const {
 } = require("arcsecond")
 const scope = require("../../../parsers/scope/scope")
 
-test("expression", () => {
+xtest("expression", () => {
   const content = "3"
   const value = toValue(parse(scope)(content))
   expect(value[0].evaluate().value).toBe(3)
   expect(value[0].evaluate().type).toBe("Number")
 })
 
-test("assignment", () => {
+xtest("assignment", () => {
   const content = "k: 4"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["k"])
   expect(value[0].expressions[0].evaluate().value).toBe(4)
 })
 
-test("assignments", () => {
+xtest("assignments", () => {
   const content = "m: 8; n: 9"
   const value = toValue(parse(scope)(content))
   expect(value.length).toBe(2)
 })
 
-test("array", () => {
+xtest("array", () => {
   const content = "arr: 5, 6"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["arr"])
@@ -32,7 +32,7 @@ test("array", () => {
   expect(value[0].expressions[1].evaluate().value).toBe(6)
 })
 
-test("multiline array", () => {
+xtest("multiline array", () => {
 
   /* eslint-disable indent */
 const content = `array:
@@ -46,7 +46,7 @@ const content = `array:
   expect(value[0].expressions[1].evaluate().value).toBe(8)
 })
 
-test("multiline indented array", () => {
+xtest("multiline indented array", () => {
   /* eslint-disable indent */
 const content = `arrayMD:
 - 9
@@ -59,7 +59,7 @@ const content = `arrayMD:
   expect(value[0].expressions[1].evaluate().value).toBe(10)
 })
 
-test("multiline array, assignments and expressions", () => {
+xtest("multiline array, assignments and expressions", () => {
   /* eslint-disable indent */
 const content = `array:
   ka: 10
@@ -76,7 +76,7 @@ const content = `array:
 
 // @TODO: Fix alias to scope
 /*
-test("named array", () => {
+xtest("named array", () => {
   const content = "array: k: 7, l: 8"
   const value = toValue(parse(scope)(content))
   expect(value[0].keys).toEqual(["array"])
@@ -85,7 +85,7 @@ test("named array", () => {
 })
 */
 
-test("indented scope", () => {
+xtest("indented scope", () => {
   /* eslint-disable indent */
 const content = `scope
   k: 5
@@ -99,7 +99,7 @@ key: 9
   expect(value.length).toBe(2)
 })
 
-test("indented deep scope", () => {
+xtest("indented deep scope", () => {
   /* eslint-disable indent */
 const content = `scope:
   deep:
@@ -113,7 +113,7 @@ const content = `scope:
   expect(value[0].expressions[0].expressions.length).toBe(2)
 })
 
-test("indented deep scope 2", () => {
+xtest("indented deep scope 2", () => {
   /* eslint-disable indent */
 const content = `scope:
   deepone:
@@ -134,7 +134,7 @@ const content = `scope:
   expect(value[0].expressions[2].expressions[0].expressions[0].expressions[0].evaluate().value).toBe(9)
 })
 
-test("indented scope root", () => {
+xtest("indented scope root", () => {
   /* eslint-disable indent */
 const content = `scope:
   k: 7
@@ -147,7 +147,7 @@ two:
   expect(value[1].keys).toEqual(["two"])
 })
 
-test("indented scope, assignments", () => {
+xtest("indented scope, assignments", () => {
   /* eslint-disable indent */
 const content = `scope:
   k: 6
@@ -162,7 +162,7 @@ three:
   expect(value[2].keys).toEqual(["three"])
 })
 
-test("indented scope semicolon", () => {
+xtest("indented scope semicolon", () => {
   /* eslint-disable indent */
 const content = `scope:
   m: 8; n:9
@@ -172,7 +172,7 @@ const content = `scope:
   expect(value[0].expressions.length).toBe(2)
 })
 
-test("indented scope indented", () => {
+xtest("indented scope indented", () => {
   /* eslint-disable indent */
 const content = `scope:
 - deepone:

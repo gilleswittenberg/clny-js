@@ -1,5 +1,3 @@
-class Object {
-
-}
+class Object {}
 
 module.exports = Object

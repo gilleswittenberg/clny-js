@@ -4,11 +4,11 @@ const {
   mapTo
 } = require("arcsecond")
 
-const Expression = require("../../tree/Expression")
+const Null = require("../../tree/expressions/scalars/Null")
 
 const nullParser = pipeParsers([
   str("null"),
-  mapTo(() => new Expression("null", "Null"))
+  mapTo(str => new Null(null, str))
 ])
 
 module.exports = nullParser

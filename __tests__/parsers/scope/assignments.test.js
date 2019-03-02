@@ -4,7 +4,7 @@ const {
 } = require("arcsecond")
 const assignmentsParser = require("../../../parsers/scope/assignments")
 
-test("single", () => {
+xtest("single", () => {
   const assignments = toValue(parse(assignmentsParser)("k: 5"))
   assignments.forEach(assignment => assignment.evaluate())
   expect(assignments.length).toBe(1)
@@ -12,7 +12,7 @@ test("single", () => {
   expect(assignments[0].expressions[0].value).toBe(5)
 })
 
-test("plural", () => {
+xtest("plural", () => {
   const assignments = toValue(parse(assignmentsParser)("l: 6, m: 7"))
   assignments.forEach(assignment => assignment.evaluate())
   expect(assignments.length).toBe(2)
@@ -22,7 +22,7 @@ test("plural", () => {
   expect(assignments[1].expressions[0].value).toBe(7)
 })
 
-test("plural parens", () => {
+xtest("plural parens", () => {
   const assignments = toValue(parse(assignmentsParser)("(l: 6, m: 7 )"))
   assignments.forEach(assignment => assignment.evaluate())
   expect(assignments.length).toBe(2)

@@ -20,7 +20,7 @@ const {
 const key = require("./key")
 const expressions = require("../expressions/expressions")
 
-const Assignment = require("../../tree/Assignment")
+const Assignment = require("../../tree/expressions/Assignment")
 
 const assignment = wrappedInParentheses(
   pipeParsers([

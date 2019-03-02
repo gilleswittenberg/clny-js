@@ -1,6 +1,6 @@
 const Scope = require("../../tree/Scope")
 const Number = require("../../tree/expressions/scalars/Number")
-const Assignment = require("../../tree/Assignment")
+const Assignment = require("../../tree/expressions/Assignment")
 const Statement = require("../../tree/Statement")
 
 xtest("empty", () => {

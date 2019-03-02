@@ -19,7 +19,7 @@ const {
 
 const prefix = (operators, expression, mapToFunc) => pipeParsers([
   sequenceOf([
-    many(whitespaced(str(operators[0]))),
+    many(whitespaced(choice(operators.map(op => str(op))))),
     expression
   ]),
   mapTo(([operators, expression]) => {

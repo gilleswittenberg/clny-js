@@ -7,7 +7,8 @@ class Number extends Scalar {
   }
 
   parse (literal) {
-    return parseFloat(literal.replace(/_/g, ""))
+    const num = parseFloat(literal.replace(/_/g, ""))
+    return isNaN(num) ? 0 : num
   }
 }
 

@@ -1,5 +1,5 @@
 const Expression = require("./expressions/Expression")
-const Assignment = require("./Assignment")
+const Assignment = require("./expressions/Assignment")
 const Statement = require("./Statement")
 
 const isExpression = object => object instanceof Expression

@@ -9,12 +9,9 @@ class Identity extends Expression {
   }
 
   evaluate (scope) {
-    const expression = scope[this.key]
-    if (expression === undefined) throw this.key + " is not defined in scope"
-    expression.evaluate()
-    this.type = expression.type
-    this.value = expression.value.value
-    return this.value
+    this.expressions = scope[this.key]
+    if (this.expressions === undefined) throw this.key + " is not defined in scope"
+    return super.evaluate()
   }
 }
 

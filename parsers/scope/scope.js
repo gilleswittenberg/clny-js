@@ -27,7 +27,7 @@ const key = require("./key")
 const assignments = require("./assignments")
 const expressions = require("../expressions/expressions")
 
-const Assignment = require("../../tree/Assignment")
+const Assignment = require("../../tree/expressions/Assignment")
 
 const indentedNewline = num => {
   if (num === 0) return newline

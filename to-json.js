@@ -7,7 +7,7 @@ const { parse, toPromise } = require("arcsecond")
 
 const scope = require("./parsers/scope/scope")
 const Expression = require("./tree/Expression")
-const Assignment = require("./tree/Assignment")
+const Assignment = require("./tree/expressions/Assignment")
 
 // read file
 assert.ok(process.argv[2], "Supply file: `node to-json.js --file`")

@@ -2,8 +2,7 @@ const types = [
   "Null",
   "Boolean",
   "Number",
-  "String",
-  "RegExp"
+  "String"
 ]
 
 const pluralize = str => str + "s"

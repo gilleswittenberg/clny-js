@@ -8,12 +8,15 @@ const number = require("./expressions/numbers/number")
 const string = require("./expressions/strings/string")
 const identity = require("./expressions/identity")
 const key = require("./scope/key")
+//const type = require("./types/type")
 const createOperatorsParser = require("./convenience/createOperatorsParser")
 
-const Objects = require("../tree/Objects")
-const Assignment = require("../tree/Assignment")
+const Expression = require("../tree/expressions/Expression")
+const Assignment = require("../tree/expressions/Assignment")
 
 const Operation = require("../tree/expressions/operations/Operation")
+
+const { types/*, pluralTypes */ } = require("../tree/types2")
 
 const notOperator = operator => expression => expression !== operator
 
@@ -53,16 +56,31 @@ const mapToAssignment = matches => {
   return keysAndExpression.reverse().reduce((acc, cur) => acc == null ? cur : new Assignment([cur], [acc]))
 }
 
-const mapToObjects = objects =>
-  new Objects(objects.flat(Infinity).filter(notOperator(",")))
+const mapToPlural = expressions =>
+  new Expression(null, expressions.flat(Infinity).filter(notOperator(",")))
+
+const mapToType = matches => {
+  const types = matches.slice(0, -1)
+  const expression = matches.slice(-1)[0]
+  return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
+}
 
 const table = [
+  // Booleans
+  { type: "PRE", operators: ["!"], mapTo: mapPrefixToOperation },
+  { type: "LEFT", operators: ["&"], mapTo: mapToOperation },
+  { type: "LEFT", operators: ["|"], mapTo: mapToOperation },
+  // Numbers
   { type: "PRE", operators: ["-"], mapTo: mapPrefixToOperation },
   { type: "RIGHT", operators: ["**"], mapTo: mapToOperation },
   { type: "LEFT", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT", operators: ["+", "-"], mapTo: mapToOperation },
+  // Assignment
   { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
-  { type: "LEFT", operators: [","], mapTo: mapToObjects }
+  // Plurals
+  { type: "LEFT", operators: [","], mapTo: mapToPlural },
+  // Type
+  { type: "PRE", operators: types, mapTo: mapToType }
 ]
 
 const parser = createOperatorsParser(table, basic)
@@ -71,10 +89,10 @@ module.exports = parser
 
 // @TODO: Expression: Boolean, Number, String
 // @TODO: + to Arithmetic and String concat (Operation, PrefixOperation, PostfixOperation, InfixOperation)
+// @TODO: Casting single Expression, Plurals, Assignment
 
-// @TODO: Casting single Expression, plural Expressions
-// @TODO: More abstract KEYS_VALUE
-// @TODO: Key on BEGINNING OF LINE
 // @TODO: Indent / scopes
 // @TODO: aliases (::)
+// @TODO: Key on BEGINNING OF LINE
 // @TODO: Optional closing opening brackets, parens
+// @TODO: More abstract KEYS_VALUE

@@ -5,7 +5,8 @@ const {
   many,
   possibly,
   mapTo,
-  parse
+  parse,
+  toValue
 } = require("arcsecond")
 
 const {
@@ -55,9 +56,12 @@ const lines = pipeParsers([
     // remove comments
     const nonCommentLines = nonEmptyLines.filter(line => {
       // @TODO: ? Is it clean to call parse here
-      const result = parse(comment)(line.chars)
-      // @TODO: ? Is this a right check for Either
-      return result.value[0] === 0
+      try {
+        toValue(parse(comment)(line.chars))
+        return false
+      } catch (err) {
+        return true
+      }
     })
 
     return nonCommentLines

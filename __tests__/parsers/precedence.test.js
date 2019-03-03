@@ -103,6 +103,7 @@ test("plural assignments", () => {
 test("plural assignments", () => {
   //log(toValue(parse(parser)("5: 6")))
   //log(toValue(parse(parser)("arr: 5, 6")))
+  //log(toValue(parse(parser)("arr: (7, 8)")))
   //log(toValue(parse(parser)("k: l: 6")))
   //log(toValue(parse(parser)("k: l: 6, m: 7")))
   //log(toValue(parse(parser)("7, k: 8, 9")))

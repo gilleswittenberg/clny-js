@@ -47,7 +47,6 @@ const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
     if (expressions.length === 0) return expression
     const flat = [expression, expressions].flat(Infinity)
     // @TODO: Can we use Array.reduce here?
-    // @TODO: It seems leftAssociative are also parser results are also being mapped through here
     while (flat.length >= 3) {
       const operand1 = flat.pop()
       const operator = flat.pop()

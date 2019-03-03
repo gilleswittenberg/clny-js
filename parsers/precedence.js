@@ -13,8 +13,8 @@ const createOperatorsParser = require("./convenience/createOperatorsParser")
 
 const Expression = require("../tree/expressions/Expression")
 const Assignment = require("../tree/expressions/Assignment")
-
 const Operation = require("../tree/expressions/operations/Operation")
+const Scope = require("../tree/Scope2")
 
 const { types/*, pluralTypes */ } = require("../tree/types2")
 
@@ -65,6 +65,14 @@ const mapToType = matches => {
   return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
 }
 
+const mapToScope = matches =>
+  new Scope(
+    matches
+      .flat(Infinity)
+      .filter(notOperator(";"))
+  )
+
+
 const table = [
   // Booleans
   { type: "PRE", operators: ["!"], mapTo: mapPrefixToOperation },
@@ -80,7 +88,9 @@ const table = [
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
   // Type
-  { type: "PRE", operators: types, mapTo: mapToType }
+  { type: "PRE", operators: types, mapTo: mapToType },
+  // Scope
+  { type: "LEFT", operators: [";"], mapTo: mapToScope }
 ]
 
 const parser = createOperatorsParser(table, basic)
@@ -92,7 +102,8 @@ module.exports = parser
 // @TODO: Casting single Expression, Plurals, Assignment
 
 // @TODO: Indent / scopes
-// @TODO: aliases (::)
+// @TODO: Comments
 // @TODO: Key on BEGINNING OF LINE
+// @TODO: aliases (::)
 // @TODO: Optional closing opening brackets, parens
 // @TODO: More abstract KEYS_VALUE

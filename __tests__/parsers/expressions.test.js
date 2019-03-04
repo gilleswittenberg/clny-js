@@ -2,15 +2,13 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const parser = require("../../parsers/precedence")
+const parser = require("../../parsers/expressions")
 const Identity = require("../../tree/expressions/Identity")
 const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Assignment = require("../../tree/expressions/Assignment")
-
-const log = require("../../utils/dev/log")
 
 test("single", () => {
   expect(toValue(parse(parser)("5"))).toBeInstanceOf(Number)

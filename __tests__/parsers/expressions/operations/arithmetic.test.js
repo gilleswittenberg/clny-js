@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const arithmetic = require("../../../../parsers/expressions/numbers/arithmetic")
+const arithmetic = require("../../../../parsers/expressions/operations/arithmetic")
 
 xtest("", () => {})
 xtest("number", () => {

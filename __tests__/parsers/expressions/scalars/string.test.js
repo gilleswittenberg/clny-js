@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const string = require("../../../../parsers/expressions/strings/string")
+const string = require("../../../../parsers/expressions/scalars/string")
 
 test("string", () => {
   /* eslint-disable quotes */

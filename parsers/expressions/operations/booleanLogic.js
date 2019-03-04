@@ -1,4 +1,4 @@
-const boolean = require("./boolean")
+const boolean = require("../scalars/boolean")
 const BooleanLogic = require("../../../tree/expressions/operations/BooleanLogic")
 
 const createOperatorsParser = require("../../convenience/createOperatorsParser")

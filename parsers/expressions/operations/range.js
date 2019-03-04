@@ -4,12 +4,12 @@ const {
   mapTo
 } = require("arcsecond")
 
-const { whitespaced } = require("../convenience/whitespace")
-const { rangeDelimiter } = require("../convenience/tokens")
+const { whitespaced } = require("../../convenience/whitespace")
+const { rangeDelimiter } = require("../../convenience/tokens")
 // @TODO: Allow only ints
-const number = require("./numbers/number")
+const number = require("../scalars/number")
 
-const Number = require("../../tree/expressions/scalars/Number")
+const Number = require("../../../tree/expressions/scalars/Number")
 
 // @TODO: Move to (Range extends Expression)
 const createRange = (start, end) => {

@@ -14,7 +14,7 @@ const {
 } = require("./convenience/whitespace")
 
 const key = require("./scope/key")
-const expressions = require("./expressions")
+const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
 const Indent = require("../tree/Indent")
@@ -51,6 +51,7 @@ const line = pipeParsers([
 ])
 
 const mapLinesToScopes = lines => {
+
   const rootScope = new RootScope()
   const scopes = [rootScope]
   const currentScope = () => scopes[scopes.length - 1]

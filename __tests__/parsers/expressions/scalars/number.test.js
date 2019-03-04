@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const number = require("../../../../parsers/expressions/numbers/number")
+const number = require("../../../../parsers/expressions/scalars/number")
 
 const evaluatedValue = result => toValue(result).evaluate()
 

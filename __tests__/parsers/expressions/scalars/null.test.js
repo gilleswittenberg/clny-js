@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const nullParser = require("../../../parsers/expressions/null")
+const nullParser = require("../../../../parsers/expressions/scalars/null")
 
 test("null", () => {
   const expression = toValue(parse(nullParser)("null"))

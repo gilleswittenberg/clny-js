@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const range = require("../../../parsers/expressions/range")
+const range = require("../../../../parsers/expressions/operations/range")
 
 const toNumbers = arr => arr.map(expression => expression.value)
 

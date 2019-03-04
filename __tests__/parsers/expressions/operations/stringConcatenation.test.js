@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const stringConcatenation = require("../../../../parsers/expressions/strings/stringConcatenation")
+const stringConcatenation = require("../../../../parsers/expressions/operations/stringConcatenation")
 
 test("string concatination", () => {
   /* eslint-disable quotes */

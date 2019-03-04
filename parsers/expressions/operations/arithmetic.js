@@ -1,4 +1,4 @@
-const number = require("./number")
+const number = require("../scalars/number")
 const Arithmetic = require("../../../tree/expressions/operations/Arithmetic")
 
 const createOperatorsParser = require("../../convenience/createOperatorsParser")

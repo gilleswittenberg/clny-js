@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const booleanLogic = require("../../../../parsers/expressions/booleans/booleanLogic")
+const booleanLogic = require("../../../../parsers/expressions/operations/booleanLogic")
 
 test("and", () => {
   expect(toValue(parse(booleanLogic)("true & true")).evaluate().value).toBe(true)

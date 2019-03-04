@@ -4,7 +4,7 @@ const {
   mapTo
 } = require("arcsecond")
 
-const Null = require("../../tree/expressions/scalars/Null")
+const Null = require("../../../tree/expressions/scalars/Null")
 
 const nullParser = pipeParsers([
   str("null"),

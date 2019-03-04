@@ -12,7 +12,7 @@ class StringConcatenation extends Operation {
     this.operands.forEach(operand => operand.evaluate())
     const left = this.operands[0].value
     const right = this.operands[1].value
-    this.value = new String(concatStrings(left, right))
+    this.value = new String(concatStrings(left, right)).value
     this.isEvaluated = true
     return this.value
   }

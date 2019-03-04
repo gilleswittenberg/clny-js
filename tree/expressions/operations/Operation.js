@@ -16,8 +16,9 @@ class Operation extends Expression {
     const StringConcatenation = require("./StringConcatenation")
     const Range = require("./Range")
 
-    const operands = this.operands.map(operand => operand.evaluate())
+    const operands = this.operands.map(operand => operand instanceof Operation ? operand.evaluate() : operand)
     const type = operands[0].type
+
     // @TODO: Check if operands types match
     // @TODO: Check if operator is available for specific type
     switch (type) {

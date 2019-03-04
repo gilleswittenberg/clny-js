@@ -10,30 +10,38 @@ const {
   pipeParsers,
   recursiveParser,
   between,
+  takeLeft,
   mapTo
 } = require("arcsecond")
 
 const {
+  whitespace,
   whitespaced
 } = require("./whitespace")
 
-const prefix = (operators, expression, mapToFunc) => pipeParsers([
-  sequenceOf([
-    many(whitespaced(choice(operators.map(op => str(op))))),
-    expression
-  ]),
-  mapTo(([operators, expression]) => {
-    if (operators.length > 0) {
-      const arr = operators.reduce((acc, operator) => {
-        return acc == null ? [operator, expression] : [operator, acc]
-      }, null)
-      return mapToFunc(arr)
-    }
-    return expression
-  })
-])
+const prefix = (expression, operators, mapToFunc, whitespaceRequired) => {
+  const operatorParser = whitespaceRequired
+    ? choice(operators.map(op => takeLeft(str(op))(whitespace)))
+    // @TODO: Only whitespace on right side
+    : whitespaced(choice(operators.map(op => str(op))))
+  return pipeParsers([
+    sequenceOf([
+      many(operatorParser),
+      expression
+    ]),
+    mapTo(([operators, expression]) => {
+      if (operators.length > 0) {
+        const arr = operators.reduce((acc, operator) => {
+          return acc == null ? [operator, expression] : [operator, acc]
+        }, null)
+        return mapToFunc(arr)
+      }
+      return expression
+    })
+  ])
+}
 
-const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
+const rightAssociative = (expression, operators, mapToFunc) => pipeParsers([
   sequenceOf([
     expression,
     many(
@@ -57,7 +65,7 @@ const rightAssociative = (operators, expression, mapToFunc) => pipeParsers([
   })
 ])
 
-const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
+const leftAssociative = (expression, operators, mapToFunc) => pipeParsers([
   sequenceOf([
     expression,
     many(
@@ -85,7 +93,7 @@ const leftAssociative = (operators, expression, mapToFunc) => pipeParsers([
   })
 ])
 
-const keysValue = (operators, expression, mapToFunc, key) => pipeParsers([
+const keysValue = (expression, operators, mapToFunc, _, key) => pipeParsers([
   sequenceOf([
     many(
       sequenceOf([
@@ -131,7 +139,8 @@ const createOperatorsParser = (table, baseExpression) => {
   const parser = table.reduce((parser, level) => {
     const func = mapTypeToFunctionName[level.type]
     const operators = Array.isArray(level.operators) ? level.operators : [level.operators]
-    return func(operators, parser, level.mapTo, level.keyParser)
+    const whitespaceRequired = level.whitespaceRequired || false
+    return func(parser, operators, level.mapTo, whitespaceRequired, level.keyParser)
   }, expression)
 
   return parser

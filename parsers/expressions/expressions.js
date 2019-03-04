@@ -89,9 +89,9 @@ const table = [
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
   { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
   // Type
-  { type: "PRE", operators: types, mapTo: mapToType },
+  { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Statement
-  { type: "PRE", operators: ["return "], mapTo: mapToStatement },
+  { type: "PRE", operators: ["return"], mapTo: mapToStatement, whitespaceRequired: true },
   // Scope
   { type: "LEFT", operators: [";"], mapTo: mapToExpressions }
 ]
@@ -105,9 +105,10 @@ module.exports = parser
 // @TODO: Casting single Expression, Plurals, Assignment
 // @TODO: Indent / scopes
 // @TODO: Statement
-
 // @TODO: Range (Operation)
 // @TODO: Require whitespace around operator
+
+// @TODO: Evaluate Operation to value
 // @TODO: Comments
 // @TODO: Key on BEGINNING OF LINE
 // @TODO: aliases (::)

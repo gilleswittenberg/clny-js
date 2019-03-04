@@ -14,7 +14,8 @@ class Operation extends Expression {
     const BooleanLogic = require("./BooleanLogic")
     const Arithmetic = require("./Arithmetic")
     const StringConcatenation = require("./StringConcatenation")
-    
+    const Range = require("./Range")
+
     const operands = this.operands.map(operand => operand.evaluate())
     const type = operands[0].type
     // @TODO: Check if operands types match
@@ -23,6 +24,7 @@ class Operation extends Expression {
     case "Boolean":
       return (new BooleanLogic(this.operator, ...operands)).evaluate()
     case "Number":
+      if (this.operator === ",,") return (new Range(...operands)).evaluate()
       return (new Arithmetic(this.operator, ...operands)).evaluate()
     case "String":
       return (new StringConcatenation(this.operator, ...operands)).evaluate()

@@ -126,6 +126,14 @@ test("string concat", () => {
   expect(value.operands[1]).toBeInstanceOf(String)
 })
 
+test("range", () => {
+  const value = toValue(parse(parser)("1,,5"))
+  expect(value).toBeInstanceOf(Operation)
+  expect(value.operator).toBe(",,")
+  expect(value.operands.length).toBe(2)
+  expect(value.operands[0]).toBeInstanceOf(Number)
+  expect(value.operands[1]).toBeInstanceOf(Number)
+})
 
 test("Scalar cast", () => {
   const value = toValue(parse(parser)("String 5"))

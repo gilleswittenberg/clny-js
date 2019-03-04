@@ -87,6 +87,7 @@ const table = [
   { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
+  { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
   // Type
   { type: "PRE", operators: types, mapTo: mapToType },
   // Statement

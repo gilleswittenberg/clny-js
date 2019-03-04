@@ -14,6 +14,7 @@ const createOperatorsParser = require("../convenience/createOperatorsParser")
 const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
+const Statement = require("../../tree/Statement")
 
 const { types/*, plurals */ } = require("../../tree/types")
 
@@ -64,10 +65,13 @@ const mapToType = matches => {
   return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
 }
 
-const mapToScope = matches =>
+const mapToExpressions = matches =>
   matches
     .flat(Infinity)
     .filter(notOperator(";"))
+
+const mapToStatement = matches =>
+  new Statement(matches[0].trim(), matches.flat(Infinity).slice(1))
 
 const table = [
   // Booleans
@@ -85,8 +89,10 @@ const table = [
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
   // Type
   { type: "PRE", operators: types, mapTo: mapToType },
+  // Statement
+  { type: "PRE", operators: ["return "], mapTo: mapToStatement },
   // Scope
-  { type: "LEFT", operators: [";"], mapTo: mapToScope }
+  { type: "LEFT", operators: [";"], mapTo: mapToExpressions }
 ]
 
 const parser = createOperatorsParser(table, basic)
@@ -97,9 +103,10 @@ module.exports = parser
 // @TODO: + to Arithmetic and String concat (Operation, PrefixOperation, PostfixOperation, InfixOperation)
 // @TODO: Casting single Expression, Plurals, Assignment
 // @TODO: Indent / scopes
-
 // @TODO: Statement
+
 // @TODO: Range (Operation)
+// @TODO: Require whitespace around operator
 // @TODO: Comments
 // @TODO: Key on BEGINNING OF LINE
 // @TODO: aliases (::)

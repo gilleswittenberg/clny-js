@@ -9,6 +9,7 @@ const Number = require("../../../tree/expressions/scalars/Number")
 const String = require("../../../tree/expressions/scalars/String")
 const Operation = require("../../../tree/expressions/operations/Operation")
 const Assignment = require("../../../tree/expressions/Assignment")
+const Statement = require("../../../tree/Statement")
 
 test("single", () => {
   expect(toValue(parse(parser)("5"))).toBeInstanceOf(Number)
@@ -172,4 +173,12 @@ test("semicolon many", () => {
   expect(value[2]).toBeInstanceOf(Number)
   expect(value[3]).toBeInstanceOf(Assignment)
   expect(value[4]).toBeInstanceOf(String)
+})
+
+test("statement", () => {
+  const value = toValue(parse(parser)("return 5"))
+  expect(value).toBeInstanceOf(Statement)
+  expect(value.name).toBe("return")
+  expect(value.expressions.length).toBe(1)
+  expect(value.expressions[0]).toBeInstanceOf(Number)
 })

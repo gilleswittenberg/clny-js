@@ -1,5 +1,4 @@
 const Operation = require("./Operation")
-const Boolean = require("../scalars/Boolean")
 
 class BooleanLogic extends Operation {
 
@@ -10,12 +9,11 @@ class BooleanLogic extends Operation {
   }
 
   evaluate () {
-    this.operands.forEach(operand => operand.evaluate())
     const operator = this.operator
-    const left = this.operands[0].value
-    const right = this.operands.length > 1 ? this.operands[1].value : null
+    const left = this.operands[0]
+    const right = this.operands.length > 1 ? this.operands[1] : null
     const result = operator != null ? applyLogic(operator, left, right) : left
-    this.value = new Boolean(result)
+    this.value = result
     this.isEvaluated = true
     return this.value
   }

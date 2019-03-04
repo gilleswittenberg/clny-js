@@ -1,21 +1,16 @@
-const Number = require("../../tree/expressions/scalars/Number")
 const Arithmetic = require("../../tree/expressions/operations/Arithmetic")
 
 test("Arithmetic", () => {
-  const expression = new Number(5)
-  const arithmeticValue = new Arithmetic(null, expression).evaluate().value
+  const arithmeticValue = new Arithmetic(null, 5).evaluate()
   expect(arithmeticValue).toBe(5)
 })
 
 test("negate", () => {
-  const expression = new Number(6)
-  const arithmeticValue = new Arithmetic("-", expression).evaluate().value
+  const arithmeticValue = new Arithmetic("-", 6).evaluate()
   expect(arithmeticValue).toBe(-6)
 })
 
 test("subtraction", () => {
-  const expression = new Number(7)
-  const expression1 = new Number(3)
-  const arithmeticValue = new Arithmetic("-", expression, expression1).evaluate().value
+  const arithmeticValue = new Arithmetic("-", 7, 3).evaluate()
   expect(arithmeticValue).toBe(4)
 })

@@ -4,6 +4,7 @@ class Operation extends Expression {
 
   constructor (fix, operator, ...operands) {
     super()
+    this.expressions = null
     this.fix = fix
     this.operator = operator
     this.operands = operands
@@ -16,11 +17,17 @@ class Operation extends Expression {
     const StringConcatenation = require("./StringConcatenation")
     const Range = require("./Range")
 
-    const operands = this.operands.map(operand => operand instanceof Operation ? operand.evaluate() : operand)
-    const type = operands[0].type
+    const operands = this.operands.map(operand => operand.evaluate())
 
     // @TODO: Check if operands types match
     // @TODO: Check if operator is available for specific type
+    const t = typeof operands[0]
+    const type =
+      t === "boolean" ? "Boolean" :
+        t === "string" ? "String" :
+          t === "number" ? "Number" :
+            (() => { throw "Invalid operand type" })()
+
     switch (type) {
     case "Boolean":
       return (new BooleanLogic(this.operator, ...operands)).evaluate()
@@ -28,7 +35,7 @@ class Operation extends Expression {
       if (this.operator === ",,") return (new Range(...operands)).evaluate()
       return (new Arithmetic(this.operator, ...operands)).evaluate()
     case "String":
-      return (new StringConcatenation(this.operator, ...operands)).evaluate()
+      return (new StringConcatenation(...operands)).evaluate()
     }
   }
 }

@@ -2,33 +2,33 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const booleanLogic = require("../../../../parsers/expressions/operations/booleanLogic")
+const expressions = require("../../../../parsers/expressions/expressions")
 
 test("and", () => {
-  expect(toValue(parse(booleanLogic)("true & true")).evaluate().value).toBe(true)
+  expect(toValue(parse(expressions)("true & true")).evaluate()).toBe(true)
 })
 
 test("and", () => {
-  expect(toValue(parse(booleanLogic)("true & true & false")).evaluate().value).toBe(false)
+  expect(toValue(parse(expressions)("true & true & false")).evaluate()).toBe(false)
 })
 
 test("or", () => {
-  expect(toValue(parse(booleanLogic)("true | false")).evaluate().value).toBe(true)
+  expect(toValue(parse(expressions)("true | false")).evaluate()).toBe(true)
 })
 
 test("or", () => {
-  expect(toValue(parse(booleanLogic)("true | false | false")).evaluate().value.value).toBe(true)
+  expect(toValue(parse(expressions)("true | false | false")).evaluate()).toBe(true)
 })
 
 test("not", () => {
-  expect(toValue(parse(booleanLogic)("!true")).evaluate().value).toBe(false)
+  expect(toValue(parse(expressions)("!true")).evaluate()).toBe(false)
 })
 
 test("not or", () => {
-  expect(toValue(parse(booleanLogic)("!true | false")).evaluate().value.value).toBe(false)
+  expect(toValue(parse(expressions)("!true | false")).evaluate()).toBe(false)
 })
 
 test("precedence", () => {
-  expect(toValue(parse(booleanLogic)("false | true & true")).evaluate().value.value).toBe(true)
-  expect(toValue(parse(booleanLogic)("!false | (!true & true)")).evaluate().value.value).toBe(true)
+  expect(toValue(parse(expressions)("false | true & true")).evaluate()).toBe(true)
+  expect(toValue(parse(expressions)("!false | (!true & true)")).evaluate()).toBe(true)
 })

@@ -1,17 +1,27 @@
 const {
   char,
-  possibly,
   choice,
   many,
+  lookAhead,
   sequenceOf,
+  endOfInput,
   pipeParsers,
-  mapTo
+  mapTo,
+  parse,
+  toValue
 } = require("arcsecond")
 
 const {
   indent,
   whitespaced
 } = require("./convenience/whitespace")
+
+const {
+  anyChars,
+  anyCharsExceptEOL
+} = require("./convenience/convenience")
+
+const charsToString = require("../utils/charsToString")
 
 const key = require("./scope/key")
 const expressions = require("./expressions/expressions")
@@ -22,10 +32,11 @@ const ScopeOpener = require("../tree/ScopeOpener")
 const Scope = require("../tree/expressions/Scope")
 const RootScope = require("../tree/expressions/RootScope")
 const Line = require("../tree/Line")
+const Gibberish = require("../tree/Gibberish")
 
 const indents = pipeParsers([
   many(indent),
-  mapTo(indents => new Indent(indents.length))
+  mapTo(indents => new Indent(indents))
 ])
 
 const scopeOpener = pipeParsers([
@@ -36,18 +47,24 @@ const scopeOpener = pipeParsers([
   mapTo(([key]) => new ScopeOpener(key))
 ])
 
+const gibberish = pipeParsers([
+  anyChars,
+  mapTo(chars => new Gibberish(chars))
+])
+
 const lineContent = choice([
   expressions,
-  scopeOpener
+  scopeOpener,
+  gibberish
 ])
 
 const line = pipeParsers([
   sequenceOf([
     indents,
-    lineContent,
-    possibly(eol)
+    pipeParsers([anyCharsExceptEOL, mapTo(charsToString)]),
+    choice([eol, lookAhead(endOfInput)])
   ]),
-  mapTo(([indent, content]) => [content, indent])
+  mapTo(([indent, chars]) => [chars, indent])
 ])
 
 const mapLinesToScopes = lines => {
@@ -56,12 +73,38 @@ const mapLinesToScopes = lines => {
   const scopes = [rootScope]
   const currentScope = () => scopes[scopes.length - 1]
   const currentIndents = () => scopes.length - 1
+  let commentIndents = null
+
   lines.forEach(line => {
 
+    const content = line.parsedContent
     const indents = line.indents
-    if (indents > currentIndents()) throw "Invalid indention"
 
-    const content = line.chars
+    // empty line
+    if (line.isEmpty) return
+
+    // inside multiline comment
+    if (commentIndents != null && indents > commentIndents) {
+      return
+    }
+
+    // close multiline comment
+    commentIndents = null
+
+    // open multiline comment
+    if (line.isComment) {
+      commentIndents = indents
+      return
+    }
+
+    // default content (not part of multiline comment)
+    if (content instanceof Gibberish)
+      throw new Error("Invalid characters at line: " + line.lineNumber)
+
+
+    // indention check
+    if (indents > currentIndents())
+      throw new Error ("Invalid indention at line: " + line.lineNumber)
 
     // new scope
     if (content instanceof ScopeOpener) {
@@ -86,9 +129,23 @@ const mapLinesToScopes = lines => {
 }
 
 const linesParser = pipeParsers([
-  many(line),
-  mapTo(lines => {
-    return mapLinesToScopes(lines.map((line, index) => new Line(line[0], index, line[1].level)))
+  sequenceOf([
+    many(line),
+    endOfInput
+  ]),
+  mapTo(([linesChars]) => {
+    const lines = linesChars.map((line, index) => new Line(line[1].chars + line[0], index + 1, line[1].level))
+    const parsedLines = lines.map(line => {
+      try {
+        line.parsedContent = toValue(parse(lineContent)(line.content))
+      } catch (err) {
+        //console.err(err)
+        throw err
+      }
+      return line
+    })
+    return mapLinesToScopes(parsedLines)
+    //return lines.map((line, index) => new Line(line[1] + line[0], index + 1, line[1].level))
   })
 ])
 

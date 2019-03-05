@@ -65,13 +65,13 @@ const mapToType = matches => {
   return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
 }
 
+const mapToStatement = matches =>
+  new Statement(matches[0].trim(), matches.flat(Infinity).slice(1))
+
 const mapToExpressions = matches =>
   matches
     .flat(Infinity)
     .filter(notOperator(";"))
-
-const mapToStatement = matches =>
-  new Statement(matches[0].trim(), matches.flat(Infinity).slice(1))
 
 const table = [
   // Booleans
@@ -107,8 +107,8 @@ module.exports = parser
 // @TODO: Statement
 // @TODO: Range (Operation)
 // @TODO: Require whitespace around operator
-
 // @TODO: Evaluate Operation to value, Operation.expressions
+
 // @TODO: Comments
 // @TODO: Key on BEGINNING OF LINE
 // @TODO: aliases (::)

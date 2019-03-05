@@ -83,13 +83,13 @@ const table = [
   { type: "RIGHT", operators: ["**"], mapTo: mapToOperation },
   { type: "LEFT", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT", operators: ["+", "-"], mapTo: mapToOperation },
+  // Type
+  { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Assignment
   { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
   { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
-  // Type
-  { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Statement
   { type: "PRE", operators: ["return"], mapTo: mapToStatement, whitespaceRequired: true },
   // Scope

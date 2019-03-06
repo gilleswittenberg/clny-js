@@ -22,15 +22,20 @@ class Scalar extends Expression {
     const Number = require("./Number")
     const String = require("./String")
 
+    // @TODO: Cast plural to array
     const literal = "" + this.value // cast to string
     switch (type) {
     case "Null":
+    case "Nulls":
       return new Null(null, literal)
     case "Boolean":
+    case "Booleans":
       return new Boolean(null, literal)
     case "Number":
+    case "Numbers":
       return new Number(null, literal)
     case "String":
+    case "Strings":
       return new String(null, literal)
     }
   }

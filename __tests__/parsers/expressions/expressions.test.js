@@ -168,6 +168,15 @@ test("Assignment cast", () => {
   expect(value.expressions[0].castToType).toBe("String")
 })
 
+test("Plural cast", () => {
+  const value = toValue(parse(parser)("k: Strings 5"))
+  expect(value).toBeInstanceOf(Assignment)
+  expect(value.expressions.length).toBe(1)
+  expect(value.expressions[0]).toBeInstanceOf(Number)
+  expect(value.expressions[0].shouldCast).toBe(true)
+  expect(value.expressions[0].castToType).toBe("Strings")
+})
+
 test("semicolon", () => {
   const value = toValue(parse(parser)("5;6"))
   expect(value.length).toBe(2)

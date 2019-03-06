@@ -9,6 +9,8 @@ const pluralize = str => str + "s"
 
 const plurals = types.map(pluralize)
 
+const all = plurals.concat(types)
+
 /*
 const typesAndPlurals = types.map(type => [type, pluralize(type)])
 const plurals = typesAndPlurals.map(arr => arr[1])
@@ -22,5 +24,6 @@ const getSingle = plural => typesAndPlurals.find(arr => arr[1] === plural)[0]
 
 module.exports = {
   types,
-  plurals
+  plurals,
+  all
 }

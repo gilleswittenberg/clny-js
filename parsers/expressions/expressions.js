@@ -16,7 +16,7 @@ const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/Statement")
 
-const { types/*, plurals */ } = require("../../tree/types")
+const { all: types } = require("../../tree/types")
 
 const notOperator = operator => expression => expression !== operator
 

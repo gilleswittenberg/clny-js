@@ -5,6 +5,8 @@ const Statement = require("../../../tree/Statement")
 
 test("empty", () => {
   const scope = new Scope()
+  expect(scope.keys).toEqual([])
+  expect(scope.expressions).toEqual([])
   expect(scope.evaluate(true)).toEqual(null)
 })
 

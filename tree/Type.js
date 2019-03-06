@@ -1,3 +1,5 @@
+const toArray = require("../utils/toArray")
+
 class Type {
 
   // @TODO: fullName e.g. (key: Name)
@@ -31,7 +33,6 @@ module.exports = Type
 
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
-const toArray = arr => Array.isArray(arr) ? arr : arr != null ? [arr] : []
 
 const join = (arr, sep) => toArray(arr).join(sep)
 const optionsToName = arr => join(arr, " | ")

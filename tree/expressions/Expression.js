@@ -1,4 +1,5 @@
 const Object = require("../Object")
+const toArray = require("../../utils/toArray")
 
 class Expression extends Object {
 
@@ -8,9 +9,7 @@ class Expression extends Object {
 
     this.type = type
 
-    this.expressions = [] // Expression[]
-    const expressionsArray = Array.isArray(expressions) ? expressions : [expressions]
-    expressionsArray.forEach(expression => this.addExpression(expression))
+    this.expressions = toArray(expressions)
     this.setSize()
 
     this.isEvaluated = false

@@ -19,6 +19,8 @@ const {
   whitespaced
 } = require("./whitespace")
 
+const toArray = require("../../utils/toArray")
+
 const prefix = (expression, operators, mapToFunc, whitespaceRequired) => {
   const operatorParser = whitespaceRequired
     ? choice(operators.map(op => takeLeft(str(op))(whitespace)))
@@ -138,7 +140,7 @@ const createOperatorsParser = (table, baseExpression) => {
 
   const parser = table.reduce((parser, level) => {
     const func = mapTypeToFunctionName[level.type]
-    const operators = Array.isArray(level.operators) ? level.operators : [level.operators]
+    const operators = toArray(level.operators)
     const whitespaceRequired = level.whitespaceRequired || false
     return func(parser, operators, level.mapTo, whitespaceRequired, level.keyParser)
   }, expression)

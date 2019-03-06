@@ -1,6 +1,8 @@
 const Expression = require("./Expression")
 const Assignment = require("./Assignment")
 
+const toArray = require("../../utils/toArray")
+
 const isScope = object => object instanceof Scope
 const isAssignment = object => object instanceof Assignment
 const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
@@ -8,9 +10,8 @@ const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
 class Scope extends Expression {
 
   constructor (keys = [], expressions = []) {
-    const expressionsArray = Array.isArray(expressions) ? expressions : [expressions]
-    super("Scope", expressionsArray)
-    this.keys = Array.isArray(keys) ? keys : [keys]
+    super("Scope", toArray(expressions))
+    this.keys = toArray(keys)
     this.isRoot = false
   }
 

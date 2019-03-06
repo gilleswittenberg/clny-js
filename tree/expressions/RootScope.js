@@ -1,10 +1,10 @@
 const Scope = require("./Scope")
+const toArray = require("../../utils/toArray")
 
 class RootScope extends Scope {
 
   constructor (expressions = []) {
-    const expressionsArray = Array.isArray(expressions) ? expressions : [expressions]
-    super("RootScope", expressionsArray)
+    super("RootScope", toArray(expressions))
     this.keys = null
     this.isRoot = true
   }

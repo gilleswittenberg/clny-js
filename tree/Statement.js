@@ -1,19 +1,24 @@
 const Object = require("./Object")
+const toArray = require("../utils/toArray")
 
-module.exports = class Statement extends Object {
+// @TODO: Extend Expression
+class Statement extends Object {
 
   constructor (name, expressions) {
     super()
     this.name = name
-    // @TODO: pluralize single expression
-    this.expressions = expressions
+    this.expressions = toArray(expressions)
     this.isEvaluated = false
   }
 
   evaluate () {
-    if (this.isEvaluated) return this.expressions
-    this.expressions.forEach(expression => expression.evaluate())
+    if (this.isEvaluated) return this.value
+    const values = this.expressions.map(expression => expression.evaluate())
+    const value = values.length > 1 ? values : values[0]
+    this.value = value
     this.isEvaluated = true
-    return this.expressions
+    return this.value
   }
 }
+
+module.exports = Statement

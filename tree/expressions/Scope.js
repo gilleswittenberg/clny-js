@@ -1,5 +1,6 @@
 const Expression = require("./Expression")
 const Assignment = require("./Assignment")
+const Statement = require("../Statement")
 
 const toArray = require("../../utils/toArray")
 
@@ -15,6 +16,7 @@ class Scope extends Expression {
     this.isRoot = false
   }
 
+  // @TODO: Global asData setting
   evaluate (asData = false) {
 
     if (this.isEmpty) return null
@@ -23,8 +25,7 @@ class Scope extends Expression {
       const value = this.evaluateDataScope()
       return key != null ? { [key]: value } : value
     }
-    return null
-    //return this.evaluateFunctionScope()
+    return this.evaluateFunctionScope()
   }
 
   evaluateDataScope () {
@@ -50,7 +51,6 @@ class Scope extends Expression {
     })
   }
 
-  /*
   evaluateFunctionScope () {
 
     const isLast = (index, arr) => arr.length - 1 === index
@@ -64,7 +64,7 @@ class Scope extends Expression {
         expression.keys.forEach(key => scope.keys[key] = expression.expressions)
       }
       if (expression instanceof Statement || isLast(index, arr)) {
-        scope.returnValue = expression.values()
+        scope.returnValue = expression.value
         scope.hasReturned = true
       }
       return scope
@@ -72,7 +72,6 @@ class Scope extends Expression {
 
     return evaluatedScope.returnValue
   }
-  */
 }
 
 module.exports = Scope

@@ -84,10 +84,13 @@ const table = [
   { type: "LEFT", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT", operators: ["+", "-"], mapTo: mapToOperation },
   // Type
+  // @TODO: User defined Types
   { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Range
   { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
   // Assignment
+  // @TODO: KEYS_VALUE could be prefix
+  // @TODO: KEYS_VALUE lesser precedence than plural (,)
   { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
@@ -100,18 +103,3 @@ const table = [
 const parser = createOperatorsParser(table, basic)
 
 module.exports = parser
-
-// @TODO: Expression: Boolean, Number, String
-// @TODO: + to Arithmetic and String concat (Operation, PrefixOperation, PostfixOperation, InfixOperation)
-// @TODO: Casting single Expression, Plurals, Assignment
-// @TODO: Indent / scopes
-// @TODO: Statement
-// @TODO: Range (Operation)
-// @TODO: Require whitespace around operator
-// @TODO: Evaluate Operation to value, Operation.expressions
-// @TODO: Comments
-
-// @TODO: Key on BEGINNING OF LINE
-// @TODO: More abstract KEYS_VALUE
-// @TODO: aliases (::)
-// @TODO: Optional closing opening brackets, parens

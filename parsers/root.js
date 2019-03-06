@@ -6,13 +6,21 @@ const {
   sequenceOf,
   endOfInput,
   pipeParsers,
+  possibly,
+  takeLeft,
+  many1,
   mapTo,
   parse,
   toValue
 } = require("arcsecond")
 
 const {
+  colon
+} = require("./convenience/tokens")
+
+const {
   indent,
+  whitespace,
   whitespaced
 } = require("./convenience/whitespace")
 
@@ -28,6 +36,7 @@ const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
 const Indent = require("../tree/Indent")
+const Assignment = require("../tree/expressions/Assignment")
 const ScopeOpener = require("../tree/ScopeOpener")
 const Scope = require("../tree/expressions/Scope")
 const RootScope = require("../tree/expressions/RootScope")
@@ -42,7 +51,7 @@ const indents = pipeParsers([
 const scopeOpener = pipeParsers([
   sequenceOf([
     key,
-    whitespaced(char(":"))
+    whitespaced(colon)
   ]),
   mapTo(([key]) => new ScopeOpener(key))
 ])
@@ -53,6 +62,31 @@ const gibberish = pipeParsers([
 ])
 
 const lineContent = choice([
+  pipeParsers([
+    sequenceOf([
+      choice([
+        pipeParsers([
+          sequenceOf([
+            many1(
+              takeLeft(whitespaced(key))(colon)
+            ),
+            colon,
+            possibly(whitespace)
+          ]),
+          mapTo(([keys]) => keys)
+        ]),
+        pipeParsers([
+          sequenceOf([
+            key,
+            whitespaced(colon)
+          ]),
+          mapTo(([key]) => [key])
+        ])
+      ]),
+      expressions
+    ]),
+    mapTo(([keys, expressions]) => new Assignment(keys, expressions))
+  ]),
   expressions,
   scopeOpener,
   gibberish

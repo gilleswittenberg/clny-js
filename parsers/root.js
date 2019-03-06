@@ -144,13 +144,11 @@ const linesParser = pipeParsers([
       try {
         line.parsedContent = toValue(parse(lineContent)(line.content))
       } catch (err) {
-        //console.err(err)
         throw err
       }
       return line
     })
     return mapLinesToScopes(parsedLines)
-    //return lines.map((line, index) => new Line(line[1] + line[0], index + 1, line[1].level))
   })
 ])
 

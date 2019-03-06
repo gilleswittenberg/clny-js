@@ -17,6 +17,7 @@ const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/expressions/Statement")
 
 const { all: types } = require("../../tree/types")
+const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
 
@@ -95,7 +96,7 @@ const table = [
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
   // Statement
-  { type: "PRE", operators: ["return"], mapTo: mapToStatement, whitespaceRequired: true },
+  { type: "PRE", operators: statements, mapTo: mapToStatement, whitespaceRequired: true },
   // Scope
   { type: "LEFT", operators: [";"], mapTo: mapToExpressions }
 ]

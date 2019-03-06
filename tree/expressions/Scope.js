@@ -7,6 +7,8 @@ const toArray = require("../../utils/toArray")
 const isScope = object => object instanceof Scope
 const isAssignment = object => object instanceof Assignment
 const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
+const isReturnStatement = object => object instanceof Statement && object.name === "return"
+const isPrintStatement = object => object instanceof Statement && ["print", "log", "debug"].includes(object.name)
 
 class Scope extends Expression {
 
@@ -58,15 +60,28 @@ class Scope extends Expression {
     const initialScope = { hasReturned: false, returnValue: null, keys: {} }
 
     const evaluatedScope = this.expressions.reduce((scope, expression, index, arr) => {
+
       if (scope.hasReturned) return scope
       expression.evaluate(scope.keys)
+
+      // Assignment
       if (expression instanceof Assignment) {
         expression.keys.forEach(key => scope.keys[key] = expression.expressions)
       }
-      if (expression instanceof Statement || isLast(index, arr)) {
+
+      // return
+      if (isReturnStatement(expression) || isLast(index, arr)) {
         scope.returnValue = expression.value
         scope.hasReturned = true
       }
+
+      // print
+      if (isPrintStatement(expression)) {
+        // @TODO: Different outputs for print, log, debug
+        // eslint-disable-next-line no-console
+        console.log(expression.value)
+      }
+
       return scope
     }, initialScope)
 

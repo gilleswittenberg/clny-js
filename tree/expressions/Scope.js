@@ -7,8 +7,9 @@ const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
 
 class Scope extends Expression {
 
-  constructor (keys = []) {
-    super("Scope", [])
+  constructor (keys = [], expressions = []) {
+    const expressionsArray = Array.isArray(expressions) ? expressions : [expressions]
+    super("Scope", expressionsArray)
     this.keys = Array.isArray(keys) ? keys : [keys]
     this.isRoot = false
   }
@@ -21,7 +22,8 @@ class Scope extends Expression {
       const value = this.evaluateDataScope()
       return key != null ? { [key]: value } : value
     }
-    return this.evaluateFunctionScope()
+    return null
+    //return this.evaluateFunctionScope()
   }
 
   evaluateDataScope () {

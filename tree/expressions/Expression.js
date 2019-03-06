@@ -3,7 +3,7 @@ const Object = require("../Object")
 class Expression extends Object {
 
   constructor (type, expressions) {
-    
+
     super()
 
     this.type = type
@@ -11,6 +11,7 @@ class Expression extends Object {
     this.expressions = [] // Expression[]
     const expressionsArray = Array.isArray(expressions) ? expressions : [expressions]
     expressionsArray.forEach(expression => this.addExpression(expression))
+    this.setSize()
 
     this.isEvaluated = false
     this.shouldCast = false

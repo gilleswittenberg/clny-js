@@ -1,7 +1,7 @@
 const fs = require("fs")
 const assert = require("assert").strict
 
-const scripts = ["json", "run"]
+const scripts = ["json", "run", "parse"]
 const scriptsString = scripts.join(" / ")
 const message = "Fail!, documentation: `node index.js (" + scriptsString + ") --file`"
 
@@ -25,7 +25,7 @@ const asData = script === scripts[0] ? true : false
 const evaluate = rootScope => rootScope.evaluate(asData)
 const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
 
-const onSuccess = rootScope => output(evaluate(rootScope))
+const onSuccess = rootScope => script === "parse" ? output(rootScope) : output(evaluate(rootScope))
 const onError = err => console.error(err)
 
 toPromise(parse(root)(fileContent))

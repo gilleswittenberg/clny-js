@@ -8,7 +8,7 @@ class Identity extends Expression {
     this.isEvaluated = false
   }
 
-  evaluate (scope) {
+  evaluate (scope = {}) {
     this.expressions = scope[this.key]
     if (this.expressions === undefined) throw this.key + " is not defined in scope"
     return super.evaluate()

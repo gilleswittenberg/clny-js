@@ -1,7 +1,7 @@
 k:
-  str: "String"
+  str: "ABC !"
   f: 123.4
-  i: a: 1
+  i: 1
 camelCase: 77
 arrayWithKeys:
   a: 78

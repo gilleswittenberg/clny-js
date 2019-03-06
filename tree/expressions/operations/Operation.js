@@ -12,6 +12,7 @@ class Operation extends Expression {
 
   evaluate () {
 
+    // @TODO: Clean this up
     const BooleanLogic = require("./BooleanLogic")
     const Arithmetic = require("./Arithmetic")
     const StringConcatenation = require("./StringConcatenation")

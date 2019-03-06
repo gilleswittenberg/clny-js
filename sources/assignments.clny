@@ -1,9 +1,10 @@
 k: 6
-camelCase: alias: 77
+camelCase: 77
 str: "Abc String"
 b: true
 n: Number 8
-range: rangeAlias: -1,,5
+plural: (2, "2")
 arithmetic: 1 + 2
+range: -1,,5
 castToString: String 5
-castToPlural: Strings 55, 66, 77
+castToPlural: (55, 66, 77)

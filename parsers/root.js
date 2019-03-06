@@ -116,16 +116,21 @@ const mapLinesToScopes = lines => {
     // close scope
     if (indents === currentIndents() - 1) {
       const scope = scopes.pop()
-      currentScope().expressions.push(scope)
+      currentScope().addExpression(scope)
     }
 
     // current scope
     if (indents === currentIndents()) {
-      currentScope().expressions.push(content)
+      currentScope().addExpression(content)
     }
   })
 
-  return scopes[0]
+  // collapse scopes
+  return scopes.reverse().reduce((acc, scope) => {
+    if (acc == null) return scope
+    scope.addExpression(acc)
+    return scope
+  })
 }
 
 const linesParser = pipeParsers([

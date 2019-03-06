@@ -9,10 +9,10 @@ class Range extends Operation {
 
   evaluate () {
 
-    const start = this.operands[0].evaluate()
-    const end = this.operands[1].evaluate()
+    const start = this.operands[0]
+    const end = this.operands[1]
     const range = this.createRange(start, end)
-    
+
     this.expressions = range.map(n => new Number(n))
     this.value = this.expressions.map(expression => expression.evaluate())
 

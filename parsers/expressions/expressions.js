@@ -85,11 +85,12 @@ const table = [
   { type: "LEFT", operators: ["+", "-"], mapTo: mapToOperation },
   // Type
   { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
+  // Range
+  { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
   // Assignment
   { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
   // Plurals
   { type: "LEFT", operators: [","], mapTo: mapToPlural },
-  { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
   // Statement
   { type: "PRE", operators: ["return"], mapTo: mapToStatement, whitespaceRequired: true },
   // Scope

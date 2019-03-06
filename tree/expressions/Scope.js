@@ -1,6 +1,6 @@
 const Expression = require("./Expression")
 const Assignment = require("./Assignment")
-const Statement = require("../Statement")
+const Statement = require("../expressions/Statement")
 
 const toArray = require("../../utils/toArray")
 

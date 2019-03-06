@@ -1,5 +1,5 @@
 const Number = require("../../tree/expressions/scalars/Number")
-const Statement = require("../../tree/Statement")
+const Statement = require("../../tree/expressions/Statement")
 
 test("single", () => {
   const expression = new Number(5)

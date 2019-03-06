@@ -9,7 +9,7 @@ const Number = require("../../../tree/expressions/scalars/Number")
 const String = require("../../../tree/expressions/scalars/String")
 const Operation = require("../../../tree/expressions/operations/Operation")
 const Assignment = require("../../../tree/expressions/Assignment")
-const Statement = require("../../../tree/Statement")
+const Statement = require("../../../tree/expressions/Statement")
 
 test("single", () => {
   expect(toValue(parse(parser)("5"))).toBeInstanceOf(Number)

@@ -2,7 +2,7 @@ const Scope = require("../../../tree/expressions/Scope")
 const Number = require("../../../tree/expressions/scalars/Number")
 const Assignment = require("../../../tree/expressions/Assignment")
 const Identity = require("../../../tree/expressions/Identity")
-const Statement = require("../../../tree/Statement")
+const Statement = require("../../../tree/expressions/Statement")
 
 describe("data scope", () => {
 

@@ -1,17 +1,11 @@
-const Object = require("../Object")
 const toArray = require("../../utils/toArray")
 
-class Expression extends Object {
+class Expression {
 
   constructor (type, expressions) {
-
-    super()
-
     this.type = type
-
-    this.expressions = toArray(expressions)
-    this.setSize()
-
+    this.expressions = []
+    this.addExpressions(expressions)
     this.isEvaluated = false
     this.shouldCast = false
   }

@@ -14,7 +14,7 @@ const createOperatorsParser = require("../convenience/createOperatorsParser")
 const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
-const Statement = require("../../tree/Statement")
+const Statement = require("../../tree/expressions/Statement")
 
 const { all: types } = require("../../tree/types")
 

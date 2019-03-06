@@ -116,19 +116,19 @@ const mapLinesToScopes = lines => {
     // close scope
     if (indents === currentIndents() - 1) {
       const scope = scopes.pop()
-      currentScope().addExpression(scope)
+      currentScope().addExpressions(scope)
     }
 
     // current scope
     if (indents === currentIndents()) {
-      currentScope().addExpression(content)
+      currentScope().addExpressions(content)
     }
   })
 
   // collapse scopes
   return scopes.reverse().reduce((acc, scope) => {
     if (acc == null) return scope
-    scope.addExpression(acc)
+    scope.addExpressions(acc)
     return scope
   })
 }

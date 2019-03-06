@@ -59,7 +59,7 @@ class Scope extends Expression {
 
     const evaluatedScope = this.expressions.reduce((scope, expression, index, arr) => {
       if (scope.hasReturned) return scope
-      expression.evaluate()
+      expression.evaluate(scope.keys)
       if (expression instanceof Assignment) {
         expression.keys.forEach(key => scope.keys[key] = expression.expressions)
       }

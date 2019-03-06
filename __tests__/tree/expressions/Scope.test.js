@@ -1,8 +1,8 @@
 const Scope = require("../../../tree/expressions/Scope")
 const Number = require("../../../tree/expressions/scalars/Number")
 const Assignment = require("../../../tree/expressions/Assignment")
+const Identity = require("../../../tree/expressions/Identity")
 const Statement = require("../../../tree/Statement")
-
 
 describe("data scope", () => {
 
@@ -58,5 +58,12 @@ describe("function scope", () => {
     const expression1 = new Number(10)
     const scope = new Scope(null, [expression, expression1])
     expect(scope.evaluate()).toEqual(10)
+  })
+
+  test("assignment", () => {
+    const assignment = new Assignment(["a"], new Number(11))
+    const identity = new Identity("a")
+    const scope = new Scope(null, [assignment, identity])
+    expect(scope.evaluate()).toEqual(11)
   })
 })

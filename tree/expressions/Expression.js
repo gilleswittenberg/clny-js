@@ -30,8 +30,8 @@ class Expression extends Object {
     return this
   }
 
-  addExpression (expression) {
-    this.expressions.push(expression)
+  addExpressions (expressions) {
+    toArray(expressions).forEach(expression => this.expressions.push(expression))
     this.setSize()
   }
 

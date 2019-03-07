@@ -2,6 +2,7 @@ k: 6
 camelCase: 77
 str: "Abc String"
 b: true
+a: alias:: "Double"
 n: Number 8
 plural: (2, "2")
 arithmetic: 1 + 2

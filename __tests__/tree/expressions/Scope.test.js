@@ -34,6 +34,14 @@ describe("data scope", () => {
     expect(scope.evaluate(true)).toEqual([8, { k: 9 }])
   })
 
+  test("expressions, alias", () => {
+    const expression = new Number(10)
+    const expression1 = new Number(11)
+    const assignment = new Assignment(["e", "elias"], [expression1])
+    const scope = new Scope(null, [expression, assignment])
+    expect(scope.evaluate(true)).toEqual([10, { e: 11, elias: 11 }])
+  })
+
   test("assignments", () => {
     const expression = new Number(8)
     const expression1 = new Number(9)
@@ -41,6 +49,13 @@ describe("data scope", () => {
     const assignment1 = new Assignment(["kTwo"], [expression1])
     const scope = new Scope(null, [assignment, assignment1])
     expect(scope.evaluate(true)).toEqual({ kOne: 8, kTwo: 9 })
+  })
+
+  test("assignments alias", () => {
+    const expression = new Number(9)
+    const assignment = new Assignment(["key", "alias"], expression)
+    const scope = new Scope(null, assignment)
+    expect(scope.evaluate(true)).toEqual({ key: 9, alias: 9 })
   })
 })
 

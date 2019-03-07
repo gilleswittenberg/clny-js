@@ -39,16 +39,19 @@ class Scope extends Expression {
     // create map e.g. ({ k: 5, l: 6 })
     if (evaluateToMap) {
       return this.expressions.reduce((acc, expression) => {
-        // @TODO: multiple keys (aliases)
-        acc[expression.keys[0]] = expression.value
+        expression.keys.forEach(key => acc[key] = expression.value)
         return acc
       }, {})
     }
 
     // create array e.g. ([5, 6, { k: 7 }])
     return this.expressions.map(expression => {
-      // @TODO: multiple keys (aliases)
-      if (isScopeOrAssignment(expression)) return { [expression.keys[0]]: expression.value }
+      if (isScopeOrAssignment(expression)) {
+        return expression.keys.reduce((acc, key) => {
+          acc[key] = expression.value
+          return acc
+        }, {})
+      }
       return expression.value
     })
   }

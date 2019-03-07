@@ -1,4 +1,4 @@
-const StringConcatenation = require("../../tree/expressions/operations/StringConcatenation")
+const StringConcatenation = require("../../../../tree/expressions/operations/StringConcatenation")
 
 test("not", () => {
   const stringResult = new StringConcatenation("ABC", "DEF!").evaluate()

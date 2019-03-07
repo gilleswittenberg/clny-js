@@ -1,4 +1,4 @@
-const Arithmetic = require("../../tree/expressions/operations/Arithmetic")
+const Arithmetic = require("../../../../tree/expressions/operations/Arithmetic")
 
 test("Arithmetic", () => {
   const arithmeticValue = new Arithmetic(null, 5).evaluate()

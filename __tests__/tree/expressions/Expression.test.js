@@ -1,4 +1,4 @@
-const Expression = require("../../tree/expressions/Expression")
+const Expression = require("../../../tree/expressions/Expression")
 
 
 xtest("Number", () => {

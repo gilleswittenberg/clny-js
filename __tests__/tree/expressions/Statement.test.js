@@ -1,6 +1,6 @@
-const Statement = require("../../tree/expressions/Statement")
-const Number = require("../../tree/expressions/scalars/Number")
-const String = require("../../tree/expressions/scalars/String")
+const Statement = require("../../../tree/expressions/Statement")
+const Number = require("../../../tree/expressions/scalars/Number")
+const String = require("../../../tree/expressions/scalars/String")
 
 test("single", () => {
   const expression = new Number(5)

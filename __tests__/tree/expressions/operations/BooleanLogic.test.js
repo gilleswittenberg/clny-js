@@ -1,4 +1,4 @@
-const BooleanLogic = require("../../tree/expressions/operations/BooleanLogic")
+const BooleanLogic = require("../../../../tree/expressions/operations/BooleanLogic")
 
 test("not", () => {
   const logicValue = new BooleanLogic("!", false).evaluate()

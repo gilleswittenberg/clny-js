@@ -20,7 +20,6 @@ class Scope extends Expression {
 
   // @TODO: Global asData setting
   evaluate (asData = false) {
-
     if (this.isEmpty) return null
     if (asData) {
       const key = this.keys != null ? this.keys[0] : null
@@ -64,12 +63,15 @@ class Scope extends Expression {
 
     const evaluatedScope = this.expressions.reduce((scope, expression, index, arr) => {
 
+
       if (scope.hasReturned) return scope
+
       expression.evaluate(scope.keys)
 
       // Assignment
-      if (expression instanceof Assignment) {
-        expression.keys.forEach(key => scope.keys[key] = expression.expressions)
+      if (isScopeOrAssignment(expression)) {
+        const expressions = isScope(expression) ? expression : expression.expressions
+        expression.keys.forEach(key => scope.keys[key] = expressions)
       }
 
       // return

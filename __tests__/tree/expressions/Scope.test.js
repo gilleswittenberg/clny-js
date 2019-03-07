@@ -76,9 +76,16 @@ describe("function scope", () => {
   })
 
   test("assignment", () => {
-    const assignment = new Assignment(["a"], new Number(11))
+    const assignment = new Assignment("a", new Number(11))
     const identity = new Identity("a")
     const scope = new Scope(null, [assignment, identity])
     expect(scope.evaluate()).toEqual(11)
+  })
+
+  test("scope", () => {
+    const scope = new Scope("scope", new Number(12))
+    const identity = new Identity("scope")
+    const scopeOuter = new Scope(null, [scope, identity])
+    expect(scopeOuter.evaluate()).toEqual(12)
   })
 })

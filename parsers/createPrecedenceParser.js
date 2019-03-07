@@ -48,6 +48,20 @@ const prefix = (expression, operatorsParser, mapToFunc) => {
   ])
 }
 
+const postfix = (expression, operatorsParser, mapToFunc) => {
+  return pipeParsers([
+    sequenceOf([
+      expression,
+      many(operatorsParser)
+    ]),
+    mapTo(([expression, operators]) => {
+      if (operators.length === 0) return expression
+      const arr = operators.reduce((acc, operator) => [operator, acc], expression)
+      return mapToFunc(arr)
+    })
+  ])
+}
+
 const rightAssociative = (expression, operatorsParser, mapToFunc) => pipeParsers([
   sequenceOf([
     expression,
@@ -102,7 +116,7 @@ const leftAssociative = (expression, operatorsParser, mapToFunc) => pipeParsers(
 
 const mapTypeToFunctionName = {
   "PREFIX": prefix,
-  //"POSTFIX": postfix,
+  "POSTFIX": postfix,
   "RIGHT_ASSOCIATIVE": rightAssociative,
   "LEFT_ASSOCIATIVE": leftAssociative
 }

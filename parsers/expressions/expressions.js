@@ -16,6 +16,7 @@ const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/expressions/Statement")
+const Application = require("../../tree/expressions/Application")
 
 const { all: types } = require("../../tree/types")
 const statements = require("../../tree/statements")
@@ -35,6 +36,14 @@ const mapPrefixToOperation = matches => {
   const evaluate = (operator, arrayOrExpression) => {
     const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
     return new Operation("PREFIX", operator, operand)
+  }
+  return evaluate(...matches)
+}
+
+const mapPostfixToApplication = matches => {
+  const evaluate = (operator, arrayOrExpression) => {
+    const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
+    return new Application(expression)
   }
   return evaluate(...matches)
 }
@@ -74,6 +83,7 @@ const mapToExpressions = matches =>
     .filter(notOperator(";"))
 
 const table = [
+  { type: "POSTFIX", operators: "()", mapTo: mapPostfixToApplication },
   // Booleans
   { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },

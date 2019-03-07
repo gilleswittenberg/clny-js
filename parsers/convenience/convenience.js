@@ -2,14 +2,10 @@ const {
   anythingExcept,
   many,
   str,
+  char,
   choice,
   between
 } = require("arcsecond")
-
-const {
-  leftParens,
-  rightParens
-} = require("./tokens")
 
 const {
   whitespaced,
@@ -30,12 +26,12 @@ const possiblyWrapped = (parser, bracketType = "PARENS", whitespace = true) => {
     "PARENS": ["(", ")"],
     "SQUARE": ["[", "]"],
     "CURLY" : ["{", "}"],
-    "ANGLE" : ["<", ">"],
+    "ANGLE" : ["<", ">"]
   }
   if (brackets[bracketType] == null) throw "Invalid bracketType"
   const [l, r] = brackets[bracketType]
   const constructParser = s => {
-    const p = str(s)
+    const p = char(s)
     return whitespace ? whitespaced(p) : p
   }
   const left = constructParser(l)

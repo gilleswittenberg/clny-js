@@ -1,6 +1,5 @@
 const Expression = require("../../../tree/expressions/Expression")
 
-
 xtest("Number", () => {
   const expressionValue = new Expression(5).evaluate()
   expect(expressionValue).toBe(5)

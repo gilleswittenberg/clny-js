@@ -1,23 +1,22 @@
 const Expression = require("../../../tree/expressions/Expression")
+const Number = require("../../../tree/expressions/scalars/Number")
 
-xtest("Number", () => {
-  const expressionValue = new Expression(5).evaluate()
-  expect(expressionValue).toBe(5)
-  expect(expressionValue.type).toBe("Number")
-})
+describe("Expression", () => {
 
-xtest("Boolean as String", () => {
-  const expressionValue = new Expression(true, "String").evaluate()
-  expect(expressionValue).toBe("true")
-  expect(expressionValue.type).toBe("String")
-})
+  test("constructor", () => {
+    const expression = new Expression("Number", new Number(4))
+    expect(expression.isEvaluated).toBe(false)
+    expect(expression.isEmpty).toBe(false)
+    expect(expression.isSingle).toBe(true)
+    expect(expression.isPlural).toBe(false)
+    expect(expression.expressions.length).toBe(1)
+    expect(expression.expressions[0]).toBeInstanceOf(Number)
+  })
 
-xtest("castTo", () => {
-  const expression = new Expression(567)
-  const expressionValue = expression.evaluate()
-  expect(expressionValue).toBe(567)
-  expect(expressionValue.type).toBe("Number")
-  const castExpressionValue = expression.castTo("String").evaluate()
-  expect(castExpressionValue).toBe("567")
-  expect(castExpressionValue.type).toBe("String")
+  test("evaluation", () => {
+    const expression = new Expression("Number", new Number(5))
+    expression.evaluate()
+    expect(expression.type).toBe("Number")
+    expect(expression.value).toBe(5)
+  })
 })

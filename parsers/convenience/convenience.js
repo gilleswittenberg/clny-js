@@ -24,10 +24,30 @@ const anyCharsExceptEOL = many(anyCharExceptEOL)
 
 const escapedBackslash = str("\\")
 
-const wrappedInParentheses = parser => choice([
-  between(whitespaced(leftParens))(whitespaced(rightParens))(parser),
-  parser
-])
+
+const possiblyWrapped = (parser, bracketType = "PARENS", whitespace = true) => {
+  const brackets = {
+    "PARENS": ["(", ")"],
+    "SQUARE": ["[", "]"],
+    "CURLY" : ["{", "}"],
+    "ANGLE" : ["<", ">"],
+  }
+  if (brackets[bracketType] == null) throw "Invalid bracketType"
+  const [l, r] = brackets[bracketType]
+  const constructParser = s => {
+    const p = str(s)
+    return whitespace ? whitespaced(p) : p
+  }
+  const left = constructParser(l)
+  const right = constructParser(r)
+  return choice([
+    between(left)(right)(parser),
+    parser
+  ])
+}
+
+const wrappedInParentheses = parser => possiblyWrapped(parser)
+const wrappedInCurlyBraces = parser => possiblyWrapped(parser, "CURLY")
 
 module.exports = {
   anyChar,
@@ -35,5 +55,6 @@ module.exports = {
   anyCharExceptEOL,
   anyCharsExceptEOL,
   escapedBackslash,
-  wrappedInParentheses
+  wrappedInParentheses,
+  wrappedInCurlyBraces
 }

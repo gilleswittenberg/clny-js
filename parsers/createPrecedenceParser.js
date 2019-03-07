@@ -2,7 +2,7 @@
 // @TODO: postfix
 
 const {
-  char,
+  Parser,
   str,
   sequenceOf,
   many,
@@ -19,36 +19,41 @@ const {
   whitespaced
 } = require("./convenience/whitespace")
 
+const {
+  leftParens,
+  rightParens
+} = require("./convenience/tokens")
+
 const toArray = require("../utils/toArray")
 
-const prefix = (expression, operators, mapToFunc, whitespaceRequired) => {
-  const operatorParser = whitespaceRequired
-    ? choice(operators.map(op => takeLeft(str(op))(whitespace)))
+const createOperatorsParser = (operators, whitespaceRequired) => {
+  const operatorParser = operator => operator instanceof Parser ? operator : str(operator)
+  return whitespaceRequired ?
+    choice(operators.map(op => takeLeft(operatorParser(op))(whitespace))) :
     // @TODO: Only whitespace on right side
-    : whitespaced(choice(operators.map(op => str(op))))
+    whitespaced(choice(operators.map(op => operatorParser(op))))
+}
+
+const prefix = (expression, operatorsParser, mapToFunc) => {
   return pipeParsers([
     sequenceOf([
-      many(operatorParser),
+      many(operatorsParser),
       expression
     ]),
     mapTo(([operators, expression]) => {
-      if (operators.length > 0) {
-        const arr = operators.reduce((acc, operator) => {
-          return acc == null ? [operator, expression] : [operator, acc]
-        }, null)
-        return mapToFunc(arr)
-      }
-      return expression
+      if (operators.length === 0) return expression
+      const arr = operators.reverse().reduce((acc, operator) => [operator, acc], expression)
+      return mapToFunc(arr)
     })
   ])
 }
 
-const rightAssociative = (expression, operators, mapToFunc) => pipeParsers([
+const rightAssociative = (expression, operatorsParser, mapToFunc) => pipeParsers([
   sequenceOf([
     expression,
     many(
       sequenceOf([
-        whitespaced(choice(operators.map(op => str(op)))),
+        operatorsParser,
         expression
       ])
     )
@@ -67,12 +72,12 @@ const rightAssociative = (expression, operators, mapToFunc) => pipeParsers([
   })
 ])
 
-const leftAssociative = (expression, operators, mapToFunc) => pipeParsers([
+const leftAssociative = (expression, operatorsParser, mapToFunc) => pipeParsers([
   sequenceOf([
     expression,
     many(
       sequenceOf([
-        whitespaced(choice(operators.map(op => str(op)))),
+        operatorsParser,
         expression
       ])
     )
@@ -95,29 +100,11 @@ const leftAssociative = (expression, operators, mapToFunc) => pipeParsers([
   })
 ])
 
-const keysValue = (expression, operators, mapToFunc, _, key) => pipeParsers([
-  sequenceOf([
-    many(
-      sequenceOf([
-        key,
-        whitespaced(choice(operators.map(op => str(op))))
-      ])
-    ),
-    expression
-  ]),
-  mapTo(([keys, expression]) => {
-    if (keys.length === 0) return expression
-    const flat = [keys, expression].flat(Infinity)
-    return mapToFunc(flat)
-  })
-])
-
 const mapTypeToFunctionName = {
-  "PRE": prefix,
-  //"POST": postfix,
-  "RIGHT": rightAssociative,
-  "LEFT": leftAssociative,
-  "KEYS_VALUE": keysValue
+  "PREFIX": prefix,
+  //"POSTFIX": postfix,
+  "RIGHT_ASSOCIATIVE": rightAssociative,
+  "LEFT_ASSOCIATIVE": leftAssociative
 }
 
 // type table: [ {
@@ -127,14 +114,14 @@ const mapTypeToFunctionName = {
 // } ]
 // type base: Parser
 
-const createOperatorsParser = (table, baseExpression) => {
+const createPrecedenceParser = (table, baseExpression) => {
 
   // @TODO: type check level.type, level.operators, baseExpression
 
   const expression = recursiveParser(() =>
     choice([
       whitespaced(baseExpression),
-      between(whitespaced(char("(")))(whitespaced(char(")")))(parser)
+      between(whitespaced(leftParens))(whitespaced(rightParens))(parser)
     ])
   )
 
@@ -142,10 +129,11 @@ const createOperatorsParser = (table, baseExpression) => {
     const func = mapTypeToFunctionName[level.type]
     const operators = toArray(level.operators)
     const whitespaceRequired = level.whitespaceRequired || false
-    return func(parser, operators, level.mapTo, whitespaceRequired, level.keyParser)
+    const operatorsParser = createOperatorsParser(operators, whitespaceRequired)
+    return func(parser, operatorsParser, level.mapTo, whitespaceRequired, level.keyParser)
   }, expression)
 
   return parser
 }
 
-module.exports = createOperatorsParser
+module.exports = createPrecedenceParser

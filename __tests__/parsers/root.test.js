@@ -10,14 +10,29 @@ const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
 
-test("root scope", () => {
-  const content = "key: 5"
-  const result = toValue(parse(root)(content))
-  expect(result).toBeInstanceOf(RootScope)
-  expect(result.expressions.length).toBe(1)
-  expect(result.expressions[0]).toBeInstanceOf(Assignment)
-  expect(result.expressions[0].keys).toEqual(["key"])
-  expect(result.expressions[0].expressions[0]).toBeInstanceOf(Number)
+describe("root scope", () => {
+
+  test("scalar", () => {
+    const content = "key: 5"
+    const result = toValue(parse(root)(content))
+    expect(result).toBeInstanceOf(RootScope)
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
+    expect(result.expressions[0].keys).toEqual(["key"])
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Number)
+  })
+
+  test("plural", () => {
+    const content = "array: 6, 7"
+    const result = toValue(parse(root)(content))
+    expect(result).toBeInstanceOf(RootScope)
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
+    expect(result.expressions[0].keys).toEqual(["array"])
+    expect(result.expressions[0].expressions[0].isPlural).toBe(true)
+    expect(result.expressions[0].expressions[0].expressions[0]).toBeInstanceOf(Number)
+    expect(result.expressions[0].expressions[0].expressions[1]).toBeInstanceOf(Number)
+  })
 })
 
 describe("key, aliases", () => {
@@ -29,6 +44,7 @@ describe("key, aliases", () => {
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["key"])
     expect(result.expressions[0].expressions.length).toBe(1)
+    expect(result.expressions[0].expressions[0].isPlural).toBe(true)
     expect(result.expressions[0].expressions[0].expressions.length).toBe(2)
     expect(result.expressions[0].expressions[0].expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].expressions[0].expressions[0].keys).toEqual(["a"])

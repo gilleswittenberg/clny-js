@@ -7,9 +7,10 @@ const boolean = require("./scalars/boolean")
 const number = require("./scalars/number")
 const string = require("./scalars/string")
 const identity = require("./identity")
-const key = require("../key")
-//const type = require("./types/type")
-const createOperatorsParser = require("../createOperatorsParser")
+
+const keyPrefix = require("../keyPrefix")
+
+const createPrecedenceParser = require("../createPrecedenceParser")
 
 const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
@@ -21,6 +22,7 @@ const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
 
+// scalar or plural
 const basic = choice([
   nullParser,
   boolean,
@@ -29,32 +31,29 @@ const basic = choice([
   identity
 ])
 
-const mapPrefixToOperation = expression => {
-  const evaluate = expression => {
-    const operator = expression[0]
-    const snd = expression[1]
-    const operand = Array.isArray(snd) ? evaluate(snd) : snd
+const mapPrefixToOperation = matches => {
+  const evaluate = (operator, arrayOrExpression) => {
+    const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
     return new Operation("PREFIX", operator, operand)
   }
-  return evaluate(expression)
+  return evaluate(...matches)
 }
 
-const mapToOperation = expression => {
-  if (expression.length === 1) return expression[0]
-  const evaluate = expression => {
-    const operator = expression[0]
-    const value = expression[1]
-    const value1 = expression[2]
-    const operand = Array.isArray(value) ? evaluate(value) : value
-    const operand1 = Array.isArray(value1) ? evaluate(value1) : value1
+const mapToOperation = matches => {
+  const evaluate = (operator, arrayOrExpression, arrayOrExpression1) => {
+    const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
+    const operand1 = Array.isArray(arrayOrExpression1) ? evaluate(...arrayOrExpression1) : arrayOrExpression1
     return new Operation("INFIX", operator, operand, operand1)
   }
-  return evaluate(expression)
+  return evaluate(...matches)
 }
 
 const mapToAssignment = matches => {
-  const keysAndExpression = matches.filter(notOperator(":"))
-  return keysAndExpression.reverse().reduce((acc, cur) => acc == null ? cur : new Assignment([cur], [acc]))
+  const evaluate = (key, arrayOrExpression) => {
+    const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
+    return new Assignment(key, expression)
+  }
+  return evaluate(...matches)
 }
 
 const mapToPlural = expressions =>
@@ -76,31 +75,30 @@ const mapToExpressions = matches =>
 
 const table = [
   // Booleans
-  { type: "PRE", operators: ["!"], mapTo: mapPrefixToOperation },
-  { type: "LEFT", operators: ["&"], mapTo: mapToOperation },
-  { type: "LEFT", operators: ["|"], mapTo: mapToOperation },
+  { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
+  { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },
+  { type: "LEFT_ASSOCIATIVE", operators: "|", mapTo: mapToOperation },
   // Numbers
-  { type: "PRE", operators: ["-"], mapTo: mapPrefixToOperation },
-  { type: "RIGHT", operators: ["**"], mapTo: mapToOperation },
-  { type: "LEFT", operators: ["*", "/"], mapTo: mapToOperation },
-  { type: "LEFT", operators: ["+", "-"], mapTo: mapToOperation },
+  { type: "PREFIX", operators: "-", mapTo: mapPrefixToOperation },
+  { type: "RIGHT_ASSOCIATIVE", operators: "**", mapTo: mapToOperation },
+  { type: "LEFT_ASSOCIATIVE", operators: ["*", "/"], mapTo: mapToOperation },
+  { type: "LEFT_ASSOCIATIVE", operators: ["+", "-"], mapTo: mapToOperation },
   // Type
-  // @TODO: User defined Types
-  { type: "PRE", operators: types, mapTo: mapToType, whitespaceRequired: true },
+  // @TODO: User defined Types (lower precedence than Range and Plurals)
+  { type: "PREFIX", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Range
-  { type: "LEFT", operators: [",,"], mapTo: mapToOperation },
+  { type: "LEFT_ASSOCIATIVE", operators: ",,", mapTo: mapToOperation },
   // Assignment
-  // @TODO: KEYS_VALUE could be prefix
   // @TODO: KEYS_VALUE lesser precedence than plural (,)
-  { type: "KEYS_VALUE", operators: [":"], mapTo: mapToAssignment, keyParser: key },
+  { type: "PREFIX", operators: keyPrefix, mapTo: mapToAssignment },
   // Plurals
-  { type: "LEFT", operators: [","], mapTo: mapToPlural },
+  { type: "LEFT_ASSOCIATIVE", operators: ",", mapTo: mapToPlural },
   // Statement
-  { type: "PRE", operators: statements, mapTo: mapToStatement, whitespaceRequired: true },
+  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespaceRequired: true },
   // Scope
-  { type: "LEFT", operators: [";"], mapTo: mapToExpressions }
+  { type: "LEFT_ASSOCIATIVE", operators: ";", mapTo: mapToExpressions }
 ]
 
-const parser = createOperatorsParser(table, basic)
+const parser = createPrecedenceParser(table, basic)
 
 module.exports = parser

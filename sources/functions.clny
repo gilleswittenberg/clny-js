@@ -1,0 +1,5 @@
+f:
+  print "Function f applied"
+  print 5 + 5
+
+print "After f"

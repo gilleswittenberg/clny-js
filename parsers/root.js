@@ -31,7 +31,7 @@ const {
 
 const charsToString = require("../utils/charsToString")
 
-const key = require("./scope/key")
+const key = require("./key")
 const expressions = require("./expressions/expressions")
 const eol = char("\n")
 

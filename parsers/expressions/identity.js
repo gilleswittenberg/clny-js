@@ -3,7 +3,7 @@ const {
   mapTo
 } = require("arcsecond")
 
-const key = require("../scope/key")
+const key = require("../key")
 const Identity = require("../../tree/expressions/Identity")
 
 const identity = pipeParsers([

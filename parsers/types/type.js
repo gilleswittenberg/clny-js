@@ -25,7 +25,7 @@ const {
   arrow
 } = require("../convenience/tokens")
 
-const key = require("../scope/key")
+const key = require("../key")
 const typeLiteral = require("./typeLiteral")
 const wrappedTypeLiteral = wrappedInParentheses(typeLiteral)
 

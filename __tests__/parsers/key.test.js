@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const key = require("../../../parsers/scope/key")
+const key = require("../../parsers/key")
 
 test("key", () => {
   expect(toValue(parse(key)("k"))).toBe("k")

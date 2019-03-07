@@ -17,9 +17,9 @@ const {
 const {
   whitespace,
   whitespaced
-} = require("./whitespace")
+} = require("./convenience/whitespace")
 
-const toArray = require("../../utils/toArray")
+const toArray = require("../utils/toArray")
 
 const prefix = (expression, operators, mapToFunc, whitespaceRequired) => {
   const operatorParser = whitespaceRequired

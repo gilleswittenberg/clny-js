@@ -1,6 +1,6 @@
 module.exports = class Comment {
 
-  constructor (content) {
-    this.content = content
+  constructor (chars) {
+    this.chars = chars
   }
 }

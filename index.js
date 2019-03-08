@@ -20,14 +20,16 @@ const fileContent = fs.readFileSync(path).toString()
 const { parse, toPromise } = require("arcsecond")
 const root = require("./parsers/root")
 const util = require("util")
-
 const asData = script === scripts[0] ? true : false
+
+const rootScope = root(asData)
+
 const evaluate = rootScope => rootScope.evaluate(asData)
 const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
 
 const onSuccess = rootScope => script === "parse" ? output(rootScope) : output(evaluate(rootScope))
 const onError = err => console.error(err)
 
-toPromise(parse(root)(fileContent))
+toPromise(parse(rootScope)(fileContent))
   .then(onSuccess)
   .catch(onError)

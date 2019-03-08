@@ -3,7 +3,7 @@ const {
   parse
 } = require("arcsecond")
 const root = require("../../parsers/root")
-const RootScope = require("../../tree/expressions/RootScope")
+const rootScope = root(true)
 const Scope = require("../../tree/expressions/Scope")
 const Assignment = require("../../tree/expressions/Assignment")
 const Expression = require("../../tree/expressions/Expression")
@@ -14,8 +14,9 @@ describe("root scope", () => {
 
   test("scalar", () => {
     const content = "key: 5"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["key"])
@@ -24,8 +25,9 @@ describe("root scope", () => {
 
   test("plural", () => {
     const content = "array: 6, 7"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["array"])
@@ -39,7 +41,7 @@ describe("key, aliases", () => {
 
   test("assignments", () => {
     const content = "key: a: 6, b: 7"
-    const result = toValue(parse(root)(content))
+    const result = toValue(parse(rootScope)(content))
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["key"])
@@ -56,7 +58,7 @@ describe("key, aliases", () => {
 
   test("alias", () => {
     const content = "kk: alias:: 8"
-    const result = toValue(parse(root)(content))
+    const result = toValue(parse(rootScope)(content))
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["kk", "alias"])
@@ -66,7 +68,7 @@ describe("key, aliases", () => {
 
   test("plural alias", () => {
     const content = "kkk: alias: aliasSnd:: 9"
-    const result = toValue(parse(root)(content))
+    const result = toValue(parse(rootScope)(content))
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["kkk", "alias", "aliasSnd"])
@@ -84,7 +86,7 @@ describe("deep", () => {
   l: 6
 my: 9
 `
-    const result = toValue(parse(root)(content))
+    const result = toValue(parse(rootScope)(content))
     expect(result.expressions.length).toBe(2)
     expect(result.expressions[0]).toBeInstanceOf(Scope)
     expect(result.expressions[0].keys).toEqual(["scope"])
@@ -98,7 +100,7 @@ my: 9
   "a"
   "b"
 `
-    const result = toValue(parse(root)(content))
+    const result = toValue(parse(rootScope)(content))
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Scope)
     expect(result.expressions[0].keys).toEqual(["arr"])
@@ -112,7 +114,7 @@ describe("indention", () => {
   test("invalid", () => {
     const content = `key:
     5`
-    expect(() => toValue(parse(root)(content))).toThrow("Invalid indention at line: 2")
+    expect(() => toValue(parse(rootScope)(content))).toThrow("Invalid indention at line: 2")
   })
 
   test("empty line", () => {
@@ -121,7 +123,7 @@ describe("indention", () => {
 
   6
 `
-    expect(() => toValue(parse(root)(content))).not.toThrow()
+    expect(() => toValue(parse(rootScope)(content))).not.toThrow()
   })
 })
 
@@ -129,8 +131,9 @@ describe("comment", () => {
 
   test("closed comment", () => {
     const content = "# text \\# 5"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(5)
@@ -138,8 +141,9 @@ describe("comment", () => {
 
   test("closed comment last", () => {
     const content = "6 # text \\#"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(6)
@@ -147,8 +151,9 @@ describe("comment", () => {
 
   test("closed comment multi", () => {
     const content = "# text \\#  # text2 \\# 56 # text3 \\#  , 6 # text \\## text2 \\#"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Expression)
     expect(result.expressions[0].isPlural).toBe(true)
@@ -157,8 +162,9 @@ describe("comment", () => {
 
   test("comment eol", () => {
     const content = "22 # Five!"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(22)
@@ -166,8 +172,9 @@ describe("comment", () => {
 
   test("comment line", () => {
     const content = "# only comment on line"
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(0)
   })
 
@@ -175,8 +182,9 @@ describe("comment", () => {
     const content = `# text
   ~giberish@!abc~
 "continue"`
-    const result = toValue(parse(root)(content))
-    expect(result).toBeInstanceOf(RootScope)
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(String)
     expect(result.expressions[0].value).toBe("continue")
@@ -186,6 +194,6 @@ describe("comment", () => {
     const content = `# text
 ~giberish@!abc~
 5`
-    expect(() => toValue(parse(root)(content))).toThrow("Invalid characters at line: 2")
+    expect(() => toValue(parse(rootScope)(content))).toThrow("Invalid characters at line: 2")
   })
 })

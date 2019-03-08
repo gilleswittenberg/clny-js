@@ -1,5 +1,5 @@
 const Expression = require("./Expression")
-const Scope = require("./Scope")
+const FunctionScope = require("./FunctionScope")
 const Identity = require("./Identity")
 
 class Application extends Expression {
@@ -15,11 +15,15 @@ class Application extends Expression {
 
     // @TODO: More abstract identity reference
     const isIdentity = expression instanceof Identity
-    const toEvaluate = isIdentity ? scope[expression.key] : expression
+    let toEvaluate = isIdentity ? scope[expression.key] : expression
+
+    if (toEvaluate instanceof Application) {
+      toEvaluate = toEvaluate.evaluate(scope)
+    }
 
     // @TODO: More abstract type checking
-    if (!(toEvaluate instanceof Scope)) throw "Can not apply non Scope Expression"
-    this.value = toEvaluate.evaluate()
+    if (!(toEvaluate instanceof FunctionScope)) throw "Can not apply non FunctionScope Expression"
+    this.value = toEvaluate.evaluate(scope)
     this.isEvaluated = true
     return this.value
   }

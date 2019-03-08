@@ -38,8 +38,8 @@ const eol = char("\n")
 const Indent = require("../tree/Indent")
 const Assignment = require("../tree/expressions/Assignment")
 const ScopeOpener = require("../tree/ScopeOpener")
-const Scope = require("../tree/expressions/Scope")
-const RootScope = require("../tree/expressions/RootScope")
+const DataScope = require("../tree/expressions/DataScope")
+const FunctionScope = require("../tree/expressions/FunctionScope")
 const Line = require("../tree/Line")
 const Gibberish = require("../tree/Gibberish")
 
@@ -103,7 +103,7 @@ const line = pipeParsers([
 
 const mapLinesToScopes = lines => {
 
-  const rootScope = new RootScope()
+  const rootScope = scopeConstructor(null, null, true)
   const scopes = [rootScope]
   const currentScope = () => scopes[scopes.length - 1]
   const currentIndents = () => scopes.length - 1
@@ -142,7 +142,8 @@ const mapLinesToScopes = lines => {
 
     // new scope
     if (content instanceof ScopeOpener) {
-      const newScope = new Scope(content.key)
+      //const newScope = new Scope(content.key)
+      const newScope = scopeConstructor(content.key)
       scopes.push(newScope)
       return
     }
@@ -186,4 +187,13 @@ const linesParser = pipeParsers([
   })
 ])
 
-module.exports = linesParser
+let asData
+const scopeConstructor = (keys, expressions, isRoot) => {
+  const constructor = asData ? DataScope : FunctionScope
+  return new constructor(keys, expressions, isRoot)
+}
+
+module.exports = (data = false) => {
+  asData = data
+  return linesParser
+}

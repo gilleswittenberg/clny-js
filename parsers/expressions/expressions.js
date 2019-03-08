@@ -9,6 +9,7 @@ const string = require("./scalars/string")
 const identity = require("./identity")
 
 const keyPrefix = require("../keyPrefix")
+const keyPostfix = require("../keyPostfix")
 
 const createPrecedenceParser = require("../createPrecedenceParser")
 
@@ -17,6 +18,7 @@ const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/expressions/Statement")
 const Application = require("../../tree/expressions/Application")
+const Chain = require("../../tree/expressions/Chain")
 
 const { all: types } = require("../../tree/types")
 const statements = require("../../tree/statements")
@@ -44,6 +46,14 @@ const mapPostfixToApplication = matches => {
   const evaluate = (operator, arrayOrExpression) => {
     const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
     return new Application(expression)
+  }
+  return evaluate(...matches)
+}
+
+const mapPostfixToChain = matches => {
+  const evaluate = (key, arrayOrExpression) => {
+    const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
+    return new Chain(key, expression)
   }
   return evaluate(...matches)
 }
@@ -84,6 +94,7 @@ const mapToExpressions = matches =>
 
 const table = [
   { type: "POSTFIX", operators: "()", mapTo: mapPostfixToApplication },
+  { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToChain },
   // Booleans
   { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },

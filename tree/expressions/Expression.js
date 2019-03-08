@@ -8,6 +8,7 @@ class Expression {
     this.addExpressions(expressions)
     this.isEvaluated = false
     this.shouldCast = false
+    this.properties = {}
   }
 
   evaluate () {

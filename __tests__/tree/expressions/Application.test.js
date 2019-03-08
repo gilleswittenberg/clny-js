@@ -15,8 +15,8 @@ describe("Application", () => {
   test("Identity", () => {
     const number = new Number(6)
     const scope = new Scope(null, number)
-    const identity = new Identity("sc", scope)
+    const identity = new Identity("scope", scope)
     const application = new Application(identity)
-    expect(application.evaluate({ sc: scope })).toBe(6)
+    expect(application.evaluate({ scope })).toBe(6)
   })
 })

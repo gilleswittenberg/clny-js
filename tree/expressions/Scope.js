@@ -16,6 +16,10 @@ class Scope extends Expression {
     super("Scope", toArray(expressions))
     this.keys = toArray(keys)
     this.isRoot = false
+
+    this.properties = {
+      apply: () => this.evaluateFunctionScope()
+    }
   }
 
   // @TODO: Global asData setting

@@ -12,8 +12,11 @@ class Application extends Expression {
   evaluate (scope = {}) {
     if (this.isEvaluated) return this.value
     const expression = this.expressions[0]
+
+    // @TODO: More abstract identity reference
     const isIdentity = expression instanceof Identity
     const toEvaluate = isIdentity ? scope[expression.key] : expression
+
     // @TODO: More abstract type checking
     if (!(toEvaluate instanceof Scope)) throw "Can not apply non Scope Expression"
     this.value = toEvaluate.evaluate()

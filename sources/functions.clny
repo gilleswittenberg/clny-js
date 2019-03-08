@@ -5,4 +5,9 @@ f:
 
 print "After f"
 
-f ()
+f()
+
+g:
+  print "G"
+
+g.apply

@@ -51,9 +51,17 @@ class FunctionScope extends Scope {
 
       // print
       if (isPrintStatement(expression)) {
-        // @TODO: Different outputs for print, log, debug
+        const name = expression.name
+        const val = expression.value
+        // @TODO: Type for Plural
+        const type = expression.expressions[0].type
+        const value =
+          name === "print" ? val :
+            name === "log" ? new Date().toLocaleString() + " " + val :
+              name === "debug" ? type + " " + val :
+                (() => { throw "Invalid Print Statement" })()
         // eslint-disable-next-line no-console
-        console.log(expression.value)
+        console.log(value)
       }
 
       return scope

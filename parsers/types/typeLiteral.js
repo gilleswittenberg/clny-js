@@ -7,13 +7,15 @@ const {
   mapTo
 } = require("arcsecond")
 
+const charsToString = require("../../utils/charsToString")
+
 const uppercase = regex(/^[A-Z]/)
 const typeLiteral = pipeParsers([
   sequenceOf([
     uppercase,
     possibly(letters)
   ]),
-  mapTo(([first, chars]) => first + (chars ? chars : ""))
+  mapTo(chars => charsToString(chars))
 ])
 
 module.exports = typeLiteral

@@ -6,9 +6,6 @@ const {
   sequenceOf,
   endOfInput,
   pipeParsers,
-  possibly,
-  takeLeft,
-  many1,
   mapTo,
   parse,
   toValue
@@ -20,7 +17,6 @@ const {
 
 const {
   indent,
-  whitespace,
   whitespaced
 } = require("./convenience/whitespace")
 
@@ -37,7 +33,6 @@ const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
 const Indent = require("../tree/Indent")
-const Assignment = require("../tree/expressions/Assignment")
 const ScopeOpener = require("../tree/ScopeOpener")
 const DataScope = require("../tree/expressions/DataScope")
 const FunctionScope = require("../tree/expressions/FunctionScope")

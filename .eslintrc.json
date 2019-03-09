@@ -14,9 +14,13 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
         "comma-dangle": [
-          "error",
-          "never"
+            "error",
+            "never"
         ],
         "indent": [
             "error",
@@ -29,6 +33,10 @@
         "no-console": [
           "error", { "allow": ["info", "warn", "error"] }
         ],
+        "no-extra-parens": [
+            "error",
+            "all"
+        ],
         "quotes": [
             "error",
             "double"
@@ -37,13 +45,9 @@
             "error",
             "never"
         ],
-        "no-extra-parens": [
+        "space-before-function-paren": [
             "error",
-            "all"
-        ],
-        "arrow-parens": [
-            "error",
-            "as-needed"
+            "always"
         ]
     }
 }

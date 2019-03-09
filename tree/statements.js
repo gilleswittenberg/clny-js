@@ -5,7 +5,8 @@ const statements = [
   "debug",
   "if",
   "elseif",
-  "else"
+  "else",
+  "for"
 ]
 
 module.exports = statements

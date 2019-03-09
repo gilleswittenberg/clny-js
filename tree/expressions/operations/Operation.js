@@ -4,7 +4,6 @@ class Operation extends Expression {
 
   constructor (fix, operator, ...operands) {
     super()
-    this.expressions = null
     this.fix = fix
     this.operator = operator
     this.operands = operands

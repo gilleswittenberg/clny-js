@@ -18,6 +18,7 @@ const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/expressions/Statement")
 const ConditionalStatement = require("../../tree/expressions/ConditionalStatement")
+const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
 const Chain = require("../../tree/expressions/Chain")
 
@@ -98,6 +99,8 @@ const mapToStatement = matches => {
   case "elseif":
   case "else":
     return new ConditionalStatement(name, expressions)
+  case "for":
+    return new ForStatement(name, expressions)
   default:
     throw name + "is not a valid statement name"
   }

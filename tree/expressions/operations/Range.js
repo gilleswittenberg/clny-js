@@ -8,14 +8,17 @@ class Range extends Operation {
   }
 
   evaluate () {
+    if (this.isEvaluated) return this.value
 
     const start = this.operands[0]
     const end = this.operands[1]
     const range = this.createRange(start, end)
 
-    this.expressions = range.map(n => new Number(n))
-    this.value = this.expressions.map(expression => expression.evaluate())
+    const expressions = range.map(n => new Number(n))
+    this.addExpressions(expressions)
 
+    this.value = this.expressions.map(expression => expression.evaluate())
+    this.isEvaluated = true
     return this.value
   }
 

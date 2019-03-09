@@ -110,7 +110,7 @@ const mapLinesToScopes = lines => {
 
     // default content (not part of multiline comment)
     if (content instanceof Gibberish)
-      throw new Error("Invalid characters at line: " + line.lineNumber)
+      throw new Error ("Invalid characters at line: " + line.lineNumber)
 
 
     // indention check
@@ -128,6 +128,7 @@ const mapLinesToScopes = lines => {
     // close scope
     if (indents === currentIndents() - 1) {
       const scope = scopes.pop()
+      if (scope.expressions.isEmpty) throw new Error ("Scope opened without adding expressions")
       currentScope().addExpressions(scope)
     }
 

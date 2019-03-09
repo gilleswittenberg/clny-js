@@ -1,21 +1,44 @@
 const Statement = require("./Statement")
 
+const isIf = name => ["if", "elseif"].includes(name)
+
 class ConditionalStatement extends Statement {
 
   evaluate (scope = {}) {
 
     if (this.isEvaluated) return this.value
 
-    if (this.expressions.length != 2) throw "if statement should have 2 arguments"
+    let condition, consequent
 
-    const condition = this.expressions[0]
-    condition.evaluate(scope)
-    const consequent = this.expressions[1]
-    if (condition.type !== "Boolean") throw "if statement's first argument should be a Boolean"
-    if (consequent.type !== "Scope") throw "if statement's second argument should be a Scope"
+    if (isIf(this.name)) {
+      if (this.expressions.length !== 2) throw "if / elseif statement should have 2 arguments"
+      condition = this.expressions[0]
+      condition.evaluate(scope)
+      if (condition.type !== "Boolean") throw "if / elseif statement's first argument should be a Boolean"
+      consequent = this.expressions[1]
+    } else {
+      if (this.expressions.length !== 1) throw "else statement should have 1 argument"
+      consequent = this.expressions[0]
+    }
 
-    this.value = condition.value === true ? [true, consequent.evaluate()] : [false, null]
+    if (consequent.type !== "Scope") throw "if / elseif / else statement's last argument should be a Scope"
+
+    if (isIf(this.name)) {
+      this.value = condition.value === true ? [true, consequent.evaluate()] : [false, null]
+    } else {
+      this.value = consequent.evaluate()
+    }
     this.isEvaluated = true
+    return this.value
+  }
+
+  doNotEvaluate (previousValue) {
+    this.isEvaluated = true
+    if (isIf(this.name)) {
+      this.value = [true, previousValue]
+    } else {
+      this.value = previousValue
+    }
     return this.value
   }
 }

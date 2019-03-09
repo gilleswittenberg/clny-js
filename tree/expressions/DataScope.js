@@ -10,8 +10,9 @@ class DataScope extends Scope {
   evaluate () {
     if (this.isEmpty) return null
     const key = this.keys != null ? this.keys[0] : null
-    const value = this.evaluateDataScope()
-    return key != null ? { [key]: value } : value
+    this.value = this.evaluateDataScope()
+    this.isEvaluated = true
+    return key != null ? { [key]: this.value } : this.value
   }
 
   evaluateDataScope () {

@@ -1,12 +1,15 @@
 const Scope = require("./Scope")
 const Assignment = require("./Assignment")
 const Statement = require("../expressions/Statement")
+const ConditionalStatement = require("../expressions/ConditionalStatement")
 
 const isScope = object => object instanceof Scope
 const isAssignment = object => object instanceof Assignment
 const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
 const isReturnStatement = object => object instanceof Statement && object.name === "return"
 const isPrintStatement = object => object instanceof Statement && ["print", "log", "debug"].includes(object.name)
+const isPrimaryConditionalStatement = object => object instanceof ConditionalStatement && ["if", "elseif"].includes(object.name)
+const isSecondaryConditionalStatement = object => object instanceof ConditionalStatement && ["elseif", "else"].includes(object.name)
 
 class FunctionScope extends Scope {
 
@@ -20,7 +23,9 @@ class FunctionScope extends Scope {
 
   evaluate (scope) {
     if (this.isEmpty) return null
-    return this.evaluateFunctionScope(scope)
+    this.value = this.evaluateFunctionScope(scope)
+    this.isEvaluated = true
+    return this.value
   }
 
   evaluateFunctionScope (scope = {}) {
@@ -34,7 +39,24 @@ class FunctionScope extends Scope {
       if (scope.hasReturned) return scope
 
       if (!isScope(expression)) {
-        expression.evaluate(scope.keys)
+
+        // conditional statements
+        if (isSecondaryConditionalStatement(expression)) {
+          const previousExpression = arr[index - 1]
+          if (!isPrimaryConditionalStatement(previousExpression)) {
+            throw "ConditionalStatement " + expression.name + " should be preceded by if Statement"
+          }
+          if (previousExpression.value[0] === false) {
+            expression.evaluate(scope.keys)
+          } else {
+            expression.doNotEvaluate(previousExpression.value[1])
+          }
+        }
+
+        // expressions
+        else {
+          expression.evaluate(scope.keys)
+        }
       }
 
       // Assignment

@@ -95,6 +95,8 @@ const mapToStatement = matches => {
   case "debug":
     return new Statement(name, expressions)
   case "if":
+  case "elseif":
+  case "else":
     return new ConditionalStatement(name, expressions)
   default:
     throw name + "is not a valid statement name"

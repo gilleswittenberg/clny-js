@@ -32,6 +32,7 @@ const {
 const charsToString = require("../utils/charsToString")
 
 const key = require("./key")
+const assignment = require("./assignment")
 const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
@@ -62,31 +63,7 @@ const gibberish = pipeParsers([
 ])
 
 const lineContent = choice([
-  pipeParsers([
-    sequenceOf([
-      choice([
-        pipeParsers([
-          sequenceOf([
-            many1(
-              takeLeft(whitespaced(key))(colon)
-            ),
-            colon,
-            possibly(whitespace)
-          ]),
-          mapTo(([keys]) => keys)
-        ]),
-        pipeParsers([
-          sequenceOf([
-            key,
-            whitespaced(colon)
-          ]),
-          mapTo(([key]) => [key])
-        ])
-      ]),
-      expressions
-    ]),
-    mapTo(([keys, expressions]) => new Assignment(keys, expressions))
-  ]),
+  assignment,
   expressions,
   scopeOpener,
   gibberish

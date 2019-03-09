@@ -2,7 +2,8 @@ const statements = [
   "return",
   "print",
   "log",
-  "debug"
+  "debug",
+  "if"
 ]
 
 module.exports = statements

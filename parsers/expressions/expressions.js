@@ -17,6 +17,7 @@ const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Statement = require("../../tree/expressions/Statement")
+const ConditionalStatement = require("../../tree/expressions/ConditionalStatement")
 const Application = require("../../tree/expressions/Application")
 const Chain = require("../../tree/expressions/Chain")
 
@@ -84,8 +85,21 @@ const mapToType = matches => {
   return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
 }
 
-const mapToStatement = matches =>
-  new Statement(matches[0].trim(), matches.flat(Infinity).slice(1))
+const mapToStatement = matches => {
+  const name = matches[0]
+  const expressions = matches.flat(Infinity).slice(1)
+  switch (name) {
+  case "return":
+  case "print":
+  case "log":
+  case "debug":
+    return new Statement(name, expressions)
+  case "if":
+    return new ConditionalStatement(name, expressions)
+  default:
+    throw name + "is not a valid statement name"
+  }
+}
 
 const mapToExpressions = matches =>
   matches

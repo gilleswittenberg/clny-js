@@ -73,6 +73,7 @@ class FunctionScope extends Scope {
 
       // print
       if (isPrintStatement(expression)) {
+        // @TODO: Move logic into PrintStatement
         const name = expression.name
         const val = expression.value
         // @TODO: Type for Plural

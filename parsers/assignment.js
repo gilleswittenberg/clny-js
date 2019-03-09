@@ -22,6 +22,7 @@ const expressions = require("./expressions/expressions")
 
 const Assignment = require("../tree/expressions/Assignment")
 
+// @TODO: Optional key statement
 const assignment = pipeParsers([
   sequenceOf([
     choice([

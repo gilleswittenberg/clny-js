@@ -94,15 +94,17 @@ const mapToStatement = matches => {
   case "print":
   case "log":
   case "debug":
+    // @TODO: ReturnStatement, PrintStatement
     return new Statement(name, expressions)
   case "if":
   case "elseif":
   case "else":
     return new ConditionalStatement(name, expressions)
   case "for":
+    // @TODO: Do not supply name to ForStatement
     return new ForStatement(name, expressions)
   default:
-    throw name + "is not a valid statement name"
+    throw name + " is not a valid statement name"
   }
 }
 

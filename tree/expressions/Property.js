@@ -1,7 +1,7 @@
 const Expression = require("./Expression")
 const Identity = require("./Identity")
 
-class Chain extends Expression {
+class Property extends Expression {
 
   constructor (key, parent) {
     super()
@@ -26,4 +26,4 @@ class Chain extends Expression {
   }
 }
 
-module.exports = Chain
+module.exports = Property

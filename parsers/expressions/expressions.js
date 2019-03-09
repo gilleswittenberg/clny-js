@@ -20,7 +20,7 @@ const Statement = require("../../tree/expressions/Statement")
 const ConditionalStatement = require("../../tree/expressions/ConditionalStatement")
 const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
-const Chain = require("../../tree/expressions/Chain")
+const Property = require("../../tree/expressions/Property")
 
 const { all: types } = require("../../tree/types")
 const statements = require("../../tree/statements")
@@ -52,10 +52,10 @@ const mapPostfixToApplication = matches => {
   return evaluate(...matches)
 }
 
-const mapPostfixToChain = matches => {
+const mapPostfixToProperty = matches => {
   const evaluate = (key, arrayOrExpression) => {
     const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
-    return new Chain(key, expression)
+    return new Property(key, expression)
   }
   return evaluate(...matches)
 }
@@ -113,7 +113,7 @@ const mapToExpressions = matches =>
 
 const table = [
   { type: "POSTFIX", operators: "()", mapTo: mapPostfixToApplication },
-  { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToChain },
+  { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToProperty },
   // Booleans
   { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },

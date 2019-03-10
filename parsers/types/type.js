@@ -1,6 +1,5 @@
 const {
   choice,
-  between,
   pipeParsers,
   sequenceOf,
   possibly,
@@ -13,6 +12,7 @@ const {
 } = require("../convenience/whitespace")
 
 const {
+  wrappedInParentheses,
   optionalWrappedInParentheses
 } = require("../convenience/wrapped")
 
@@ -20,8 +20,6 @@ const {
   colon,
   comma,
   pipe,
-  leftParens,
-  rightParens,
   arrow
 } = require("../convenience/tokens")
 
@@ -55,10 +53,7 @@ const productType = optionalWrappedInParentheses(
 
 const types = choice([
   namedType(
-    // @TODO: Abstract required parentheses
-    between(whitespaced(leftParens))(whitespaced(rightParens))(
-      productType
-    )
+    wrappedInParentheses(productType)
   ),
   productType
 ])

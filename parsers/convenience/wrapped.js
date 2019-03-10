@@ -34,10 +34,12 @@ const optionalWrap = (parser, bracketType = "PARENS", whitespace = true) => {
   ])
 }
 
+const wrappedInParentheses = parser => wrap(parser)
 const optionalWrappedInParentheses = parser => optionalWrap(parser)
 const optionalWrappedInCurlyBraces = parser => optionalWrap(parser, "CURLY")
 
 module.exports = {
+  wrappedInParentheses,
   optionalWrappedInParentheses,
   optionalWrappedInCurlyBraces
 }

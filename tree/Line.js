@@ -11,12 +11,9 @@ const {
 } = require("arcsecond")
 
 const {
+  escapedBackslash,
   numberSign
 } = require("../parsers/convenience/tokens")
-
-const {
-  escapedBackslash
-} = require("../parsers/convenience/convenience")
 
 const charsToString = require("../utils/charsToString")
 

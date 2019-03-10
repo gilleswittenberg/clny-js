@@ -24,6 +24,7 @@ const rightParens = char(")")
 const pipe = char("|")
 
 // multchar tokens
+const escapedBackslash = str("\\")
 const arrow = str("->")
 const rangeDelimiter = str(",,")
 
@@ -46,6 +47,7 @@ module.exports = {
   rightParens,
   pipe,
 
+  escapedBackslash,
   arrow,
-  rangeDelimiter 
+  rangeDelimiter
 }

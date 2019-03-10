@@ -1,7 +1,6 @@
 const {
   anythingExcept,
-  many,
-  str
+  many
 } = require("arcsecond")
 
 const {
@@ -14,12 +13,9 @@ const anyChars = many(anyChar)
 const anyCharExceptEOL = anythingExcept(eol)
 const anyCharsExceptEOL = many(anyCharExceptEOL)
 
-const escapedBackslash = str("\\")
-
 module.exports = {
   anyChar,
   anyChars,
   anyCharExceptEOL,
-  anyCharsExceptEOL,
-  escapedBackslash
+  anyCharsExceptEOL
 }

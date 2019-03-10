@@ -123,7 +123,7 @@ const mapLinesToScopes = lines => {
     // close scope
     if (indents === currentIndents() - 1) {
       const scope = scopes.pop()
-      if (scope.expressions.isEmpty) throw new Error ("Scope opened without adding expressions")
+      if (scope.isEmpty) throw new Error ("Scope opened without adding expressions")
       currentScope().addExpressions(scope)
     }
 

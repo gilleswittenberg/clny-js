@@ -107,6 +107,13 @@ my: 9
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(String)
     expect(result.expressions[0].expressions[1]).toBeInstanceOf(String)
   })
+
+  test("empty scope opener", () => {
+    const content = `scope:
+"a"
+`
+    expect(() => parse(rootScope)(content)).toThrow("Scope opened without adding expressions")
+  })
 })
 
 describe("indention", () => {

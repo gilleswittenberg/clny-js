@@ -15,14 +15,14 @@ const {
 } = require("../convenience/whitespace")
 
 const {
-  wrappedInParentheses
-} = require("../convenience/convenience")
+  optionalWrappedInParentheses
+} = require("../convenience/wrapped")
 
 const { type: typeKeyword } = require("../keywords")
 const typeLiteral = require("./typeLiteral")
 const type = require("./type")
 
-const typeAssignment = wrappedInParentheses(
+const typeAssignment = optionalWrappedInParentheses(
   pipeParsers([
     sequenceOf([
       possibly(

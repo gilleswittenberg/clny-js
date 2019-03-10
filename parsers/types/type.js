@@ -13,8 +13,8 @@ const {
 } = require("../convenience/whitespace")
 
 const {
-  wrappedInParentheses
-} = require("../convenience/convenience")
+  optionalWrappedInParentheses
+} = require("../convenience/wrapped")
 
 const {
   colon,
@@ -27,9 +27,7 @@ const {
 
 const key = require("../key")
 const typeLiteral = require("./typeLiteral")
-const wrappedTypeLiteral = wrappedInParentheses(typeLiteral)
-
-//const Type = require("../../tree/Type")
+const wrappedTypeLiteral = optionalWrappedInParentheses(typeLiteral)
 
 // @TODO: Aliases
 const namedType = type => pipeParsers([
@@ -45,15 +43,14 @@ const namedType = type => pipeParsers([
     ),
     type
   ]),
-  mapTo(([key,type]) => [key, type])
-  //mapTo(([key,type]) => (new Type(null, type, null, null, key)))
+  mapTo(([key, type]) => [key, type])
 ])
 
-const sumType = wrappedInParentheses(
+const sumType = optionalWrappedInParentheses(
   sepBy1(whitespaced(pipe))(wrappedTypeLiteral)
 )
-const productType = wrappedInParentheses(
-  sepBy1(whitespaced(comma))(wrappedInParentheses(namedType(sumType)))
+const productType = optionalWrappedInParentheses(
+  sepBy1(whitespaced(comma))(optionalWrappedInParentheses(namedType(sumType)))
 )
 
 const types = choice([

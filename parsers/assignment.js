@@ -26,12 +26,14 @@ const Assignment = require("../tree/expressions/Assignment")
 const assignment = pipeParsers([
   sequenceOf([
     choice([
+      // aliased assignment eg. `key: alias:: expressions`
       takeLeft(many1(takeLeft(whitespaced(key))(colon)))(
         sequenceOf([
           colon,
           possibly(whitespace)
         ])
       ),
+      // single key assignment eg. `key: expressions`
       takeLeft(key)(whitespaced(colon))
     ]),
     expressions

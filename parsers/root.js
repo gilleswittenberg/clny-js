@@ -28,6 +28,7 @@ const {
 const charsToString = require("../utils/charsToString")
 
 const key = require("./key")
+const typeLiteral = require("./types/typeLiteral")
 const assignment = require("./assignment")
 const typeConstructor = require("./types/typeConstructor")
 const expressions = require("./expressions/expressions")
@@ -35,7 +36,9 @@ const eol = char("\n")
 
 const Indent = require("../tree/Indent")
 const ScopeOpener = require("../tree/ScopeOpener")
+const TypeOpener = require("../tree/TypeOpener")
 const DataScope = require("../tree/expressions/DataScope")
+const TypeScope = require("../tree/TypeScope")
 const FunctionScope = require("../tree/expressions/FunctionScope")
 const TypeConstructor = require("../tree/TypeConstructor")
 const Line = require("../tree/Line")
@@ -54,6 +57,14 @@ const scopeOpener = pipeParsers([
   mapTo(([key]) => new ScopeOpener(key))
 ])
 
+const typeOpener = pipeParsers([
+  sequenceOf([
+    typeLiteral,
+    whitespaced(colon)
+  ]),
+  mapTo(([name]) => new TypeOpener(name))
+])
+
 const gibberish = pipeParsers([
   anyChars,
   mapTo(chars => new Gibberish(chars))
@@ -64,6 +75,7 @@ const lineContent = choice([
   typeConstructor,
   expressions,
   scopeOpener,
+  typeOpener,
   gibberish
 ])
 
@@ -93,9 +105,7 @@ const mapLinesToScopes = lines => {
     if (line.isEmpty) return
 
     // inside multiline comment
-    if (commentIndents != null && indents > commentIndents) {
-      return
-    }
+    if (commentIndents != null && indents > commentIndents) return
 
     // close multiline comment
     commentIndents = null
@@ -117,9 +127,15 @@ const mapLinesToScopes = lines => {
 
     // new scope
     if (content instanceof ScopeOpener) {
-      //const newScope = new Scope(content.key)
       const newScope = scopeConstructor(content.key)
       scopes.push(newScope)
+      return
+    }
+
+    // new type scope
+    if (content instanceof TypeOpener) {
+      const typeScope = new TypeScope(content.name)
+      scopes.push(typeScope)
       return
     }
 

@@ -8,6 +8,11 @@ class Scope extends Expression {
     super("Scope", expressions)
     this.keys = toArray(keys)
     this.isRoot = isRoot
+    this.types = {}
+  }
+
+  addType (name, type) {
+    this.types[name] = type
   }
 }
 

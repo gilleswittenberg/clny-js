@@ -9,6 +9,7 @@ const Assignment = require("../../tree/expressions/Assignment")
 const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
+const Type = require("../../tree/Type")
 
 describe("root scope", () => {
 
@@ -74,6 +75,18 @@ describe("key, aliases", () => {
     expect(result.expressions[0].keys).toEqual(["kkk", "alias", "aliasSnd"])
     expect(result.expressions[0].expressions.length).toBe(1)
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(Number)
+  })
+})
+
+describe("type", () => {
+
+  test("single line", () => {
+    const content = "OptionalBoolean: Null | Boolean"
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.types.OptionalBoolean).toBeInstanceOf(Type)
+    expect(result.types.OptionalBoolean.options.length).toBe(2)
+    expect(result.expressions.length).toBe(0)
   })
 })
 

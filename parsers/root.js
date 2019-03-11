@@ -29,6 +29,7 @@ const charsToString = require("../utils/charsToString")
 
 const key = require("./key")
 const assignment = require("./assignment")
+const typeConstructor = require("./types/typeConstructor")
 const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
@@ -36,6 +37,7 @@ const Indent = require("../tree/Indent")
 const ScopeOpener = require("../tree/ScopeOpener")
 const DataScope = require("../tree/expressions/DataScope")
 const FunctionScope = require("../tree/expressions/FunctionScope")
+const TypeConstructor = require("../tree/TypeConstructor")
 const Line = require("../tree/Line")
 const Gibberish = require("../tree/Gibberish")
 
@@ -59,6 +61,7 @@ const gibberish = pipeParsers([
 
 const lineContent = choice([
   assignment,
+  typeConstructor,
   expressions,
   scopeOpener,
   gibberish
@@ -125,6 +128,12 @@ const mapLinesToScopes = lines => {
       const scope = scopes.pop()
       if (scope.isEmpty) throw new Error ("Scope opened without adding expressions")
       currentScope().addExpressions(scope)
+    }
+
+    // type constructor
+    if (content instanceof TypeConstructor) {
+      currentScope().addType(content.name, content.type)
+      return
     }
 
     // current scope

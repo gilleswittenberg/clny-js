@@ -44,7 +44,6 @@ const typeConstructor = optionalWrappedInParentheses(
         ])
       )
     ]),
-    //mapTo(([,name, type]) => type != null ? [name, type] : [name])
     mapTo(([,name, type]) => new TypeConstructor(name, type))
   ])
 )

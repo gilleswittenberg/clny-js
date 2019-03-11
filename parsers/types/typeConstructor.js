@@ -22,7 +22,9 @@ const { type: typeKeyword } = require("../keywords")
 const typeLiteral = require("./typeLiteral")
 const type = require("./type")
 
-const typeAssignment = optionalWrappedInParentheses(
+const TypeConstructor = require("../../tree/TypeConstructor")
+
+const typeConstructor = optionalWrappedInParentheses(
   pipeParsers([
     sequenceOf([
       possibly(
@@ -42,8 +44,9 @@ const typeAssignment = optionalWrappedInParentheses(
         ])
       )
     ]),
-    mapTo(([,name, type]) => type != null ? [name, type] : [name])
+    //mapTo(([,name, type]) => type != null ? [name, type] : [name])
+    mapTo(([,name, type]) => new TypeConstructor(name, type))
   ])
 )
 
-module.exports = typeAssignment
+module.exports = typeConstructor

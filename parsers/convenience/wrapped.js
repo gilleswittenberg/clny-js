@@ -35,6 +35,7 @@ const optionalWrap = (parser, bracketType = "PARENS", whitespace = true) => {
 }
 
 const wrappedInParentheses = parser => wrap(parser)
+// @TODO: Rename to optionalyWrapped...
 const optionalWrappedInParentheses = parser => optionalWrap(parser)
 const optionalWrappedInCurlyBraces = parser => optionalWrap(parser, "CURLY")
 

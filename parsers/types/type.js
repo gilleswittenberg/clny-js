@@ -25,7 +25,24 @@ const {
 
 const key = require("../key")
 const typeLiteral = require("./typeLiteral")
-const wrappedTypeLiteral = optionalWrappedInParentheses(typeLiteral)
+
+const Type = require("../../tree/Type")
+
+
+const wrappedTypeLiteral = pipeParsers([
+  optionalWrappedInParentheses(typeLiteral),
+  mapTo(type => new Type (type))
+])
+
+const sumType = pipeParsers([
+  optionalWrappedInParentheses(
+    sepBy1(whitespaced(pipe))(wrappedTypeLiteral)
+  ),
+  mapTo(types => {
+    if (types.length === 1) return types[0]
+    return new Type (null, types)
+  })
+])
 
 // @TODO: Aliases
 const namedType = type => pipeParsers([
@@ -41,15 +58,25 @@ const namedType = type => pipeParsers([
     ),
     type
   ]),
-  mapTo(([key, type]) => [key, type])
+  mapTo(([key, type]) => {
+    if (key == null) return type
+    const name = type.name
+    const options = type.options
+    const types = type.types
+    const inputTypes = type.inputTypes
+    return new Type (name, options, types, inputTypes, key)
+  })
 ])
 
-const sumType = optionalWrappedInParentheses(
-  sepBy1(whitespaced(pipe))(wrappedTypeLiteral)
-)
-const productType = optionalWrappedInParentheses(
-  sepBy1(whitespaced(comma))(optionalWrappedInParentheses(namedType(sumType)))
-)
+const productType = pipeParsers([
+  optionalWrappedInParentheses(
+    sepBy1(whitespaced(comma))(optionalWrappedInParentheses(namedType(sumType)))
+  ),
+  mapTo(types => {
+    if (types.length === 1) return types[0]
+    return new Type (null, null, types)
+  })
+])
 
 const types = choice([
   namedType(
@@ -64,7 +91,11 @@ const functionType = pipeParsers([
     whitespaced(arrow),
     types
   ]),
-  mapTo(([args,,types]) => [args, types])
+  mapTo(([inputType,,type]) => {
+    const types = type.isCompound ? type.types : type
+    const inputTypes = inputType.isCompound ? inputType.types : inputType
+    return new Type (null, null, types, inputTypes)
+  })
 ])
 
 const type = choice([

@@ -1,45 +1,35 @@
 const toArray = require("../utils/toArray")
-
-class Type {
-
-  // @TODO: fullName e.g. (key: Name)
-
-  constructor (name, options, types, inputTypes, keys) {
-
-    this.name = name != null ? name :
-      notEmpty(options) ? optionsToName(options) :
-        notEmpty(types) || notEmpty(inputTypes) ? typesToName(types, inputTypes) :
-          null
-
-    this.options =
-      isEmpty(options) ? [this] :
-        toArray(options).map(nameToType)
-    this.types =
-      isEmpty(types) ? this.options :
-        toArray(types).map(nameToType)
-    this.isPlural = this.types.length > 1
-
-    this.inputTypes =
-      notEmpty(inputTypes) ? toArray(inputTypes).map(nameToType) :
-        []
-    this.isFunction = this.inputTypes > 0
-
-    this.keys = toArray(keys)
-  }
-
-}
-
-module.exports = Type
-
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
 
-const join = (arr, sep) => toArray(arr).join(sep)
-const optionsToName = arr => join(arr, " | ")
-const typesToName = (types, inputTypes) => {
-  const sep = ", "
-  const arrow = " -> "
-  return (notEmpty(inputTypes) ? join(inputTypes, sep) + arrow : "") + join(types, sep)
+class Type {
+
+  constructor (name, options, types, inputTypes, keys) {
+
+    this.options = toArray(options)
+    this.types = toArray(types)
+    this.isCompound = this.types.length > 1
+
+    this.inputTypes = toArray(inputTypes)
+    this.isFunction = this.inputTypes.length > 0
+
+    this.keys = toArray(keys)
+    this.name = name != null ? name : this.createName()
+    this.fullName = this.createFullName()
+  }
+
+  createFullName () {
+    return this.keys.map(key => key + ": ").join("") + this.name
+  }
+
+  createName () {
+    // Sum type
+    if (notEmpty(this.options)) return this.options.map(option => option.name).join(" | ")
+    // Product type
+    if (isEmpty(this.inputTypes)) return this.types.map(type => type.fullName).join(", ")
+    // Function type
+    return this.inputTypes.map(type => type.fullName).join(", ") + " -> " + this.types.map(type => type.name).join(", ")
+  }
 }
 
-const nameToType = name => new Type(name)
+module.exports = Type

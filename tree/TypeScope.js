@@ -2,15 +2,12 @@ class TypeScope {
 
   constructor (name) {
     this.name = name
-    this.properties = {}
+    this.types = []
     this.isEmpty = true
   }
 
-  addProperty (property) {
-    const keys = property.keys
-    keys.forEach(key => {
-      this.properties[key] = property
-    })
+  addType (type) {
+    this.types.push(type)
     this.isEmpty = false
   }
 }

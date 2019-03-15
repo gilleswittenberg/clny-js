@@ -3,6 +3,7 @@ const ScopeOpener = require("../tree/ScopeOpener")
 const TypeOpener = require("../tree/TypeOpener")
 const TypeScope = require("../tree/TypeScope")
 const TypeConstructor = require("../tree/TypeConstructor")
+const Type = require("../tree/Type")
 const Gibberish = require("../tree/Gibberish")
 
 // @TODO: throw new Error ("Can only define type at root")
@@ -115,8 +116,12 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
     if (content instanceof TypeConstructor) {
       scope.addType(content.name, content.type)
     }
+    else if (content instanceof TypeScope) {
+      const type = new Type(content.name, null, content.types)
+      scope.addType(content.name, type)
+    }
     else if (scope instanceof TypeScope) {
-      scope.addProperty(content)
+      scope.addType(content)
     }
     else {
       scope.addExpressions(content)
@@ -132,14 +137,16 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
     // expression(s)
     if (scopeLine.isEmpty) return content
 
-    // new scope
-    let scope
+    // type
     if (content instanceof TypeOpener) {
-      scope = new TypeScope(content.name)
+      const scope = new TypeScope(content.name)
+      const properties = scopeLines.map(scopeLine => scopeLine.line.parsedContent)
+      properties.forEach(property => addToScope(scope, property))
+      return scope
     }
-    else {
-      scope = new Scope(content.key)
-    }
+
+    // new scope
+    const scope = new Scope(content.key)
     const expressions = scopeLines.map(scopeLineToExpressionsOrScope)
     expressions.forEach(expression => addToScope(scope, expression))
     return scope

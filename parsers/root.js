@@ -6,6 +6,7 @@ const {
   sequenceOf,
   endOfInput,
   pipeParsers,
+  takeLeft,
   mapTo,
   parse,
   toValue
@@ -91,17 +92,13 @@ const line = pipeParsers([
 ])
 
 const linesParser = Scope => pipeParsers([
-  sequenceOf([
-    many(line),
-    endOfInput
-  ]),
-  mapTo(([linesChars]) => {
+  takeLeft(many(line))(endOfInput),
+  mapTo(linesChars => {
     const lines = linesChars.map((line, index) => new Line(line[1].chars + line[0], index + 1, line[1].level))
     // @TODO: Move into Line
     const parsedLines = lines.map(line => {
       let parsedContent = ""
-      // @TODO:
-      //if (line.isEmpty === false) {
+      // @TODO: parse lines after comments have been filtered out
       if (line.content !== "") {
         try {
           parsedContent = toValue(parse(lineContent)(line.content))

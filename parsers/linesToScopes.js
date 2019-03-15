@@ -5,7 +5,6 @@ const TypeScope = require("../tree/TypeScope")
 const TypeConstructor = require("../tree/TypeConstructor")
 const Gibberish = require("../tree/Gibberish")
 
-// @TODO: class ScopeLine (is a Tree)
 // @TODO: throw new Error ("Can only define type at root")
 // @TODO: throw new Error ("Can only add TypeConstructor as property to type")
 const mapLinesToScopeLines = lines => {

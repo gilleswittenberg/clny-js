@@ -1,3 +1,4 @@
+const ScopeLine = require("../tree/ScopeLine")
 const ScopeOpener = require("../tree/ScopeOpener")
 const TypeOpener = require("../tree/TypeOpener")
 const TypeScope = require("../tree/TypeScope")
@@ -9,18 +10,18 @@ const Gibberish = require("../tree/Gibberish")
 // @TODO: throw new Error ("Can only add TypeConstructor as property to type")
 const mapLinesToScopeLines = lines => {
 
-  const scopes = [null, []]
+  const scopes = new ScopeLine()
   const currentIndices = []
-  const lastScope = () => currentIndices.reduce((scope, index) => scope[1][index], scopes)
+  const lastScope = () => currentIndices.reduce((scopeLine, index) => scopeLine.getScopeLine(index), scopes)
 
   const pushToScope = line => {
-    const lineScope = [line, []]
+    const scopeLine = new ScopeLine(line)
     const scope = lastScope()
-    scope[1].push(lineScope)
+    scope.addScopeLine(scopeLine)
   }
 
   const lastIndex = () => {
-    const l = lastScope()[1].length
+    const l = lastScope().numScopeLines
     return l > 0 ? l - 1 : 0
   }
 
@@ -49,15 +50,16 @@ const mapLinesToScopeLines = lines => {
     pushToScope(line)
   })
 
-  return scopes[1]
+  return scopes.scopeLines
 }
 
 const filterComments = scopeLines => {
   const filterLine = scopeLine => {
-    const line = scopeLine[0]
+    const line = scopeLine.line
+    const scopeLines = scopeLine.scopeLines
     // clear child line
     if (line.isComment) return null
-    scopeLine[1] = scopeLine[1].map(filterLine).filter(scopeLine => scopeLine != null)
+    scopeLine.scopeLines = scopeLines.map(filterLine).filter(scopeLine => scopeLine != null)
     return scopeLine
   }
   return scopeLines.map(filterLine).filter(scopeLine => scopeLine != null)
@@ -65,8 +67,8 @@ const filterComments = scopeLines => {
 
 const checkGibberish = scopeLines => {
   const check = scopeLine => {
-    const line = scopeLine[0]
-    const scopeLines = scopeLine[1]
+    const line = scopeLine.line
+    const scopeLines = scopeLine.scopeLines
     if (line.parsedContent instanceof Gibberish) {
       throw new Error ("Invalid characters at line: " + line.lineNumber)
     }
@@ -78,12 +80,12 @@ const checkGibberish = scopeLines => {
 
 const checkIndention = scopeLines => {
   const checkIndents = scopeLine => {
-    const line = scopeLine[0]
+    const line = scopeLine.line
     const indents = line.indents
-    const scopeLines = scopeLine[1]
+    const scopeLines = scopeLine.scopeLines
     scopeLines.forEach(scopeLine => {
-      if (scopeLine[0].indents > indents + 1)
-        throw new Error ("Invalid indention at line: " + scopeLine[0].lineNumber)
+      if (scopeLine.line.indents > indents + 1)
+        throw new Error ("Invalid indention at line: " + scopeLine.line.lineNumber)
       checkIndents(scopeLine)
     })
   }
@@ -93,8 +95,8 @@ const checkIndention = scopeLines => {
 
 const checkScopeOpeners = scopeLines => {
   const checkScopeOpener = scopeLine => {
-    const line = scopeLine[0]
-    const scopeLines = scopeLine[1]
+    const line = scopeLine.line
+    const scopeLines = scopeLine.scopeLines
     if (scopeLines.length > 0 && line.canOpenScope === false)
       throw new Error ("Can not open scope at line:" + line.lineNumber)
     if (scopeLines.length === 0 && line.parsedContent instanceof ScopeOpener)
@@ -123,12 +125,12 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
 
   const scopeLineToExpressionsOrScope = scopeLine => {
 
-    const line = scopeLine[0]
+    const line = scopeLine.line
     const content = line.parsedContent
-    const scopeLines = scopeLine[1]
+    const scopeLines = scopeLine.scopeLines
 
     // expression(s)
-    if (scopeLines.length === 0) return content
+    if (scopeLine.isEmpty) return content
 
     // new scope
     let scope

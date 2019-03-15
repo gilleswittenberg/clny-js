@@ -88,6 +88,14 @@ describe("type", () => {
     expect(result.types.OptionalBoolean.options.length).toBe(2)
     expect(result.expressions.length).toBe(0)
   })
+
+  xtest("multiline", () => {
+    const content = `Product:
+  title: String
+  price: Float
+`
+    toValue(parse(rootScope)(content))
+  })
 })
 
 describe("deep", () => {

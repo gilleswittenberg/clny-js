@@ -34,13 +34,13 @@ const typeConstructor = require("./types/typeConstructor")
 const expressions = require("./expressions/expressions")
 const eol = char("\n")
 
+const linesToScopes = require("./linesToScopes")
+
 const Indent = require("../tree/Indent")
 const ScopeOpener = require("../tree/ScopeOpener")
 const TypeOpener = require("../tree/TypeOpener")
 const DataScope = require("../tree/expressions/DataScope")
-const TypeScope = require("../tree/TypeScope")
 const FunctionScope = require("../tree/expressions/FunctionScope")
-const TypeConstructor = require("../tree/TypeConstructor")
 const Line = require("../tree/Line")
 const Gibberish = require("../tree/Gibberish")
 
@@ -49,6 +49,7 @@ const indents = pipeParsers([
   mapTo(indents => new Indent(indents))
 ])
 
+// @TODO: Optional colon
 const scopeOpener = pipeParsers([
   sequenceOf([
     key,
@@ -57,6 +58,7 @@ const scopeOpener = pipeParsers([
   mapTo(([key]) => new ScopeOpener(key))
 ])
 
+// @TODO: Optional colon
 const typeOpener = pipeParsers([
   sequenceOf([
     typeLiteral,
@@ -67,15 +69,15 @@ const typeOpener = pipeParsers([
 
 const gibberish = pipeParsers([
   anyChars,
-  mapTo(chars => new Gibberish(chars))
+  mapTo(chars => new Gibberish(charsToString(chars)))
 ])
 
 const lineContent = choice([
   assignment,
   typeConstructor,
-  expressions,
   scopeOpener,
   typeOpener,
+  expressions,
   gibberish
 ])
 
@@ -88,110 +90,34 @@ const line = pipeParsers([
   mapTo(([indent, chars]) => [chars, indent])
 ])
 
-const mapLinesToScopes = lines => {
-
-  const rootScope = scopeConstructor(null, null, true)
-  const scopes = [rootScope]
-  const currentScope = () => scopes[scopes.length - 1]
-  const currentIndents = () => scopes.length - 1
-  let commentIndents = null
-
-  lines.forEach(line => {
-
-    const content = line.parsedContent
-    const indents = line.indents
-
-    // empty line
-    if (line.isEmpty) return
-
-    // inside multiline comment
-    if (commentIndents != null && indents > commentIndents) return
-
-    // close multiline comment
-    commentIndents = null
-
-    // open multiline comment
-    if (line.isComment) {
-      commentIndents = indents
-      return
-    }
-
-    // default content (not part of multiline comment)
-    if (content instanceof Gibberish)
-      throw new Error ("Invalid characters at line: " + line.lineNumber)
-
-
-    // indention check
-    if (indents > currentIndents())
-      throw new Error ("Invalid indention at line: " + line.lineNumber)
-
-    // new scope
-    if (content instanceof ScopeOpener) {
-      const newScope = scopeConstructor(content.key)
-      scopes.push(newScope)
-      return
-    }
-
-    // new type scope
-    if (content instanceof TypeOpener) {
-      const typeScope = new TypeScope(content.name)
-      scopes.push(typeScope)
-      return
-    }
-
-    // close scope
-    if (indents === currentIndents() - 1) {
-      const scope = scopes.pop()
-      if (scope.isEmpty) throw new Error ("Scope opened without adding expressions")
-      currentScope().addExpressions(scope)
-    }
-
-    // type constructor
-    if (content instanceof TypeConstructor) {
-      currentScope().addType(content.name, content.type)
-      return
-    }
-
-    // current scope
-    if (indents === currentIndents()) {
-      currentScope().addExpressions(content)
-    }
-  })
-
-  // collapse scopes
-  return scopes.reverse().reduce((acc, scope) => {
-    if (acc == null) return scope
-    scope.addExpressions(acc)
-    return scope
-  })
-}
-
-const linesParser = pipeParsers([
+const linesParser = Scope => pipeParsers([
   sequenceOf([
     many(line),
     endOfInput
   ]),
   mapTo(([linesChars]) => {
     const lines = linesChars.map((line, index) => new Line(line[1].chars + line[0], index + 1, line[1].level))
+    // @TODO: Move into Line
     const parsedLines = lines.map(line => {
-      try {
-        line.parsedContent = toValue(parse(lineContent)(line.content))
-      } catch (err) {
-        throw err
+      let parsedContent = ""
+      // @TODO:
+      //if (line.isEmpty === false) {
+      if (line.content !== "") {
+        try {
+          parsedContent = toValue(parse(lineContent)(line.content))
+        } catch (err) {
+          throw err
+        }
       }
+      line.setParsedContent(parsedContent)
       return line
     })
-    return mapLinesToScopes(parsedLines)
+
+    return linesToScopes(Scope, parsedLines)
   })
 ])
 
-let asData
-const scopeConstructor = (keys, expressions, isRoot) => {
-  const constructor = asData ? DataScope : FunctionScope
-  return new constructor(keys, expressions, isRoot)
-}
-
 module.exports = (data = false) => {
-  asData = data
-  return linesParser
+  const Scope = data ? DataScope : FunctionScope
+  return linesParser(Scope)
 }

@@ -20,6 +20,10 @@ const charsToString = require("../utils/charsToString")
 const escapedNumberSign = sequenceOf([escapedBackslash, numberSign])
 
 const Comment = require("./Comment")
+const Identity = require("./expressions/Identity")
+const ScopeOpener = require("./ScopeOpener")
+const TypeOpener = require("./TypeOpener")
+const TypeConstructor = require("./TypeConstructor")
 
 const comment = pipeParsers([
   sequenceOf([
@@ -43,6 +47,7 @@ class Line {
     this.chars = chars
     this.lineNumber = lineNumber
     this.indents = indents
+    // @TODO: This is not always set correctly
     this.parsedComments = this.parseComments(chars)
     this.content = charsToString(this.parsedComments)
     this.isComment = this.parsedComments.length === 1 && this.parsedComments[0] instanceof Comment
@@ -60,6 +65,13 @@ class Line {
       console.error(err)
       throw err
     }
+  }
+
+  setParsedContent (parsedContent) {
+    this.parsedContent = parsedContent
+    // @TODO: Remove TypeOpener
+    const scopeOpeners = [Identity, ScopeOpener, TypeOpener, TypeConstructor]
+    this.canOpenScope = scopeOpeners.reduce((acc, opener) => acc || this.parsedContent instanceof opener, false)
   }
 }
 

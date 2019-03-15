@@ -27,7 +27,7 @@ const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
 
-// scalar or plural
+// scalar
 const basic = choice([
   nullParser,
   boolean,

@@ -33,6 +33,7 @@ const typeLiteral = require("./types/typeLiteral")
 const assignment = require("./assignment")
 const typeConstructor = require("./types/typeConstructor")
 const expressions = require("./expressions/expressions")
+const type = require("./types/type")
 const eol = char("\n")
 
 const linesToScopes = require("./linesToScopes")
@@ -54,7 +55,8 @@ const indents = pipeParsers([
 const scopeOpener = pipeParsers([
   sequenceOf([
     key,
-    whitespaced(colon)
+    whitespaced(colon),
+    endOfInput
   ]),
   mapTo(([key]) => new ScopeOpener(key))
 ])
@@ -63,7 +65,8 @@ const scopeOpener = pipeParsers([
 const typeOpener = pipeParsers([
   sequenceOf([
     typeLiteral,
-    whitespaced(colon)
+    whitespaced(colon),
+    endOfInput
   ]),
   mapTo(([name]) => new TypeOpener(name))
 ])
@@ -74,10 +77,12 @@ const gibberish = pipeParsers([
 ])
 
 const lineContent = choice([
+  typeOpener,
+  scopeOpener,
   assignment,
   typeConstructor,
-  scopeOpener,
-  typeOpener,
+  // @TODO: Remove when assignment or expressions can handle `key: String`
+  type,
   expressions,
   gibberish
 ])

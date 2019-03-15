@@ -7,8 +7,10 @@ class TypeScope {
   }
 
   addProperty (property) {
-    const key = property.key
-    this.properties[key] = property
+    const keys = property.keys
+    keys.forEach(key => {
+      this.properties[key] = property
+    })
     this.isEmpty = false
   }
 }

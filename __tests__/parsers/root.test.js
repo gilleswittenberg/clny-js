@@ -10,6 +10,7 @@ const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
 const Type = require("../../tree/Type")
+const TypeScope = require("../../tree/TypeScope")
 
 describe("root scope", () => {
 
@@ -89,12 +90,15 @@ describe("type", () => {
     expect(result.expressions.length).toBe(0)
   })
 
-  xtest("multiline", () => {
+  test("multiline", () => {
     const content = `Product:
   title: String
   price: Float
 `
-    toValue(parse(rootScope)(content))
+    const result = toValue(parse(rootScope)(content))
+    expect(result.expressions[0]).toBeInstanceOf(TypeScope)
+    expect(result.expressions[0].properties.title).toBeInstanceOf(Type)
+    expect(result.expressions[0].properties.price).toBeInstanceOf(Type)
   })
 })
 

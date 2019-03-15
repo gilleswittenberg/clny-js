@@ -98,8 +98,9 @@ const checkScopeOpeners = scopeLines => {
     const scopeLines = scopeLine.scopeLines
     if (scopeLines.length > 0 && line.canOpenScope === false)
       throw new Error ("Can not open scope at line:" + line.lineNumber)
-    if (scopeLines.length === 0 && line.parsedContent instanceof ScopeOpener)
+    if (scopeLines.length === 0 && line.parsedContent instanceof ScopeOpener) {
       throw new Error ("Scope opened without adding expressions")
+    }
     scopeLines.forEach(checkScopeOpener)
   }
   scopeLines.forEach(checkScopeOpener)
@@ -115,7 +116,7 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
       scope.addType(content.name, content.type)
     }
     else if (scope instanceof TypeScope) {
-      scope.addProperty(content.name, content.type)
+      scope.addProperty(content)
     }
     else {
       scope.addExpressions(content)

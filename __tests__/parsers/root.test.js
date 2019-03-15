@@ -218,6 +218,23 @@ describe("comment", () => {
     expect(result.expressions[0].value).toBe("continue")
   })
 
+  test("multiline deep", () => {
+    const content = `k:
+  5
+  # text
+    ~giberish@!abc~
+  "continue"`
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.isRoot).toBe(true)
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Scope)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Number)
+    expect(result.expressions[0].expressions[0].value).toBe(5)
+    expect(result.expressions[0].expressions[1]).toBeInstanceOf(String)
+    expect(result.expressions[0].expressions[1].value).toBe("continue")
+  })
+
   test("multiline gibberish", () => {
     const content = `# text
 ~giberish@!abc~

@@ -57,7 +57,7 @@ const filterComments = scopeLines => {
     const line = scopeLine[0]
     // clear child line
     if (line.isComment) return null
-    scopeLine[1] = scopeLine[1].map(filterLine)
+    scopeLine[1] = scopeLine[1].map(filterLine).filter(scopeLine => scopeLine != null)
     return scopeLine
   }
   return scopeLines.map(filterLine).filter(scopeLine => scopeLine != null)

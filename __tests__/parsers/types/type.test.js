@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const type = require("../../../parsers/types/type")
+const { type } = require("../../../parsers/types/type")
 const Type = require("../../../tree/Type")
 
 test("single", () => {

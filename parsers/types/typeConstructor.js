@@ -20,7 +20,7 @@ const {
 
 const { type: typeKeyword } = require("../keywords")
 const typeLiteral = require("./typeLiteral")
-const type = require("./type")
+const { type } = require("./type")
 
 const TypeConstructor = require("../../tree/TypeConstructor")
 

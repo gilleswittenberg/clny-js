@@ -103,4 +103,8 @@ const type = choice([
   types
 ])
 
-module.exports = type
+module.exports = {
+  functionType,
+  types,
+  type
+}

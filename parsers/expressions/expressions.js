@@ -22,7 +22,8 @@ const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
 const Property = require("../../tree/expressions/Property")
 
-const { all: types } = require("../../tree/types")
+//const { all: types } = require("../../tree/types")
+const { functionType, types } = require("../types/type")
 const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
@@ -126,13 +127,14 @@ const table = [
   { type: "LEFT_ASSOCIATIVE", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: ["+", "-"], mapTo: mapToOperation },
   // Type
-  // @TODO: User defined Types (lower precedence than Range and Plurals)
-  { type: "PREFIX", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // Range
   { type: "LEFT_ASSOCIATIVE", operators: ",,", mapTo: mapToOperation },
   // Assignment
+  { type: "PREFIX", operators: types, mapTo: mapToType, whitespaceRequired: true },
   // @TODO: KEYS_VALUE lesser precedence than plural (,)
   { type: "PREFIX", operators: keyPrefix, mapTo: mapToAssignment },
+  // @TODO: Combine with types, functionType, key prefixes
+  { type: "PREFIX", operators: functionType, mapTo: mapToType, whitespaceRequired: true },
   // Plurals
   { type: "LEFT_ASSOCIATIVE", operators: ",", mapTo: mapToPlural },
   // Statement

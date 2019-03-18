@@ -7,9 +7,13 @@ const rootScope = root(true)
 const Scope = require("../../tree/expressions/Scope")
 const Assignment = require("../../tree/expressions/Assignment")
 const Expression = require("../../tree/expressions/Expression")
+const Boolean = require("../../tree/expressions/scalars/Boolean")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
+const Operation = require("../../tree/expressions/operations/Operation")
 const Type = require("../../tree/Type")
+
+//const log = require("../../utils/dev/log")
 
 describe("root scope", () => {
 
@@ -35,6 +39,15 @@ describe("root scope", () => {
     expect(result.expressions[0].expressions[0].isPlural).toBe(true)
     expect(result.expressions[0].expressions[0].expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].expressions[0].expressions[1]).toBeInstanceOf(Number)
+  })
+
+  test("typed", () => {
+    const content = "b: Boolean true"
+    const result = toValue(parse(rootScope)(content))
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
+    expect(result.expressions[0].keys).toEqual(["b"])
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Boolean)
   })
 })
 
@@ -101,6 +114,28 @@ describe("type", () => {
   })
 })
 
+describe("function", () => {
+
+  test("single line", () => {
+    const content = "f: n: Number, m: Number -> Number m + n"
+    const result = toValue(parse(rootScope)(content))
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
+    expect(result.expressions[0].expressions.length).toBe(1)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Operation)
+  })
+
+  /*
+  test("assignment", () => {
+    const content = `f: n: Number, m: Number -> Number
+  m + n
+`
+    const result = toValue(parse(rootScope)(content))
+    log(result)
+  })
+  */
+})
 
 describe("deep", () => {
 

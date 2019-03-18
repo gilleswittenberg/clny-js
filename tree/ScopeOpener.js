@@ -1,6 +1,8 @@
 class ScopeOpener {
-  constructor (key) {
+  constructor (key, functionType) {
     this.key = key
+    this.functionType = functionType
+    this.isFunction = this.functionType != null
   }
 }
 

@@ -13,8 +13,6 @@ const String = require("../../tree/expressions/scalars/String")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Type = require("../../tree/Type")
 
-//const log = require("../../utils/dev/log")
-
 describe("root scope", () => {
 
   test("scalar", () => {
@@ -126,15 +124,22 @@ describe("function", () => {
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(Operation)
   })
 
-  /*
   test("assignment", () => {
-    const content = `f: n: Number, m: Number -> Number
-  m + n
+    const content = `concat: s: String, t: String -> String
+  s + t
 `
     const result = toValue(parse(rootScope)(content))
-    log(result)
+    expect(result).toBeInstanceOf(Scope)
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Scope)
+    expect(result.expressions[0].keys).toEqual(["concat"])
+    expect(result.expressions[0].shouldCast).toBe(true)
+    expect(result.expressions[0].castToType).toBeInstanceOf(Type)
+    expect(result.expressions[0].castToType.fullName).toBe("s: String, t: String -> String")
+    expect(result.expressions[0].expressions.length).toBe(1)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Operation)
+
   })
-  */
 })
 
 describe("deep", () => {

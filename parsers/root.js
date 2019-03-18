@@ -5,6 +5,7 @@ const {
   lookAhead,
   sequenceOf,
   endOfInput,
+  possibly,
   pipeParsers,
   takeLeft,
   mapTo,
@@ -33,7 +34,7 @@ const typeLiteral = require("./types/typeLiteral")
 const assignment = require("./assignment")
 const typeConstructor = require("./types/typeConstructor")
 const expressions = require("./expressions/expressions")
-const { type } = require("./types/type")
+const { type, functionType } = require("./types/type")
 const eol = char("\n")
 
 const linesToScopes = require("./linesToScopes")
@@ -56,9 +57,10 @@ const scopeOpener = pipeParsers([
   sequenceOf([
     key,
     whitespaced(colon),
+    possibly(whitespaced(functionType)),
     endOfInput
   ]),
-  mapTo(([key]) => new ScopeOpener(key))
+  mapTo(([key, , functionType]) => new ScopeOpener(key, functionType))
 ])
 
 // @TODO: Optional colon

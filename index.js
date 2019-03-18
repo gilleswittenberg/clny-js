@@ -8,8 +8,8 @@ const message = "Fail!, documentation: `node index.js (" + scriptsString + ") --
 const script = process.argv[2]
 assert.ok(scripts.includes(script), message)
 
-assert.ok(process.argv[3], message)
 const path = process.argv[3]
+assert.ok(path, message)
 
 // @TODO: Error handling
 const fileContent = fs.readFileSync(path).toString()
@@ -20,7 +20,7 @@ const fileContent = fs.readFileSync(path).toString()
 const { parse, toPromise } = require("arcsecond")
 const root = require("./parsers/root")
 const util = require("util")
-const asData = script === scripts[0] ? true : false
+const asData = script === scripts[0] ? true : false // argument "json"
 
 const rootScope = root(asData)
 

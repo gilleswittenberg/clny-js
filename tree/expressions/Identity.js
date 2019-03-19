@@ -8,11 +8,12 @@ class Identity extends Expression {
     this.isEvaluated = false
   }
 
-  evaluate (scope = {}) {
+  evaluate (env = {}) {
+    
     if (this.isEvaluated) return this.value
 
-    const expressions = scope[this.key]
-    if (expressions === undefined) throw this.key + " is not defined in scope"
+    const expressions = env.keys[this.key]
+    if (expressions === undefined) throw this.key + " is not defined in environment"
 
     this.addExpressions(expressions)
 

@@ -2,6 +2,7 @@ const Application = require("../../../tree/expressions/Application")
 const Number = require("../../../tree/expressions/scalars/Number")
 const FunctionScope = require("../../../tree/expressions/FunctionScope")
 const Identity = require("../../../tree/expressions/Identity")
+const Environment = require("../../../tree/Environment")
 
 describe("Application", () => {
 
@@ -17,7 +18,7 @@ describe("Application", () => {
     const scope = new FunctionScope(null, number)
     const identity = new Identity("scope", scope)
     const application = new Application(identity)
-    expect(application.evaluate({ scope })).toBe(6)
+    expect(application.evaluate(new Environment(null, { scope }))).toBe(6)
   })
 
   test("FunctionScope Identity deep", () => {
@@ -28,7 +29,7 @@ describe("Application", () => {
     const scopeOuter = new FunctionScope(null, scope)
     const application = new Application(scopeOuter)
     const applicationOuter = new Application(application)
-    expect(applicationOuter.evaluate({ n })).toEqual(13)
+    expect(applicationOuter.evaluate(new Environment(null, { n }))).toEqual(13)
   })
 
   test("FunctionScope Identity deep 2", () => {
@@ -39,6 +40,6 @@ describe("Application", () => {
     const application = new Application(scope)
     const scopeOuter = new FunctionScope(null, application)
     const applicationOuter = new Application(scopeOuter)
-    expect(applicationOuter.evaluate({ n })).toEqual(14)
+    expect(applicationOuter.evaluate(new Environment(null, { n }))).toEqual(14)
   })
 })

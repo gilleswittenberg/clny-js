@@ -9,21 +9,21 @@ class Application extends Expression {
     this.arguments = args
   }
 
-  evaluate (scope = {}) {
+  evaluate (env = {}) {
     if (this.isEvaluated) return this.value
     const expression = this.expressions[0]
 
     // @TODO: More abstract identity reference
     const isIdentity = expression instanceof Identity
-    let toEvaluate = isIdentity ? scope[expression.key] : expression
+    let toEvaluate = isIdentity ? env.keys[expression.key] : expression
 
     if (toEvaluate instanceof Application) {
-      toEvaluate = toEvaluate.evaluate(scope)
+      toEvaluate = toEvaluate.evaluate(env)
     }
 
     // @TODO: More abstract type checking
     if (!(toEvaluate instanceof FunctionScope)) throw "Can not apply non FunctionScope Expression"
-    this.value = toEvaluate.evaluate(scope)
+    this.value = toEvaluate.evaluate(env)
     this.isEvaluated = true
     return this.value
   }

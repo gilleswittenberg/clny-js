@@ -1,7 +1,11 @@
 const Scope = require("./Scope")
 const Assignment = require("./Assignment")
-const Statement = require("../expressions/Statement")
-const ConditionalStatement = require("../expressions/ConditionalStatement")
+const Statement = require("./Statement")
+const ConditionalStatement = require("./ConditionalStatement")
+const Identity = require("./Identity")
+const Environment = require("../Environment")
+
+const toArray = require("../../utils/toArray")
 
 const isScope = object => object instanceof Scope
 const isAssignment = object => object instanceof Assignment
@@ -21,18 +25,21 @@ class FunctionScope extends Scope {
     }
   }
 
-  evaluate (scope) {
+  evaluate (env) {
     if (this.isEmpty) return null
-    this.value = this.evaluateFunctionScope(scope)
+    // only root should call evaluate with scope == null
+    if (env == null) env = new Environment(this.types)
+    this.value = this.evaluateFunctionScope(env)
     this.isEvaluated = true
     return this.value
   }
 
-  evaluateFunctionScope (scope = {}) {
+  evaluateFunctionScope (env) {
 
     const isLast = (index, arr) => arr.length - 1 === index
 
-    const initialScope = { hasReturned: false, returnValue: null, keys: scope }
+    // destructering types, keys onto initionalScope
+    const initialScope = { hasReturned: false, returnValue: null, env }
 
     const evaluatedScope = this.expressions.reduce((scope, expression, index, arr) => {
 
@@ -47,7 +54,7 @@ class FunctionScope extends Scope {
             throw "ConditionalStatement " + expression.name + " should be preceded by if Statement"
           }
           if (previousExpression.value[0] === false) {
-            expression.evaluate(scope.keys)
+            expression.evaluate(scope.env)
           } else {
             expression.doNotEvaluate(previousExpression.value[1])
           }
@@ -55,14 +62,14 @@ class FunctionScope extends Scope {
 
         // expressions
         else {
-          expression.evaluate(scope.keys)
+          expression.evaluate(scope.env)
         }
       }
 
       // Assignment
       if (isScopeOrAssignment(expression)) {
         const expressions = isScope(expression) ? expression : expression.expressions
-        expression.keys.forEach(key => scope.keys[key] = expressions)
+        expression.keys.forEach(key => scope.env.addKey(key, expressions))
       }
 
       // return
@@ -75,9 +82,10 @@ class FunctionScope extends Scope {
       if (isPrintStatement(expression)) {
         // @TODO: Move logic into PrintStatement
         const name = expression.name
-        const val = expression.value
+        const val = toArray(expression.value).join(", ")
         // @TODO: Type for Plural
-        const type = expression.expressions[0].type
+        const expression0 = expression.expressions[0]
+        const type = expression0 instanceof Identity ? expression0.expressions[0].type : expression0.type
         const value =
           name === "print" ? val :
             name === "log" ? new Date().toLocaleString() + " " + val :

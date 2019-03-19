@@ -147,7 +147,7 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
 
     // new scope
     const scope = new Scope(content.key)
-    if (content.isFunction) scope.castToType(content.functionType)
+    if (content.isFunction) scope.setCastToType(content.functionType)
     const expressions = scopeLines.map(scopeLineToExpressionsOrScope)
     expressions.forEach(expression => addToScope(scope, expression))
     return scope

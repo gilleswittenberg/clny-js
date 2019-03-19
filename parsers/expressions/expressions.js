@@ -22,7 +22,6 @@ const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
 const Property = require("../../tree/expressions/Property")
 
-//const { all: types } = require("../../tree/types")
 const { functionType, types } = require("../types/type")
 const statements = require("../../tree/statements")
 
@@ -84,7 +83,7 @@ const mapToPlural = expressions =>
 const mapToType = matches => {
   const types = matches.slice(0, -1)
   const expression = matches.slice(-1)[0]
-  return types.length > 0 ? types.reduce((acc, type) => expression.castToType(type), expression) : expression
+  return types.length > 0 ? types.reduce((acc, type) => expression.setCastToType(type), expression) : expression
 }
 
 const mapToStatement = matches => {

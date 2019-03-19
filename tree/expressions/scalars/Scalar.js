@@ -10,19 +10,24 @@ class Scalar extends Expression {
     this.isEvaluated = true
   }
 
-  evaluate () {
-    if (this.shouldCast) return this.castTo(this.castToType).value
+  evaluate (env) {
+    if (this.shouldCast) return this.castTo(this.castToType, env.types).value
     return this.value
   }
 
-  castTo (type) {
+  castTo (type, types) {
 
+    const name = type.name
+    const exists = types[name] != null
+    if (exists === false)
+      throw new Error (name + " is not an existing type")
+
+    // @TODO: Fix circulair references / extending
     const Null = require("./Null")
     const Boolean = require("./Boolean")
     const Number = require("./Number")
     const String = require("./String")
 
-    const name = type.name
 
     // @TODO: Cast plural to array
     const literal = "" + this.value // cast to string

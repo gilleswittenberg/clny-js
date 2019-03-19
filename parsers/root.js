@@ -19,6 +19,7 @@ const {
 
 const {
   indent,
+  whitespace,
   whitespaced
 } = require("./convenience/whitespace")
 
@@ -78,13 +79,23 @@ const gibberish = pipeParsers([
   mapTo(chars => new Gibberish(charsToString(chars)))
 ])
 
+const tillEndOfLine = parser =>
+  pipeParsers([
+    sequenceOf([
+      parser,
+      whitespace,
+      endOfInput
+    ]),
+    mapTo(([parser]) => parser)
+  ])
+
 const lineContent = choice([
   typeOpener,
   scopeOpener,
   assignment,
-  typeConstructor,
+  tillEndOfLine(typeConstructor),
   // @TODO: Remove when assignment or expressions can handle `key: String`
-  type,
+  tillEndOfLine(type),
   expressions,
   gibberish
 ])

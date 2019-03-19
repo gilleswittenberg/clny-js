@@ -1,0 +1,7 @@
+Product:
+  title: String
+  price: Number
+
+product: Product "Shoe", 99
+
+debug product

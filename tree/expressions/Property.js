@@ -10,12 +10,12 @@ class Property extends Expression {
     this.isEvaluated = false
   }
 
-  evaluate (scope = {}) {
+  evaluate (env) {
     if (this.isEvaluated) return this.value
 
     // @TODO: More abstract identity reference
     const isIdentity = this.parent instanceof Identity
-    const expression = isIdentity ? scope[this.parent.key] : this.parent
+    const expression = isIdentity ? env.keys[this.parent.key] : this.parent
 
     const property = expression.properties[this.key]
     if (property === undefined) throw this.key + " is not a property of " + this.parent.constructor.name

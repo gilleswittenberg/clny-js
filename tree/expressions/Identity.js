@@ -8,8 +8,8 @@ class Identity extends Expression {
     this.isEvaluated = false
   }
 
-  evaluate (env = {}) {
-    
+  evaluate (env) {
+
     if (this.isEvaluated) return this.value
 
     const expressions = env.keys[this.key]

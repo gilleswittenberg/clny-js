@@ -7,7 +7,7 @@ class Range extends Operation {
     super("INFIX", ",,", start, end)
   }
 
-  evaluate () {
+  evaluate (env) {
     if (this.isEvaluated) return this.value
 
     const start = this.operands[0]
@@ -17,7 +17,7 @@ class Range extends Operation {
     const expressions = range.map(n => new Number(n))
     this.addExpressions(expressions)
 
-    this.value = this.expressions.map(expression => expression.evaluate())
+    this.value = this.expressions.map(expression => expression.evaluate(env))
     this.isEvaluated = true
     return this.value
   }

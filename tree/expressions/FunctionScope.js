@@ -38,7 +38,6 @@ class FunctionScope extends Scope {
 
     const isLast = (index, arr) => arr.length - 1 === index
 
-    // destructering types, keys onto initionalScope
     const initialScope = { hasReturned: false, returnValue: null, env }
 
     const evaluatedScope = this.expressions.reduce((scope, expression, index, arr) => {

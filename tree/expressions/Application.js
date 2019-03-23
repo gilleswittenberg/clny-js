@@ -9,7 +9,7 @@ class Application extends Expression {
     this.arguments = args
   }
 
-  evaluate (env = {}) {
+  evaluate (env) {
     if (this.isEvaluated) return this.value
     const expression = this.expressions[0]
 

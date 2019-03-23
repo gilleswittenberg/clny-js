@@ -4,7 +4,7 @@ const isIf = name => ["if", "elseif"].includes(name)
 
 class ConditionalStatement extends Statement {
 
-  evaluate (scope = {}) {
+  evaluate (env) {
 
     if (this.isEvaluated) return this.value
 
@@ -13,7 +13,7 @@ class ConditionalStatement extends Statement {
     if (isIf(this.name)) {
       if (this.expressions.length !== 2) throw "if / elseif statement should have 2 arguments"
       condition = this.expressions[0]
-      condition.evaluate(scope)
+      condition.evaluate(env)
       if (condition.type !== "Boolean") throw "if / elseif statement's first argument should be a Boolean"
       consequent = this.expressions[1]
     } else {
@@ -24,9 +24,9 @@ class ConditionalStatement extends Statement {
     if (consequent.type !== "Scope") throw "if / elseif / else statement's last argument should be a Scope"
 
     if (isIf(this.name)) {
-      this.value = condition.value === true ? [true, consequent.evaluate()] : [false, null]
+      this.value = condition.value === true ? [true, consequent.evaluate(env)] : [false, null]
     } else {
-      this.value = consequent.evaluate()
+      this.value = consequent.evaluate(env)
     }
     this.isEvaluated = true
     return this.value

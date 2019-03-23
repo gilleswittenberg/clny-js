@@ -9,7 +9,7 @@ class Operation extends Expression {
     this.operands = operands
   }
 
-  evaluate () {
+  evaluate (env) {
 
     // @TODO: Clean this up
     const BooleanLogic = require("./BooleanLogic")
@@ -17,7 +17,7 @@ class Operation extends Expression {
     const StringConcatenation = require("./StringConcatenation")
     const Range = require("./Range")
 
-    const operands = this.operands.map(operand => operand.evaluate())
+    const operands = this.operands.map(operand => operand.evaluate(env))
 
     // @TODO: Check if operands types match
     // @TODO: Check if operator is available for specific type

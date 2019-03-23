@@ -2,9 +2,12 @@ const Expression = require("./Expression")
 
 class Identity extends Expression {
 
-  constructor (key) {
+  constructor (str) {
     super()
-    this.key = key
+    const self = str[0] === "."
+    const key = str.replace(/^\./, "")
+    this.key = key !== "" ? key : null
+    this.self = self
     this.isEvaluated = false
   }
 

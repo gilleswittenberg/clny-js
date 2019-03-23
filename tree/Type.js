@@ -1,6 +1,7 @@
 const toArray = require("../utils/toArray")
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
+const pluralize = str => str + "s"
 
 class Type {
 
@@ -15,6 +16,7 @@ class Type {
 
     this.keys = toArray(keys)
     this.name = name != null ? name : this.createName()
+    this.pluralName = name != null ? pluralize(name) : null
     this.fullName = this.createFullName()
   }
 

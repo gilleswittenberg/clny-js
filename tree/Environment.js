@@ -1,4 +1,4 @@
-const { all: types } = require("./types")
+const types = require("./types")
 const Type = require("./Type")
 
 class Environment {

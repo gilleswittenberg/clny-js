@@ -3,6 +3,7 @@ const Type = require("../../tree/Type")
 test("Null", () => {
   const type = new Type("Null")
   expect(type.name).toBe("Null")
+  expect(type.pluralName).toBe("Nulls")
   expect(type.fullName).toBe("Null")
   expect(type.options).toEqual([])
   expect(type.types).toEqual([])
@@ -14,6 +15,7 @@ test("Null", () => {
 test("True", () => {
   const type = new Type("True")
   expect(type.name).toBe("True")
+  expect(type.pluralName).toBe("Trues")
   expect(type.fullName).toBe("True")
   expect(type.options).toEqual([])
   expect(type.types).toEqual([])
@@ -25,6 +27,7 @@ test("True", () => {
 test("Bool", () => {
   const type = new Type("Bool", [new Type("False"), new Type("True")])
   expect(type.name).toBe("Bool")
+  expect(type.pluralName).toBe("Bools")
   expect(type.fullName).toBe("Bool")
   expect(type.options.length).toBe(2)
   expect(type.options[0] instanceof Type).toBeTruthy()
@@ -37,6 +40,7 @@ test("Bool", () => {
 test("sum", () => {
   const type = new Type(null, [new Type("String"), new Type("Bool")])
   expect(type.name).toBe("String | Bool")
+  expect(type.pluralName).toBe(null)
   expect(type.fullName).toBe("String | Bool")
 })
 

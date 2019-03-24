@@ -22,7 +22,7 @@ class Application extends Expression {
     }
 
     // @TODO: More abstract type checking
-    if (!(toEvaluate instanceof FunctionScope)) throw "Can not apply non FunctionScope Expression"
+    if (!(toEvaluate instanceof FunctionScope)) throw new Error ("Can not apply non FunctionScope Expression")
     this.value = toEvaluate.evaluate(env)
     this.isEvaluated = true
     return this.value

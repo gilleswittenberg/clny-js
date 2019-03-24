@@ -104,7 +104,7 @@ const mapToStatement = matches => {
     // @TODO: Do not supply name to ForStatement
     return new ForStatement(name, expressions)
   default:
-    throw name + " is not a valid statement name"
+    throw new Error (name + " is not a valid statement name")
   }
 }
 

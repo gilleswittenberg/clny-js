@@ -11,17 +11,17 @@ class ConditionalStatement extends Statement {
     let condition, consequent
 
     if (isIf(this.name)) {
-      if (this.expressions.length !== 2) throw "if / elseif statement should have 2 arguments"
+      if (this.expressions.length !== 2) throw new Error ("if / elseif statement should have 2 arguments")
       condition = this.expressions[0]
       condition.evaluate(env)
-      if (condition.type !== "Boolean") throw "if / elseif statement's first argument should be a Boolean"
+      if (condition.type !== "Boolean") throw new Error ("if / elseif statement's first argument should be a Boolean")
       consequent = this.expressions[1]
     } else {
-      if (this.expressions.length !== 1) throw "else statement should have 1 argument"
+      if (this.expressions.length !== 1) throw new Error ("else statement should have 1 argument")
       consequent = this.expressions[0]
     }
 
-    if (consequent.type !== "Scope") throw "if / elseif / else statement's last argument should be a Scope"
+    if (consequent.type !== "Scope") throw new Error ("if / elseif / else statement's last argument should be a Scope")
 
     if (isIf(this.name)) {
       this.value = condition.value === true ? [true, consequent.evaluate(env)] : [false, null]

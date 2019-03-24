@@ -24,7 +24,7 @@ class Range extends Operation {
 
   createRange (start, end) {
 
-    if (start == null || end == null) throw "Invalid Range start or end"
+    if (start == null || end == null) throw new Error ("Invalid Range start or end")
 
     const isAscending = start <= end ? true : false
     const next = n => isAscending ? n + 1 : n - 1

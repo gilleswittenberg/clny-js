@@ -50,7 +50,7 @@ class FunctionScope extends Scope {
         if (isSecondaryConditionalStatement(expression)) {
           const previousExpression = arr[index - 1]
           if (!isPrimaryConditionalStatement(previousExpression)) {
-            throw "ConditionalStatement " + expression.name + " should be preceded by if Statement"
+            throw new Error ("ConditionalStatement " + expression.name + " should be preceded by if Statement")
           }
           if (previousExpression.value[0] === false) {
             expression.evaluate(scope.env)
@@ -89,7 +89,7 @@ class FunctionScope extends Scope {
           name === "print" ? val :
             name === "log" ? new Date().toLocaleString() + " " + val :
               name === "debug" ? type + " " + val :
-                (() => { throw "Invalid Print Statement" })()
+                (() => { throw new Error ("Invalid Print Statement") })()
         // eslint-disable-next-line no-console
         console.log(value)
       }

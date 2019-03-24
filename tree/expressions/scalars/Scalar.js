@@ -34,19 +34,19 @@ class Scalar extends Expression {
     let scalar
     switch (name) {
     case "Null":
-      scalar = new Null(null, literal)
+      scalar = new Null (null, literal)
       break
     case "Boolean":
-      scalar = new Boolean(null, literal)
+      scalar = new Boolean (null, literal)
       break
     case "Number":
-      scalar = new Number(null, literal)
+      scalar = new Number (null, literal)
       break
     case "String":
-      scalar = new String(null, literal)
+      scalar = new String (null, literal)
       break
     default:
-      throw new Error(name + " is not a scalar type")
+      throw new Error (name + " is not a scalar type")
     }
     return pluralize ? [scalar] : scalar
   }

@@ -15,7 +15,7 @@ const wrap = (parser, bracketType = "PARENS", whitespace = true) => {
     "CURLY" : ["{", "}"],
     "ANGLE" : ["<", ">"]
   }
-  if (brackets[bracketType] == null) throw "Invalid bracketType"
+  if (brackets[bracketType] == null) throw new Error ("Invalid bracketType")
   const [l, r] = brackets[bracketType]
   const constructParser = s => {
     const p = char(s)

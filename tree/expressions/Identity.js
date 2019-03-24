@@ -16,7 +16,7 @@ class Identity extends Expression {
     if (this.isEvaluated) return this.value
 
     const expressions = env.keys[this.key]
-    if (expressions === undefined) throw this.key + " is not defined in environment"
+    if (expressions === undefined) throw new Error (this.key + " is not defined in environment")
 
     this.addExpressions(expressions)
 

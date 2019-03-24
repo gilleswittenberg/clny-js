@@ -26,7 +26,7 @@ class Operation extends Expression {
       t === "boolean" ? "Boolean" :
         t === "string" ? "String" :
           t === "number" ? "Number" :
-            (() => { throw "Invalid operand type" })()
+            (() => { throw new Error ("Invalid operand type") })()
 
     switch (type) {
     case "Boolean":

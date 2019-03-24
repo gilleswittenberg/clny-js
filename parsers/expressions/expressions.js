@@ -115,7 +115,7 @@ const mapToExpressions = matches =>
 
 const table = [
   { type: "POSTFIX", operators: "()", mapTo: mapPostfixToApplication },
-  { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToProperty },
+  { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToProperty, whitespace: false },
   // Booleans
   { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },
@@ -129,15 +129,15 @@ const table = [
   // Range
   { type: "LEFT_ASSOCIATIVE", operators: ",,", mapTo: mapToOperation },
   // Assignment
-  { type: "PREFIX", operators: types, mapTo: mapToType, whitespaceRequired: true },
+  { type: "PREFIX", operators: types, mapTo: mapToType, whitespace: "REQUIRED" },
   // @TODO: KEYS_VALUE lesser precedence than plural (,)
   { type: "PREFIX", operators: keyPrefix, mapTo: mapToAssignment },
   // @TODO: Combine with types, functionType, key prefixes
-  { type: "PREFIX", operators: functionType, mapTo: mapToType, whitespaceRequired: true },
+  { type: "PREFIX", operators: functionType, mapTo: mapToType, whitespace: "REQUIRED" },
   // Plurals
   { type: "LEFT_ASSOCIATIVE", operators: ",", mapTo: mapToPlural },
   // Statement
-  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespaceRequired: true },
+  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespace: "REQUIRED" },
   // Scope
   { type: "LEFT_ASSOCIATIVE", operators: ";", mapTo: mapToExpressions }
 ]

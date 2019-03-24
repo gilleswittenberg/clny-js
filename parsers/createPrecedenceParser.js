@@ -1,5 +1,4 @@
 // @LINK: https://github.com/jneen/parsimmon/blob/master/examples/math.js
-// @TODO: postfix
 
 const {
   Parser,
@@ -26,12 +25,18 @@ const {
 
 const toArray = require("../utils/toArray")
 
-const createOperatorsParser = (operators, whitespaceRequired) => {
+const createOperatorsParser = (operators, allowWhitespace = true) => {
   const operatorParser = operator => operator instanceof Parser ? operator : str(operator)
-  return whitespaceRequired ?
-    choice(operators.map(op => takeLeft(operatorParser(op))(whitespace))) :
-    // @TODO: Only whitespace on right side
-    whitespaced(choice(operators.map(op => operatorParser(op))))
+  switch (allowWhitespace) {
+  case "REQUIRED":
+    return choice(operators.map(op => takeLeft(operatorParser(op))(whitespace)))
+  case true:
+    return takeLeft(choice(operators.map(op => operatorParser(op))))(whitespace)
+  case false:
+    return choice(operators.map(op => operatorParser(op)))
+  default:
+    throw new Error ("Invalid whitespace argument")
+  }
 }
 
 const prefix = (expression, operatorsParser, mapToFunc) => {
@@ -142,9 +147,9 @@ const createPrecedenceParser = (table, baseExpression) => {
   const parser = table.reduce((parser, level) => {
     const func = mapTypeToFunctionName[level.type]
     const operators = toArray(level.operators)
-    const whitespaceRequired = level.whitespaceRequired || false
-    const operatorsParser = createOperatorsParser(operators, whitespaceRequired)
-    return func(parser, operatorsParser, level.mapTo, whitespaceRequired, level.keyParser)
+    const whitespace = level.whitespace
+    const operatorsParser = createOperatorsParser(operators, whitespace)
+    return func(parser, operatorsParser, level.mapTo)
   }, expression)
 
   return parser

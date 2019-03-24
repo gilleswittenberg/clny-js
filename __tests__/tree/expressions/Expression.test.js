@@ -19,4 +19,22 @@ describe("Expression", () => {
     expect(expression.type).toBe("Number")
     expect(expression.value).toBe(5)
   })
+
+  describe("properties", () => {
+
+    test("single", () => {
+      const expression = new Expression("Number", new Number(6))
+      expression.evaluate()
+      expect(expression.getProperty("is")).toBe(true)
+      expect(expression.getProperty("isPlural")).toBe(false)
+    })
+
+    test("plural", () => {
+      const expression = new Expression("Numbers", [new Number(7), new Number(8)])
+      expression.evaluate()
+      expect(expression.getProperty("is")).toBe(true)
+      expect(expression.getProperty("isPlural")).toBe(true)
+      expect(expression.getProperty("length")()).toBe(2)
+    })
+  })
 })

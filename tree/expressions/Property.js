@@ -17,10 +17,10 @@ class Property extends Expression {
     const isIdentity = this.parent instanceof Identity
     const expression = isIdentity ? env.keys[this.parent.key] : this.parent
 
-    const property = expression.properties[this.key]
-    if (property === undefined) throw this.key + " is not a property of " + this.parent.constructor.name
+    if (expression.hasProperty(this.key) === false) throw new Error (this.key + " is not a property of " + this.parent.constructor.name)
+    const property = expression.getProperty(this.key)
 
-    this.value = property()
+    this.value = typeof property === "function" ? property() : property
     this.isEvaluated = true
     return this.value
   }

@@ -2,9 +2,8 @@ const Expression = require("../Expression")
 
 class Scalar extends Expression {
 
-  constructor (type, value, literal) {
-    super()
-    this.type = type
+  constructor (type, properties, value, literal) {
+    super(type, [], properties)
     this.value = literal == null ? value : this.parse(literal)
     this.literal = literal
     this.isEvaluated = true

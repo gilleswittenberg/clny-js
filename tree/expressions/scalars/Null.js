@@ -1,9 +1,13 @@
 const Scalar = require("./Scalar")
 
+const properties = {
+  is: false
+}
+
 class Null extends Scalar {
 
   constructor (value, literal) {
-    super("Null", value, literal)
+    super("Null", properties, value, literal)
   }
 
   parse () {

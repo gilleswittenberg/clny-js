@@ -1,14 +1,44 @@
 const toArray = require("../../utils/toArray")
+const { isFunction } = require("../../utils/is")
+
+const propertiesAny = {
+  is: true,
+  isPlural: false
+}
+
+const propertiesPlural = {
+  ...propertiesAny,
+  isPlural: true,
+  length: value => () => value.length
+}
 
 class Expression {
 
-  constructor (type, expressions) {
-    this.type = type
+  constructor (type, expressions, properties = {}) {
+    this.type = type // string
     this.expressions = []
     this.addExpressions(expressions)
     this.isEvaluated = false
     this.shouldCast = false
-    this.properties = {}
+    this.setProperties(properties)
+  }
+
+  setProperties (properties) {
+    this.properties = {
+      ...this.isPlural ? propertiesPlural : propertiesAny,
+      ...properties
+    }
+  }
+
+  hasProperty (name) {
+    return this.properties[name] !== undefined
+  }
+
+  getProperty (name) {
+    if (this.hasProperty(name) === false) return undefined
+    const property = this.properties[name]
+    if (isFunction(property)) return property(this.value)
+    return property
   }
 
   addExpressions (expressions) {

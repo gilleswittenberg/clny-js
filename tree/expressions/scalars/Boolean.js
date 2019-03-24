@@ -1,9 +1,14 @@
 const Scalar = require("./Scalar")
 
+const properties = {
+  isFalse: value => () => value === false,
+  isTrue: value => () =>  value === true
+}
+
 class Boolean extends Scalar {
 
   constructor (value, literal) {
-    super("Boolean", value, literal)
+    super("Boolean", properties, value, literal)
   }
 
   parse (literal) {

@@ -1,9 +1,11 @@
 const isString = value => typeof value === "string"
 const isArray = value => Array.isArray(value)
+const isFunction = value => typeof value === "function"
 
 module.exports = {
   isString,
-  isArray
+  isArray,
+  isFunction
 }
 
 // @TODO: Partial application

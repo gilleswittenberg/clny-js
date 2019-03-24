@@ -39,7 +39,13 @@ class Expression {
     const values = this.expressions.map(expression => expression.evaluate(env))
     this.value = this.isEmpty ? null : this.isSingle ? values[0] : values
 
-    if (this.shouldCast) this.castTo(this.castToType, env.types)
+    // @TODO: get type from environment and only pass this to castTo
+    if (this.shouldCast) {
+      const typeArray = env.getType(this.castToType)
+      if (typeArray == null) throw new Error (this.castToType + " is not an existing type")
+      const [type, isPlural] = type
+      this.castTo(type, isPlural)
+    }
 
     this.isEvaluated = true
     return this.value
@@ -51,12 +57,10 @@ class Expression {
     return this
   }
 
-  castTo (type, types) {
-    const name = type.name
-    const exists = types[name] != null
-    if (exists === false)
-      throw new Error (name + " is not an existing type")
+  castTo (type, pluralize = false) {
+    const name = pluralize ? type.pluralName : type.name
     this.type = name
+    // @TODO: Cast to non scalar
   }
 }
 

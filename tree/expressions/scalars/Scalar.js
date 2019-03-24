@@ -11,16 +11,18 @@ class Scalar extends Expression {
   }
 
   evaluate (env) {
-    if (this.shouldCast) return this.castTo(this.castToType, env.types).value
+    if (this.shouldCast) {
+      const typeArray = env.getType(this.castToType)
+      if (typeArray == null) throw new Error (this.castToType + " is not an existing type")
+      const [type, isPlural] = type
+      return this.castTo(type, isPlural)
+    }
     return this.value
   }
 
-  castTo (type, types) {
+  castTo (type, pluralize = false) {
 
     const name = type.name
-    const exists = types[name] != null
-    if (exists === false)
-      throw new Error (name + " is not an existing type")
 
     // @TODO: Fix circulair references / extending
     const Null = require("./Null")
@@ -30,16 +32,24 @@ class Scalar extends Expression {
 
     // @TODO: Cast plural to array
     const literal = "" + this.value // cast to string
+    let scalar
     switch (name) {
     case "Null":
-      return new Null(null, literal)
+      scalar = new Null(null, literal)
+      break
     case "Boolean":
-      return new Boolean(null, literal)
+      scalar = new Boolean(null, literal)
+      break
     case "Number":
-      return new Number(null, literal)
+      scalar = new Number(null, literal)
+      break
     case "String":
-      return new String(null, literal)
+      scalar = new String(null, literal)
+      break
+    default:
+      throw new Error(name + " is not a scalar type")
     }
+    return pluralize ? [scalar] : scalar
   }
 }
 

@@ -7,7 +7,24 @@ const Property = require("../../../tree/expressions/Property")
 const Identity = require("../../../tree/expressions/Identity")
 const Number = require("../../../tree/expressions/scalars/Number")
 
-describe("propertys chain", () => {
+describe("identity", () => {
+
+  test("self", () => {
+    const value = toValue(parse(parser)("."))
+    expect(value).toBeInstanceOf(Identity)
+    expect(value.self).toBe(true)
+    expect(value.key).toBe(null)
+  })
+
+  test("self reference", () => {
+    const value = toValue(parse(parser)(".prop"))
+    expect(value).toBeInstanceOf(Identity)
+    expect(value.self).toBe(true)
+    expect(value.key).toBe("prop")
+  })
+})
+
+describe("properties", () => {
 
   test("single", () => {
     const value = toValue(parse(parser)("a.apply"))

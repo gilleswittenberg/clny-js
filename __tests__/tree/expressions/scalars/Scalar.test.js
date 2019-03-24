@@ -3,7 +3,6 @@ const Boolean = require("../../../../tree/expressions/scalars/Boolean")
 const Number = require("../../../../tree/expressions/scalars/Number")
 const String = require("../../../../tree/expressions/scalars/String")
 const Type = require("../../../../tree/Type")
-const Environment = require("../../../../tree/Environment")
 
 describe("scalar", () => {
 
@@ -54,14 +53,20 @@ describe("castTo", () => {
   test("Number", () => {
     const number = new Number(5)
     const type = new Type("String")
-    const environment = new Environment()
-    expect(number.castTo(type, environment.types)).toBeInstanceOf(String)
+    expect(number.castTo(type)).toBeInstanceOf(String)
+  })
+
+  test("Plural", () => {
+    const number = new Number(5)
+    const type = new Type("String")
+    const result = number.castTo(type, true)
+    expect(result.length).toBe(1)
+    expect(result[0]).toBeInstanceOf(String)
   })
 
   test("non existing type", () => {
     const number = new Number(5)
     const type = new Type("NonExisting")
-    const environment = new Environment()
-    expect(() => number.castTo(type, environment.types)).toThrow("NonExisting is not an existing type")
+    expect(() => number.castTo(type)).toThrow("NonExisting is not a scalar type")
   })
 })

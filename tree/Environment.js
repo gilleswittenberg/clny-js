@@ -20,6 +20,16 @@ class Environment {
       return acc
     }, {})
   }
+
+  getType (name) {
+    const typeByName = name => this.types[name]
+    const type = typeByName(name)
+    if (type != null) return [type, false]
+    const names = Object.keys(this.types)
+    const plural = names.map(name => typeByName(name)).find(type => type.pluralName === name)
+    if (plural != null) return [plural, true]
+    return [undefined]
+  }
 }
 
 module.exports = Environment

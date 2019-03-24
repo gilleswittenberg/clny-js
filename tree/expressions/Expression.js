@@ -71,9 +71,9 @@ class Expression {
 
     // @TODO: get type from environment and only pass this to castTo
     if (this.shouldCast) {
-      const typeArray = env.getType(this.castToType)
+      const typeArray = env.getType(this.castToType.name)
       if (typeArray == null) throw new Error (this.castToType + " is not an existing type")
-      const [type, isPlural] = type
+      const [type, isPlural] = typeArray
       this.castTo(type, isPlural)
     }
 

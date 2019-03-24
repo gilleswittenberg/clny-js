@@ -4,7 +4,7 @@ const Number = require("../../../tree/expressions/scalars/Number")
 describe("Expression", () => {
 
   test("constructor", () => {
-    const expression = new Expression("Number", new Number(4))
+    const expression = new Expression("Number", new Number(3))
     expect(expression.isEvaluated).toBe(false)
     expect(expression.isEmpty).toBe(false)
     expect(expression.isSingle).toBe(true)
@@ -13,11 +13,14 @@ describe("Expression", () => {
     expect(expression.expressions[0]).toBeInstanceOf(Number)
   })
 
-  test("evaluation", () => {
-    const expression = new Expression("Number", new Number(5))
-    expression.evaluate()
-    expect(expression.type).toBe("Number")
-    expect(expression.value).toBe(5)
+  describe("evaluation", () => {
+
+    test("evaluation", () => {
+      const expression = new Expression("Number", new Number(4))
+      expression.evaluate()
+      expect(expression.type).toBe("Number")
+      expect(expression.value).toBe(4)
+    })
   })
 
   describe("properties", () => {

@@ -11,3 +11,5 @@ g:
   print "G"
 
 g.apply
+
+g 5 # application by space

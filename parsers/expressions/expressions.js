@@ -2,6 +2,11 @@ const {
   choice
 } = require("arcsecond")
 
+const {
+  spaces,
+  whitespaced
+} = require("../convenience/whitespace")
+
 const nullParser = require("./scalars/null")
 const boolean = require("./scalars/boolean")
 const number = require("./scalars/number")
@@ -48,6 +53,14 @@ const mapPostfixToApplication = matches => {
   const evaluate = (operator, arrayOrExpression) => {
     const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
     return new Application(expression)
+  }
+  return evaluate(...matches)
+}
+
+const mapToApplication = matches => {
+  const evaluate = (operator, arrayOrFunc, expression) => {
+    const func = Array.isArray(arrayOrFunc) ? evaluate(...arrayOrFunc) : arrayOrFunc
+    return new Application(func, expression)
   }
   return evaluate(...matches)
 }
@@ -125,11 +138,11 @@ const table = [
   { type: "RIGHT_ASSOCIATIVE", operators: "**", mapTo: mapToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: ["+", "-"], mapTo: mapToOperation },
-  // Type
   // Range
   { type: "LEFT_ASSOCIATIVE", operators: ",,", mapTo: mapToOperation },
-  // Assignment
+  // Type
   { type: "PREFIX", operators: types, mapTo: mapToType, whitespace: "REQUIRED" },
+  // Assignment
   // @TODO: KEYS_VALUE lesser precedence than plural (,)
   { type: "PREFIX", operators: keyPrefix, mapTo: mapToAssignment },
   // @TODO: Combine with types, functionType, key prefixes
@@ -138,10 +151,12 @@ const table = [
   { type: "LEFT_ASSOCIATIVE", operators: ",", mapTo: mapToPlural },
   // Statement
   { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespace: "REQUIRED" },
+  // Application by space
+  { type: "LEFT_ASSOCIATIVE", operators: spaces, mapTo: mapToApplication, whitespace: false },
   // Scope
   { type: "LEFT_ASSOCIATIVE", operators: ";", mapTo: mapToExpressions }
 ]
 
-const parser = createPrecedenceParser(table, basic)
+const parser = whitespaced(createPrecedenceParser(table, basic))
 
 module.exports = parser

@@ -1,12 +1,13 @@
 const Expression = require("./Expression")
 const FunctionScope = require("./FunctionScope")
 const Identity = require("./Identity")
+const toArray = require("../../utils/toArray")
 
 class Application extends Expression {
 
   constructor (expression, args) {
     super("Application", expression)
-    this.arguments = args
+    this.arguments = toArray(args)
   }
 
   evaluate (env) {

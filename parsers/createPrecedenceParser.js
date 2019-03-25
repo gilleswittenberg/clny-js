@@ -31,7 +31,7 @@ const createOperatorsParser = (operators, allowWhitespace = true) => {
   case "REQUIRED":
     return choice(operators.map(op => takeLeft(operatorParser(op))(whitespace)))
   case true:
-    return takeLeft(choice(operators.map(op => operatorParser(op))))(whitespace)
+    return whitespaced(choice(operators.map(op => operatorParser(op))))
   case false:
     return choice(operators.map(op => operatorParser(op)))
   default:
@@ -135,12 +135,10 @@ const mapTypeToFunctionName = {
 
 const createPrecedenceParser = (table, baseExpression) => {
 
-  // @TODO: type check level.type, level.operators, baseExpression
-
   const expression = recursiveParser(() =>
     choice([
-      whitespaced(baseExpression),
-      between(whitespaced(leftParens))(whitespaced(rightParens))(parser)
+      baseExpression,
+      between(leftParens)(rightParens)(whitespaced(parser))
     ])
   )
 

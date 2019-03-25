@@ -3,8 +3,11 @@ const {
   sequenceOf,
   possibly,
   many,
+  many1,
   choice,
-  between
+  between,
+  pipeParsers,
+  mapTo
 } = require("arcsecond")
 
 const {
@@ -14,11 +17,18 @@ const {
   semicolon
 } = require("./tokens")
 
+const charsToString = require("../../utils/charsToString")
+
 const times = require("./times")
 
 const lf = char("\n")
 const cr = char("\r")
 const newline = sequenceOf([possibly(cr), lf])
+
+const spaces = pipeParsers([
+  many1(space),
+  mapTo(spaces => charsToString(spaces))
+])
 
 const whitespace = many(choice([space, tab]))
 const whitespaced = parser => between(whitespace)(whitespace)(parser)
@@ -42,6 +52,7 @@ const indents = (num = 1) => {
 
 module.exports = {
   newline,
+  spaces,
   whitespace,
   whitespaced,
   whitespaceAndNewline,

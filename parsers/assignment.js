@@ -1,10 +1,10 @@
 const {
-  pipeParsers,
   sequenceOf,
   choice,
   takeLeft,
   many1,
   possibly,
+  pipeParsers,
   mapTo
 } = require("arcsecond")
 
@@ -22,23 +22,25 @@ const expressions = require("./expressions/expressions")
 
 const Assignment = require("../tree/expressions/Assignment")
 
-// @TODO: Optional key statement
+// @TODO: Optional key, type statement
 const assignment = pipeParsers([
   sequenceOf([
-    choice([
-      // aliased assignment eg. `key: alias:: expressions`
-      takeLeft(many1(takeLeft(whitespaced(key))(colon)))(
-        sequenceOf([
-          colon,
-          possibly(whitespace)
-        ])
-      ),
-      // single key assignment eg. `key: expressions`
-      takeLeft(key)(whitespaced(colon))
-    ]),
-    expressions
+    possibly(
+      choice([
+        // aliased assignment eg. `key: alias:: expressions`
+        takeLeft(many1(takeLeft(whitespaced(key))(colon)))(
+          sequenceOf([
+            colon,
+            possibly(whitespace)
+          ])
+        ),
+        // single key assignment eg. `key: expressions`
+        takeLeft(key)(whitespaced(colon))
+      ]),
+    ),
+    whitespaced(expressions)
   ]),
-  mapTo(([keys, expressions]) => new Assignment(keys, expressions))
+  mapTo(([keys, expressions]) => keys != null ? new Assignment(keys, expressions) : expressions)
 ])
 
 module.exports = assignment

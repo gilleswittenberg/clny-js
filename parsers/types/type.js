@@ -106,5 +106,6 @@ const type = choice([
 module.exports = {
   functionType,
   types,
-  type
+  type,
+  typeLiteral: wrappedTypeLiteral
 }

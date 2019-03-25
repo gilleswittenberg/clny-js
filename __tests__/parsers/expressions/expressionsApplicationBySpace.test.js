@@ -7,6 +7,7 @@ const Application = require("../../../tree/expressions/Application")
 const Identity = require("../../../tree/expressions/Identity")
 const Number = require("../../../tree/expressions/scalars/Number")
 const Expression = require("../../../tree/expressions/Expression")
+const FunctionType = require("../../../tree/FunctionType")
 
 describe("expressions application by space", () => {
 
@@ -67,5 +68,13 @@ describe("expressions application by space", () => {
     expect(value.expressions[0]).toBeInstanceOf(Application)
     expect(value.arguments[0]).toBeInstanceOf(Number)
     expect(value.arguments[0].value).toBe(3)
+  })
+
+  test("function type", () => {
+    const value = toValue(parse(parser)("a: String, b: Boolean -> Number c"))
+    expect(value).toBeInstanceOf(Application)
+    expect(value.expressions[0]).toBeInstanceOf(FunctionType)
+    expect(value.arguments[0]).toBeInstanceOf(Identity)
+    expect(value.arguments[0].key).toBe("c")
   })
 })

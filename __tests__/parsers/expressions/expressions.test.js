@@ -8,6 +8,7 @@ const Expression = require("../../../tree/expressions/Expression")
 const Number = require("../../../tree/expressions/scalars/Number")
 const String = require("../../../tree/expressions/scalars/String")
 const Type = require("../../../tree/Type")
+const Application = require("../../../tree/expressions/Application")
 const Operation = require("../../../tree/expressions/operations/Operation")
 const Assignment = require("../../../tree/expressions/Assignment")
 const Statement = require("../../../tree/expressions/Statement")
@@ -35,7 +36,7 @@ test("plural numbers", () => {
   expect(value.expressions[1]).toBeInstanceOf(Number)
 })
 
-test("plural", () => {
+test("plural identities", () => {
   const value = toValue(parse(parser)("a, b"))
   expect(value).toBeInstanceOf(Expression)
   expect(value.isPlural).toBe(true)
@@ -55,15 +56,6 @@ test("plural many", () => {
   expect(value.expressions[3].literal).toBe("8")
 })
 
-test("parens", () => {
-  const value = toValue(parse(parser)("(a, b)"))
-  expect(value).toBeInstanceOf(Expression)
-  expect(value.isPlural).toBe(true)
-  expect(value.expressions.length).toBe(2)
-  expect(value.expressions[0]).toBeInstanceOf(Identity)
-  expect(value.expressions[1]).toBeInstanceOf(Identity)
-})
-
 test("plural arithmetic", () => {
   const value = toValue(parse(parser)("5 + 1, 6 + 1"))
   expect(value).toBeInstanceOf(Expression)
@@ -73,7 +65,16 @@ test("plural arithmetic", () => {
   expect(value.expressions[1]).toBeInstanceOf(Operation)
 })
 
-test("parens deep", () => {
+test("parentheses", () => {
+  const value = toValue(parse(parser)("(a, b)"))
+  expect(value).toBeInstanceOf(Expression)
+  expect(value.isPlural).toBe(true)
+  expect(value.expressions.length).toBe(2)
+  expect(value.expressions[0]).toBeInstanceOf(Identity)
+  expect(value.expressions[1]).toBeInstanceOf(Identity)
+})
+
+test("parentheses deep", () => {
   const value = toValue(parse(parser)("3, (6, (5) + 2)"))
   expect(value).toBeInstanceOf(Expression)
   expect(value.isPlural).toBe(true)
@@ -119,7 +120,7 @@ test("alias assignments", () => {
 })
 
 test("plural assignment, expression, assignment", () => {
-  const value = toValue(parse(parser)("k: a, 6, m: 7"))
+  const value = toValue(parse(parser)("(k: a, 6, m: 7)"))
   expect(value.isPlural).toBe(true)
   expect(value.expressions.length).toBe(3)
   expect(value.expressions[0]).toBeInstanceOf(Assignment)
@@ -175,85 +176,60 @@ describe("cast", () => {
 
   test("scalar", () => {
     const value = toValue(parse(parser)("String 5"))
-    expect(value).toBeInstanceOf(Number)
-    expect(value.shouldCast).toBe(true)
-    expect(value.castToType).toBeInstanceOf(Type)
-    expect(value.castToType.name).toBe("String")
+    expect(value).toBeInstanceOf(Application)
+    expect(value.expressions[0]).toBeInstanceOf(Type)
+    expect(value.arguments[0]).toBeInstanceOf(Number)
   })
 
   test("operation", () => {
     const value = toValue(parse(parser)("String 5 + 6"))
-    expect(value).toBeInstanceOf(Operation)
-    expect(value.shouldCast).toBe(true)
-    expect(value.castToType).toBeInstanceOf(Type)
-    expect(value.castToType.name).toBe("String")
+    expect(value).toBeInstanceOf(Application)
+    expect(value.expressions[0]).toBeInstanceOf(Type)
+    expect(value.arguments[0]).toBeInstanceOf(Operation)
   })
 
   test("plural", () => {
     const value = toValue(parse(parser)("String (5, 6)"))
-    expect(value).toBeInstanceOf(Expression)
-    expect(value.expressions.length).toBe(2)
-    expect(value.expressions[0]).toBeInstanceOf(Number)
-    expect(value.expressions[1]).toBeInstanceOf(Number)
-    expect(value.shouldCast).toBe(true)
-    expect(value.castToType).toBeInstanceOf(Type)
-    expect(value.castToType.name).toBe("String")
+    expect(value).toBeInstanceOf(Application)
+    expect(value.expressions[0]).toBeInstanceOf(Type)
+    expect(value.arguments[0]).toBeInstanceOf(Expression)
+    expect(value.arguments[0].isPlural).toBe(true)
   })
 
   test("assignment", () => {
-    const value = toValue(parse(parser)("k: String 5"))
+    const value = toValue(parse(parser)("k: (String 5)"))
     expect(value).toBeInstanceOf(Assignment)
-    expect(value.expressions.length).toBe(1)
-    expect(value.expressions[0]).toBeInstanceOf(Number)
-    expect(value.expressions[0].shouldCast).toBe(true)
-    expect(value.expressions[0].castToType).toBeInstanceOf(Type)
-    expect(value.expressions[0].castToType.name).toBe("String")
-  })
-
-  test("plural", () => {
-    const value = toValue(parse(parser)("k: Strings 5"))
-    expect(value).toBeInstanceOf(Assignment)
-    expect(value.expressions.length).toBe(1)
-    expect(value.expressions[0]).toBeInstanceOf(Number)
-    expect(value.expressions[0].shouldCast).toBe(true)
-    expect(value.expressions[0].castToType).toBeInstanceOf(Type)
-    expect(value.expressions[0].castToType.name).toBe("Strings")
+    expect(value.expressions[0]).toBeInstanceOf(Application)
+    expect(value.expressions[0].expressions[0]).toBeInstanceOf(Type)
+    expect(value.expressions[0].arguments[0]).toBeInstanceOf(Number)
   })
 })
 
-describe("function", () => {
+describe("semicolon", () => {
 
-  test("add", () => {
-    const value = toValue(parse(parser)("a: String, b: Boolean -> Number a"))
-    expect(value).toBeInstanceOf(Identity)
-    expect(value.expressions.length).toBe(0)
-    expect(value.shouldCast).toBe(true)
-    expect(value.castToType.name).toBe("a: String, b: Boolean -> Number")
+  test("expressions", () => {
+    const value = toValue(parse(parser)("5;6"))
+    expect(value.length).toBe(2)
+    expect(value[0]).toBeInstanceOf(Number)
+    expect(value[1]).toBeInstanceOf(Number)
   })
-})
 
-test("semicolon", () => {
-  const value = toValue(parse(parser)("5;6"))
-  expect(value.length).toBe(2)
-  expect(value[0]).toBeInstanceOf(Number)
-  expect(value[1]).toBeInstanceOf(Number)
-})
+  test("semicolon assignments", () => {
+    const value = toValue(parse(parser)("k: 5; b: true"))
+    expect(value.length).toBe(2)
+    expect(value[0]).toBeInstanceOf(Assignment)
+    expect(value[1]).toBeInstanceOf(Assignment)
+  })
 
-test("semicolon assignments", () => {
-  const value = toValue(parse(parser)("k: 5; b: true"))
-  expect(value.length).toBe(2)
-  expect(value[0]).toBeInstanceOf(Assignment)
-  expect(value[1]).toBeInstanceOf(Assignment)
-})
-
-test("semicolon many", () => {
-  const value = toValue(parse(parser)("5; 6; 9; k: 8; \"str\""))
-  expect(value.length).toBe(5)
-  expect(value[0]).toBeInstanceOf(Number)
-  expect(value[1]).toBeInstanceOf(Number)
-  expect(value[2]).toBeInstanceOf(Number)
-  expect(value[3]).toBeInstanceOf(Assignment)
-  expect(value[4]).toBeInstanceOf(String)
+  test("semicolon many", () => {
+    const value = toValue(parse(parser)("5; 6; 9; k: 8; \"str\""))
+    expect(value.length).toBe(5)
+    expect(value[0]).toBeInstanceOf(Number)
+    expect(value[1]).toBeInstanceOf(Number)
+    expect(value[2]).toBeInstanceOf(Number)
+    expect(value[3]).toBeInstanceOf(Assignment)
+    expect(value[4]).toBeInstanceOf(String)
+  })
 })
 
 test("statement", () => {

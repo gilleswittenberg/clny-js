@@ -27,6 +27,7 @@ const toArray = require("../utils/toArray")
 
 const createOperatorsParser = (operators, allowWhitespace = true) => {
   const operatorParser = operator => operator instanceof Parser ? operator : str(operator)
+  // @TODO: Extract `choice(operators.map(op => operatorParser(op)))`
   switch (allowWhitespace) {
   case "REQUIRED":
     return choice(operators.map(op => takeLeft(operatorParser(op))(whitespace)))
@@ -145,8 +146,7 @@ const createPrecedenceParser = (table, baseExpression) => {
   const parser = table.reduce((parser, level) => {
     const func = mapTypeToFunctionName[level.type]
     const operators = toArray(level.operators)
-    const whitespace = level.whitespace
-    const operatorsParser = createOperatorsParser(operators, whitespace)
+    const operatorsParser = createOperatorsParser(operators, level.whitespace)
     return func(parser, operatorsParser, level.mapTo)
   }, expression)
 

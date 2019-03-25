@@ -34,7 +34,6 @@ const key = require("./key")
 const typeLiteral = require("./types/typeLiteral")
 const assignment = require("./assignment")
 const typeConstructor = require("./types/typeConstructor")
-const expressions = require("./expressions/expressions")
 const { type, functionType } = require("./types/type")
 const eol = char("\n")
 
@@ -89,6 +88,7 @@ const tillEndOfLine = parser =>
     mapTo(([parser]) => parser)
   ])
 
+// @TODO: Wrap in whitspace
 const lineContent = choice([
   typeOpener,
   scopeOpener,
@@ -96,7 +96,6 @@ const lineContent = choice([
   tillEndOfLine(typeConstructor),
   // @TODO: Remove when assignment or expressions can handle `key: String`
   tillEndOfLine(type),
-  expressions,
   gibberish
 ])
 

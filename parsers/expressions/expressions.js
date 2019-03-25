@@ -3,8 +3,7 @@ const {
 } = require("arcsecond")
 
 const {
-  spaces,
-  whitespaced
+  spaces
 } = require("../convenience/whitespace")
 
 const nullParser = require("./scalars/null")
@@ -26,8 +25,9 @@ const ConditionalStatement = require("../../tree/expressions/ConditionalStatemen
 const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
 const Property = require("../../tree/expressions/Property")
+const FunctionType = require("../../tree/FunctionType")
 
-const { functionType, types } = require("../types/type")
+const { typeLiteral: type } = require("../types/type")
 const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
@@ -38,17 +38,11 @@ const basic = choice([
   boolean,
   number,
   string,
-  identity
+  identity,
+  type
 ])
 
-const mapPrefixToOperation = matches => {
-  const evaluate = (operator, arrayOrExpression) => {
-    const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
-    return new Operation("PREFIX", operator, operand)
-  }
-  return evaluate(...matches)
-}
-
+// @TODO: Merge mapPostfixToApplication, mapToApplication
 const mapPostfixToApplication = matches => {
   const evaluate = (operator, arrayOrExpression) => {
     const expression = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
@@ -73,6 +67,14 @@ const mapPostfixToProperty = matches => {
   return evaluate(...matches)
 }
 
+const mapPrefixToOperation = matches => {
+  const evaluate = (operator, arrayOrExpression) => {
+    const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
+    return new Operation("PREFIX", operator, operand)
+  }
+  return evaluate(...matches)
+}
+
 const mapToOperation = matches => {
   const evaluate = (operator, arrayOrExpression, arrayOrExpression1) => {
     const operand = Array.isArray(arrayOrExpression) ? evaluate(...arrayOrExpression) : arrayOrExpression
@@ -93,11 +95,8 @@ const mapToAssignment = matches => {
 const mapToPlural = expressions =>
   new Expression(null, expressions.flat(Infinity).filter(notOperator(",")))
 
-const mapToType = matches => {
-  const types = matches.slice(0, -1)
-  const expression = matches.slice(-1)[0]
-  return types.length > 0 ? types.reduce((acc, type) => expression.setCastToType(type), expression) : expression
-}
+const mapToFunctionType = matches =>
+  new FunctionType(matches[1], matches[2])
 
 const mapToStatement = matches => {
   const name = matches[0]
@@ -127,36 +126,48 @@ const mapToExpressions = matches =>
     .filter(notOperator(";"))
 
 const table = [
+
+  // Application
   { type: "POSTFIX", operators: "()", mapTo: mapPostfixToApplication },
+
+  // Properties
   { type: "POSTFIX", operators: keyPostfix, mapTo: mapPostfixToProperty, whitespace: false },
+
   // Booleans
   { type: "PREFIX", operators: "!", mapTo: mapPrefixToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: "&", mapTo: mapToOperation },
+  // Boolean OR, Sum Type
   { type: "LEFT_ASSOCIATIVE", operators: "|", mapTo: mapToOperation },
+
   // Numbers
   { type: "PREFIX", operators: "-", mapTo: mapPrefixToOperation },
   { type: "RIGHT_ASSOCIATIVE", operators: "**", mapTo: mapToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: ["*", "/"], mapTo: mapToOperation },
   { type: "LEFT_ASSOCIATIVE", operators: ["+", "-"], mapTo: mapToOperation },
+
   // Range
   { type: "LEFT_ASSOCIATIVE", operators: ",,", mapTo: mapToOperation },
-  // Type
-  { type: "PREFIX", operators: types, mapTo: mapToType, whitespace: "REQUIRED" },
+
   // Assignment
-  // @TODO: KEYS_VALUE lesser precedence than plural (,)
   { type: "PREFIX", operators: keyPrefix, mapTo: mapToAssignment },
-  // @TODO: Combine with types, functionType, key prefixes
-  { type: "PREFIX", operators: functionType, mapTo: mapToType, whitespace: "REQUIRED" },
+
   // Plurals
   { type: "LEFT_ASSOCIATIVE", operators: ",", mapTo: mapToPlural },
-  // Statement
-  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespace: "REQUIRED" },
+
+  // Function Type
+  { type: "LEFT_ASSOCIATIVE", operators: "->", mapTo: mapToFunctionType },
+
   // Application by space
   { type: "LEFT_ASSOCIATIVE", operators: spaces, mapTo: mapToApplication, whitespace: false },
+
+  // Statement
+  // @TODO: Set as Identity
+  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespace: "REQUIRED" },
+
   // Scope
   { type: "LEFT_ASSOCIATIVE", operators: ";", mapTo: mapToExpressions }
 ]
 
-const parser = whitespaced(createPrecedenceParser(table, basic))
+const parser = createPrecedenceParser(table, basic)
 
 module.exports = parser

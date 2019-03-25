@@ -44,10 +44,10 @@ test("exponentiation", () => {
 })
 
 test("whitespace", () => {
-  expect(toValue(parse(expressions)("  2   ")).evaluate()).toBe(2)
-  expect(toValue(parse(expressions)(" (  2  ) ")).evaluate()).toBe(2)
-  expect(toValue(parse(expressions)(" (  2  +    5 )  -  1  ")).evaluate()).toBe(6)
-  expect(toValue(parse(expressions)(" (1+2)/3  ")).evaluate()).toBe(1)
+  expect(toValue(parse(expressions)("2   ")).evaluate()).toBe(2)
+  expect(toValue(parse(expressions)("(  2  ) ")).evaluate()).toBe(2)
+  expect(toValue(parse(expressions)("(  2  +    5 )  -  1  ")).evaluate()).toBe(6)
+  expect(toValue(parse(expressions)("(1+2)/3  ")).evaluate()).toBe(1)
 })
 
 test("parentheses", () => {

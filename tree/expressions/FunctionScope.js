@@ -1,5 +1,6 @@
 const Scope = require("./Scope")
 const Assignment = require("./Assignment")
+const Application = require("./Application")
 const Statement = require("./Statement")
 const ConditionalStatement = require("./ConditionalStatement")
 const Identity = require("./Identity")
@@ -8,6 +9,8 @@ const Environment = require("../Environment")
 const toArray = require("../../utils/toArray")
 
 const isScope = object => object instanceof Scope
+const isApplication = object => object instanceof Application
+const isStatement = object => object instanceof Statement
 const isAssignment = object => object instanceof Assignment
 const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
 const isReturnStatement = object => object instanceof Statement && object.name === "return"
@@ -44,14 +47,23 @@ class FunctionScope extends Scope {
 
       if (scope.hasReturned) return scope
 
+      if (isApplication(expression)) {
+        const evaluated = expression.evaluate(scope.env)
+        if (isStatement(evaluated)) {
+          expression = evaluated
+        }
+      }
+
       if (!isScope(expression)) {
 
         // conditional statements
         if (isSecondaryConditionalStatement(expression)) {
+
           const previousExpression = arr[index - 1]
-          if (!isPrimaryConditionalStatement(previousExpression)) {
+
+          if (!isPrimaryConditionalStatement(previousExpression))
             throw new Error ("ConditionalStatement " + expression.name + " should be preceded by if Statement")
-          }
+
           if (previousExpression.value[0] === false) {
             expression.evaluate(scope.env)
           } else {

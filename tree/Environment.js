@@ -1,12 +1,13 @@
-const types = require("./types")
+const types = require("../buildins/types")
 const Type = require("./Type")
+const buildInKeys = require("../buildins/keys")
 
 class Environment {
 
   constructor (types = {}, keys = {}) {
     const buildInTypes = this.buildInTypes()
     this.types = { ...buildInTypes, ...types }
-    this.keys = keys
+    this.keys = { ...buildInKeys, ...keys }
   }
 
   // @TODO: Immutability

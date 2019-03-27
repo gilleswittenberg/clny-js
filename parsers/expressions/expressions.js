@@ -17,18 +17,14 @@ const keyPostfix = require("../keyPostfix")
 
 const createPrecedenceParser = require("../createPrecedenceParser")
 
-const Expression = require("../../tree/expressions/Expression")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
-const Statement = require("../../tree/expressions/Statement")
-const ConditionalStatement = require("../../tree/expressions/ConditionalStatement")
-const ForStatement = require("../../tree/expressions/ForStatement")
 const Application = require("../../tree/expressions/Application")
 const Property = require("../../tree/expressions/Property")
 const FunctionType = require("../../tree/FunctionType")
+const Expression = require("../../tree/expressions/Expression")
 
 const { typeLiteral: type } = require("../types/type")
-const statements = require("../../tree/statements")
 
 const notOperator = operator => expression => expression !== operator
 
@@ -98,28 +94,6 @@ const mapToPlural = expressions =>
 const mapToFunctionType = matches =>
   new FunctionType(matches[1], matches[2])
 
-const mapToStatement = matches => {
-  const name = matches[0]
-  const expressions = matches.flat(Infinity).slice(1)
-  switch (name) {
-  case "return":
-  case "print":
-  case "log":
-  case "debug":
-    // @TODO: ReturnStatement, PrintStatement
-    return new Statement(name, expressions)
-  case "if":
-  case "elseif":
-  case "else":
-    return new ConditionalStatement(name, expressions)
-  case "for":
-    // @TODO: Do not supply name to ForStatement
-    return new ForStatement(name, expressions)
-  default:
-    throw new Error (name + " is not a valid statement name")
-  }
-}
-
 const mapToExpressions = matches =>
   matches
     .flat(Infinity)
@@ -159,10 +133,6 @@ const table = [
 
   // Application by space
   { type: "LEFT_ASSOCIATIVE", operators: spaces, mapTo: mapToApplication, whitespace: false },
-
-  // Statement
-  // @TODO: Set as Identity
-  { type: "PREFIX", operators: statements, mapTo: mapToStatement, whitespace: "REQUIRED" },
 
   // Scope
   { type: "LEFT_ASSOCIATIVE", operators: ";", mapTo: mapToExpressions }

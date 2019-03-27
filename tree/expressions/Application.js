@@ -1,7 +1,11 @@
 const Expression = require("./Expression")
-const FunctionScope = require("./FunctionScope")
 const Identity = require("./Identity")
+const Statement = require("./Statement")
 const toArray = require("../../utils/toArray")
+const { isFunction } = require("../../utils/is")
+
+const isStatement = object => object instanceof Statement
+const isApplication = object => object instanceof Application
 
 class Application extends Expression {
 
@@ -11,22 +15,37 @@ class Application extends Expression {
   }
 
   evaluate (env) {
+
+    const FunctionScope = require("./FunctionScope")
+    const isFunctionScope = object => object instanceof FunctionScope
+
     if (this.isEvaluated) return this.value
+
     const expression = this.expressions[0]
 
-    // @TODO: More abstract identity reference
     const isIdentity = expression instanceof Identity
     let toEvaluate = isIdentity ? env.keys[expression.key] : expression
 
-    if (toEvaluate instanceof Application) {
+    if (isFunction(toEvaluate)) {
+      toEvaluate = toEvaluate(this.arguments)
+    }
+    if (isApplication(toEvaluate)) {
       toEvaluate = toEvaluate.evaluate(env)
     }
 
-    // @TODO: More abstract type checking
-    if (!(toEvaluate instanceof FunctionScope)) throw new Error ("Can not apply non FunctionScope Expression")
-    this.value = toEvaluate.evaluate(env)
-    this.isEvaluated = true
-    return this.value
+    if (isFunctionScope(toEvaluate)) {
+      this.value = toEvaluate.evaluate(env)
+      this.isEvaluated = true
+      return this.value
+    }
+    else if (isStatement(toEvaluate)) {
+      this.value = toEvaluate
+      this.isEvaluated = true
+      return toEvaluate
+    }
+    else {
+      throw new Error ("Can only apply FunctionScope or Statement")
+    }
   }
 }
 

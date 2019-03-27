@@ -11,7 +11,6 @@ const Type = require("../../../tree/Type")
 const Application = require("../../../tree/expressions/Application")
 const Operation = require("../../../tree/expressions/operations/Operation")
 const Assignment = require("../../../tree/expressions/Assignment")
-const Statement = require("../../../tree/expressions/Statement")
 
 test("single", () => {
   expect(toValue(parse(parser)("5"))).toBeInstanceOf(Number)
@@ -230,12 +229,4 @@ describe("semicolon", () => {
     expect(value[3]).toBeInstanceOf(Assignment)
     expect(value[4]).toBeInstanceOf(String)
   })
-})
-
-test("statement", () => {
-  const value = toValue(parse(parser)("return 5"))
-  expect(value).toBeInstanceOf(Statement)
-  expect(value.name).toBe("return")
-  expect(value.expressions.length).toBe(1)
-  expect(value.expressions[0]).toBeInstanceOf(Number)
 })

@@ -171,39 +171,6 @@ test("range", () => {
   expect(value.operands[1]).toBeInstanceOf(Number)
 })
 
-describe("cast", () => {
-
-  test("scalar", () => {
-    const value = toValue(parse(parser)("String 5"))
-    expect(value).toBeInstanceOf(Application)
-    expect(value.expressions[0]).toBeInstanceOf(Type)
-    expect(value.arguments[0]).toBeInstanceOf(Number)
-  })
-
-  test("operation", () => {
-    const value = toValue(parse(parser)("String 5 + 6"))
-    expect(value).toBeInstanceOf(Application)
-    expect(value.expressions[0]).toBeInstanceOf(Type)
-    expect(value.arguments[0]).toBeInstanceOf(Operation)
-  })
-
-  test("plural", () => {
-    const value = toValue(parse(parser)("String (5, 6)"))
-    expect(value).toBeInstanceOf(Application)
-    expect(value.expressions[0]).toBeInstanceOf(Type)
-    expect(value.arguments[0]).toBeInstanceOf(Expression)
-    expect(value.arguments[0].isPlural).toBe(true)
-  })
-
-  test("assignment", () => {
-    const value = toValue(parse(parser)("k: (String 5)"))
-    expect(value).toBeInstanceOf(Assignment)
-    expect(value.expressions[0]).toBeInstanceOf(Application)
-    expect(value.expressions[0].expressions[0]).toBeInstanceOf(Type)
-    expect(value.expressions[0].arguments[0]).toBeInstanceOf(Number)
-  })
-})
-
 describe("semicolon", () => {
 
   test("expressions", () => {

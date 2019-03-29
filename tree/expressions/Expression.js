@@ -57,15 +57,6 @@ class Expression {
 
     if (this.isEvaluated) return this.value
 
-    // constructor and casting for plurals
-    // @TODO: This is quite messy. Ideally we would set this in the parsing stage. But this requires hardcoding scalar types.
-    if (this.isPlural && this.expressions[0].shouldCast) {
-      const castToType = this.expressions[0].castToType
-      this.setCastToType(castToType)
-      this.expressions[0].castToType = null
-      this.expressions[0].shouldCast = false
-    }
-
     const values = this.expressions.map(expression => expression.evaluate(env))
     this.value = this.isEmpty ? null : this.isSingle ? values[0] : values
 
@@ -90,6 +81,7 @@ class Expression {
   castTo (type, pluralize = false) {
     const name = pluralize ? type.pluralName : type.name
     this.type = name
+    return this
     // @TODO: Cast to non scalar
   }
 }

@@ -2,7 +2,7 @@ const {
   toValue,
   parse
 } = require("arcsecond")
-const type = require("../../../parsers/expressions/expressions")
+const expressions = require("../../../parsers/expressions/expressions")
 const Expression = require("../../../tree/expressions/Expression")
 const Assignment = require("../../../tree/expressions/Assignment")
 const Operation = require("../../../tree/expressions/operations/Operation")
@@ -10,20 +10,20 @@ const Type = require("../../../tree/types/Type")
 const FunctionType = require("../../../tree/types/FunctionType")
 
 test("single", () => {
-  const value = toValue(parse(type)("False"))
+  const value = toValue(parse(expressions)("False"))
   expect(value).toBeInstanceOf(Type)
   expect(value.name).toBe("False")
 })
 
 test("named", () => {
-  const value = toValue(parse(type)("k: String"))
+  const value = toValue(parse(expressions)("k: String"))
   expect(value).toBeInstanceOf(Assignment)
   expect(value.keys).toEqual(["k"])
   expect(value.expressions[0].name).toBe("String")
 })
 
 test("sum", () => {
-  const value = toValue(parse(type)("Number | Boolean"))
+  const value = toValue(parse(expressions)("Number | Boolean"))
   expect(value).toBeInstanceOf(Operation)
   expect(value.operands[0]).toBeInstanceOf(Type)
   expect(value.operands[0].name).toBe("Number")
@@ -32,7 +32,7 @@ test("sum", () => {
 })
 
 test("named sum", () => {
-  const value = toValue(parse(type)("a: Number | Boolean"))
+  const value = toValue(parse(expressions)("a: Number | Boolean"))
   expect(value).toBeInstanceOf(Assignment)
   expect(value.expressions[0]).toBeInstanceOf(Operation)
   expect(value.expressions[0].operands.length).toBe(2)
@@ -41,7 +41,7 @@ test("named sum", () => {
 })
 
 test("tuple", () => {
-  const value = toValue(parse(type)("String, String"))
+  const value = toValue(parse(expressions)("String, String"))
   expect(value).toBeInstanceOf(Expression)
   expect(value.expressions.length).toBe(2)
   expect(value.expressions[0]).toBeInstanceOf(Type)
@@ -51,7 +51,7 @@ test("tuple", () => {
 })
 
 test("tuple, sum", () => {
-  const value = toValue(parse(type)("String, Number | Bool"))
+  const value = toValue(parse(expressions)("String, Number | Bool"))
   expect(value).toBeInstanceOf(Expression)
   expect(value.expressions.length).toBe(2)
   expect(value.expressions[0]).toBeInstanceOf(Type)
@@ -62,7 +62,7 @@ test("tuple, sum", () => {
 })
 
 test("compound", () => {
-  const value = toValue(parse(type)("name: String, age: Number"))
+  const value = toValue(parse(expressions)("name: String, age: Number"))
   expect(value).toBeInstanceOf(Expression)
   expect(value.expressions.length).toBe(2)
   expect(value.expressions[0]).toBeInstanceOf(Assignment)
@@ -74,7 +74,7 @@ test("compound", () => {
 })
 
 test("function", () => {
-  const value = toValue(parse(type)("name: String, age: Number -> Boolean"))
+  const value = toValue(parse(expressions)("name: String, age: Number -> Boolean"))
   expect(value).toBeInstanceOf(FunctionType)
   expect(value.inputs[0].expressions.length).toBe(2)
   expect(value.inputs[0].expressions[0]).toBeInstanceOf(Assignment)
@@ -90,7 +90,7 @@ test("function", () => {
 })
 
 test("function to tuple", () => {
-  const value = toValue(parse(type)("n: Number -> Number, Boolean"))
+  const value = toValue(parse(expressions)("n: Number -> Number, Boolean"))
   expect(value).toBeInstanceOf(FunctionType)
   expect(value.inputs.length).toBe(1)
   expect(value.inputs[0]).toBeInstanceOf(Assignment)

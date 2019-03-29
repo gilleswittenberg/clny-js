@@ -1,11 +1,13 @@
 const Expression = require("../Expression")
 const Identity = require("../Identity")
 const Statement = require("../statements/Statement")
+const Type = require("../../types/Type")
 const toArray = require("../../../utils/toArray")
 const { isFunction } = require("../../../utils/is")
 
 const isStatement = object => object instanceof Statement
 const isApplication = object => object instanceof Application
+const isType = object => object instanceof Type
 
 class Application extends Expression {
 
@@ -27,6 +29,7 @@ class Application extends Expression {
     const isIdentity = expression instanceof Identity
     let toEvaluate = isIdentity ? env.get(expression.key).value : expression
 
+    // calling function to get buildin Statements
     if (isFunction(toEvaluate)) {
       toEvaluate = toEvaluate(this.arguments)
     }
@@ -35,19 +38,21 @@ class Application extends Expression {
       toEvaluate = toEvaluate.evaluate(env)
     }
 
-    if (isFunctionScope(toEvaluate)) {
+    if (isType(toEvaluate)) {
+      this.value = this.arguments[0].setCastToType(toEvaluate).evaluate(env)
+    }
+    else if (isFunctionScope(toEvaluate)) {
       this.value = toEvaluate.evaluate(env)
-      this.isEvaluated = true
-      return this.value
     }
     else if (isStatement(toEvaluate)) {
       this.value = toEvaluate
-      this.isEvaluated = true
-      return toEvaluate
     }
     else {
-      throw new Error ("Can only apply FunctionScope or Statement")
+      throw new Error ("Can only apply Type, FunctionScope or Statement")
     }
+
+    this.isEvaluated = true
+    return this.value
   }
 }
 

@@ -1,4 +1,4 @@
-const toArray = require("../utils/toArray")
+const toArray = require("../../utils/toArray")
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
 const pluralize = str => str + "s"

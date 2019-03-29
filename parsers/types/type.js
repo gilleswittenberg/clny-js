@@ -26,7 +26,7 @@ const {
 const key = require("../key")
 const typeLiteral = require("./typeLiteral")
 
-const Type = require("../../tree/Type")
+const Type = require("../../tree/types/Type")
 
 
 const wrappedTypeLiteral = pipeParsers([

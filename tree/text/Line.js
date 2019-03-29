@@ -23,7 +23,7 @@ const Comment = require("./Comment")
 const Identity = require("../expressions/Identity")
 const ScopeOpener = require("../text/ScopeOpener")
 const TypeOpener = require("../text/TypeOpener")
-const TypeConstructor = require("../TypeConstructor")
+const TypeConstructor = require("../types/TypeConstructor")
 
 const comment = pipeParsers([
   sequenceOf([

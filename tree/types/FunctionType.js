@@ -1,4 +1,4 @@
-const toArray = require("../utils/toArray")
+const toArray = require("../../utils/toArray")
 
 class FunctionType {
 

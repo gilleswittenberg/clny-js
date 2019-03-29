@@ -7,7 +7,7 @@ const Application = require("../../../tree/expressions/scopes/Application")
 const Identity = require("../../../tree/expressions/Identity")
 const Number = require("../../../tree/expressions/scalars/Number")
 const Expression = require("../../../tree/expressions/Expression")
-const FunctionType = require("../../../tree/FunctionType")
+const FunctionType = require("../../../tree/types/FunctionType")
 
 describe("expressions application by space", () => {
 

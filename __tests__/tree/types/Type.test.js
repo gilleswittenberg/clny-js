@@ -1,4 +1,4 @@
-const Type = require("../../tree/Type")
+const Type = require("../../../tree/types/Type")
 
 test("Null", () => {
   const type = new Type("Null")

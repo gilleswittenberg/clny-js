@@ -11,7 +11,7 @@ const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Application = require("../../tree/expressions/scopes/Application")
-const Type = require("../../tree/Type")
+const Type = require("../../tree/types/Type")
 
 describe("root scope", () => {
 

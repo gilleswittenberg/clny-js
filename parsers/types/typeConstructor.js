@@ -22,7 +22,7 @@ const { type: typeKeyword } = require("../keywords")
 const typeLiteral = require("./typeLiteral")
 const { type } = require("./type")
 
-const TypeConstructor = require("../../tree/TypeConstructor")
+const TypeConstructor = require("../../tree/types/TypeConstructor")
 
 const typeConstructor = optionalWrappedInParentheses(
   pipeParsers([

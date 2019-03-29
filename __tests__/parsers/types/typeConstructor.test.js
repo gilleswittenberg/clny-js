@@ -3,7 +3,7 @@ const {
   parse
 } = require("arcsecond")
 const typeConstructor = require("../../../parsers/types/typeConstructor")
-const TypeConstructor = require("../../../tree/TypeConstructor")
+const TypeConstructor = require("../../../tree/types/TypeConstructor")
 
 test("type statement", () => {
   const value = toValue(parse(typeConstructor)("type Null"))

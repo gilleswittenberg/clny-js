@@ -21,7 +21,7 @@ const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Application = require("../../tree/expressions/scopes/Application")
 const Property = require("../../tree/expressions/Property")
-const FunctionType = require("../../tree/FunctionType")
+const FunctionType = require("../../tree/types/FunctionType")
 const Expression = require("../../tree/expressions/Expression")
 
 const { typeLiteral: type } = require("../types/type")

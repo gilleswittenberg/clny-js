@@ -6,8 +6,8 @@ const type = require("../../../parsers/expressions/expressions")
 const Expression = require("../../../tree/expressions/Expression")
 const Assignment = require("../../../tree/expressions/Assignment")
 const Operation = require("../../../tree/expressions/operations/Operation")
-const Type = require("../../../tree/Type")
-const FunctionType = require("../../../tree/FunctionType")
+const Type = require("../../../tree/types/Type")
+const FunctionType = require("../../../tree/types/FunctionType")
 
 test("single", () => {
   const value = toValue(parse(type)("False"))

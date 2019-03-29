@@ -5,7 +5,9 @@ const {
 const parser = require("../../parsers/assignment")
 const Assignment = require("../../tree/expressions/Assignment")
 const Number = require("../../tree/expressions/scalars/Number")
+const Operation = require("../../tree/expressions/operations/Operation")
 const Application = require("../../tree/expressions/scopes/Application")
+const FunctionType = require("../../tree/types/FunctionType")
 
 describe("assignment", () => {
 
@@ -27,6 +29,27 @@ describe("assignment", () => {
     expect(result.expressions[0]).toBeInstanceOf(Application)
     expect(result.expressions[0].expressions[0].inputs[0].expressions.length).toBe(2)
     expect(result.expressions[0].arguments.length).toBe(1)
+  })
+})
+
+describe("function", () => {
+
+  test("operation", () => {
+    const result = toValue(parse(parser)("onePlusTwo: 1 + 2"))
+    expect(result).toBeInstanceOf(Assignment)
+    expect(result.keys).toEqual(["onePlusTwo"])
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Operation)
+  })
+
+  test("function type", () => {
+    const result = toValue(parse(parser)("addOne: n: Number -> Number n + 1"))
+    expect(result).toBeInstanceOf(Assignment)
+    expect(result.keys).toEqual(["addOne"])
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Application)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(FunctionType)
+    expect(result.expressions[0].arguments[0]).toBeInstanceOf(Operation)
   })
 })
 

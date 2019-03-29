@@ -13,17 +13,17 @@ const {
 const {
   escapedBackslash,
   numberSign
-} = require("../parsers/convenience/tokens")
+} = require("../../parsers/convenience/tokens")
 
-const charsToString = require("../utils/charsToString")
+const charsToString = require("../../utils/charsToString")
 
 const escapedNumberSign = sequenceOf([escapedBackslash, numberSign])
 
 const Comment = require("./Comment")
-const Identity = require("./expressions/Identity")
-const ScopeOpener = require("./ScopeOpener")
-const TypeOpener = require("./TypeOpener")
-const TypeConstructor = require("./TypeConstructor")
+const Identity = require("../expressions/Identity")
+const ScopeOpener = require("../text/ScopeOpener")
+const TypeOpener = require("../text/TypeOpener")
+const TypeConstructor = require("../TypeConstructor")
 
 const comment = pipeParsers([
   sequenceOf([

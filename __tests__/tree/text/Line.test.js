@@ -1,5 +1,5 @@
-const Line = require("../../tree/Line")
-const Comment = require("../../tree/Comment")
+const Line = require("../../../tree/text/Line")
+const Comment = require("../../../tree/text/Comment")
 
 test("empty", () => {
   const line = new Line("", 1)

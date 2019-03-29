@@ -39,13 +39,13 @@ const eol = char("\n")
 
 const linesToScopes = require("./linesToScopes")
 
-const Indent = require("../tree/Indent")
-const ScopeOpener = require("../tree/ScopeOpener")
-const TypeOpener = require("../tree/TypeOpener")
+const Indent = require("../tree/text/Indent")
+const ScopeOpener = require("../tree/text/ScopeOpener")
+const TypeOpener = require("../tree/text/TypeOpener")
 const DataScope = require("../tree/expressions/scopes/DataScope")
 const FunctionScope = require("../tree/expressions/scopes/FunctionScope")
-const Line = require("../tree/Line")
-const Gibberish = require("../tree/Gibberish")
+const Line = require("../tree/text/Line")
+const Gibberish = require("../tree/text/Gibberish")
 
 const indents = pipeParsers([
   many(indent),

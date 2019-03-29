@@ -4,20 +4,9 @@ const {
 
 const keywords = [
   "type",
-  "key",
-  "if",
-  "elseif", // @TODO: choice between elseif / else if
-  "else", // @TODO: default
-  "switch", // @TODO: alternative name (choice, choose, case)
-  "try",
-  "when",
-  "for",
-  "guard",
-  "throw",
-  "return"
+  "key"
 ]
 
 // @TODO: Use Object.fromEntries when available in Node.js
-const parsers = {}
-keywords.forEach(keyword => parsers[keyword] = str(keyword))
+const parsers = keywords.reduce((acc, keyword) => { acc[keyword] = str(keyword); return acc }, {})
 module.exports = parsers

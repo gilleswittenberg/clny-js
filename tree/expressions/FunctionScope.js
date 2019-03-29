@@ -30,9 +30,8 @@ class FunctionScope extends Scope {
 
   evaluate (env) {
     if (this.isEmpty) return null
-    // only root should call evaluate with scope == null
-    if (env == null) env = new Environment(this.types)
-    this.value = this.evaluateFunctionScope(env)
+    const environment = env != null ? env.clone() : new Environment()
+    this.value = this.evaluateFunctionScope(environment)
     this.isEvaluated = true
     return this.value
   }
@@ -80,7 +79,7 @@ class FunctionScope extends Scope {
       // Assignment
       if (isScopeOrAssignment(expression)) {
         const expressions = isScope(expression) ? expression : expression.expressions
-        expression.keys.forEach(key => scope.env.addKey(key, expressions))
+        expression.keys.forEach(key => scope.env.set(key, expressions))
       }
 
       // return

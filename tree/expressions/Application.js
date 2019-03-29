@@ -24,11 +24,12 @@ class Application extends Expression {
     const expression = this.expressions[0]
 
     const isIdentity = expression instanceof Identity
-    let toEvaluate = isIdentity ? env.keys[expression.key] : expression
+    let toEvaluate = isIdentity ? env.get(expression.key).value : expression
 
     if (isFunction(toEvaluate)) {
       toEvaluate = toEvaluate(this.arguments)
     }
+    
     if (isApplication(toEvaluate)) {
       toEvaluate = toEvaluate.evaluate(env)
     }

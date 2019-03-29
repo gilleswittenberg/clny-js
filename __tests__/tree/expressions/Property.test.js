@@ -26,7 +26,7 @@ describe("Property", () => {
     const identity = new Identity("scope", scope)
     const chain = new Property("apply", identity)
     const environment = new Environment()
-    environment.addKey("scope", scope)
+    environment.set("scope", scope)
     expect(chain.evaluate(environment)).toBe(6)
   })
 })

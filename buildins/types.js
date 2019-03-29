@@ -1,3 +1,5 @@
+const Type = require("../tree/Type")
+
 const types = [
   "Null",
   "Boolean",
@@ -5,4 +7,9 @@ const types = [
   "String"
 ]
 
-module.exports = types
+const buildInTypes = types.reduce((acc, type) => {
+  acc[type] = new Type(type)
+  return acc
+}, {})
+
+module.exports = buildInTypes

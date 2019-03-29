@@ -15,7 +15,7 @@ class Property extends Expression {
 
     // @TODO: More abstract identity reference
     const isIdentity = this.parent instanceof Identity
-    const expression = isIdentity ? env.keys[this.parent.key] : this.parent
+    const expression = isIdentity ? env.get(this.parent.key).value : this.parent
 
     if (expression.hasProperty(this.key) === false) throw new Error (this.key + " is not a property of " + this.parent.constructor.name)
     const property = expression.getProperty(this.key)

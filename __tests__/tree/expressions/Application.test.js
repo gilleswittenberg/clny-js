@@ -18,7 +18,9 @@ describe("Application", () => {
     const scope = new FunctionScope(null, number)
     const identity = new Identity("scope", scope)
     const application = new Application(identity)
-    expect(application.evaluate(new Environment(null, { scope }))).toBe(6)
+    const environment = new Environment()
+    environment.set("scope", scope)
+    expect(application.evaluate(environment)).toBe(6)
   })
 
   test("FunctionScope Identity deep", () => {
@@ -29,7 +31,9 @@ describe("Application", () => {
     const scopeOuter = new FunctionScope(null, scope)
     const application = new Application(scopeOuter)
     const applicationOuter = new Application(application)
-    expect(applicationOuter.evaluate(new Environment(null, { n }))).toEqual(13)
+    const environment = new Environment()
+    environment.set("n", n)
+    expect(applicationOuter.evaluate(environment)).toEqual(13)
   })
 
   test("FunctionScope Identity deep 2", () => {
@@ -40,6 +44,8 @@ describe("Application", () => {
     const application = new Application(scope)
     const scopeOuter = new FunctionScope(null, application)
     const applicationOuter = new Application(scopeOuter)
-    expect(applicationOuter.evaluate(new Environment(null, { n }))).toEqual(14)
+    const environment = new Environment()
+    environment.set("n", n)
+    expect(applicationOuter.evaluate(environment)).toEqual(14)
   })
 })

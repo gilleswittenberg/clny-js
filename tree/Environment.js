@@ -1,35 +1,65 @@
-const types = require("../buildins/types")
-const Type = require("./Type")
+const buildInTypes = require("../buildins/types")
 const buildInKeys = require("../buildins/keys")
+//const { produce } = require("immer")
+
+// @TODO: access parent environments (., .., ...)
+// @TODO: numParentEnvironments
+
+const last = arr => arr[arr.length - 1]
 
 class Environment {
 
-  constructor (types = {}, keys = {}) {
-    const buildInTypes = this.buildInTypes()
-    this.types = { ...buildInTypes, ...types }
-    this.keys = { ...buildInKeys, ...keys }
+  constructor (parentEnvironment) {
+    this.parentEnvironment = parentEnvironment
+    this.keys = {}
+    if (parentEnvironment == null) {
+      this.setBuildIns(buildInTypes, true)
+      this.setBuildIns(buildInKeys)
+    }
   }
 
-  // @TODO: Immutability
-  addKey (key, expressions) {
-    this.keys[key] = expressions
+  clone () {
+    return new Environment(this)
   }
 
-  buildInTypes () {
-    return types.reduce((acc, type) => {
-      acc[type] = new Type(type)
-      return acc
-    }, {})
+  has (key) {
+    return this.get(key) !== undefined
   }
 
-  getType (name) {
-    const typeByName = name => this.types[name]
-    const type = typeByName(name)
-    if (type != null) return [type, false]
-    const names = Object.keys(this.types)
-    const plural = names.map(name => typeByName(name)).find(type => type.pluralName === name)
-    if (plural != null) return [plural, true]
-    return [undefined]
+  // @TODO: get (key, unwrap = true)
+  // @TODO: get (key, type = "Type" | "PluralType" | "Expression")
+  get (key) {
+    const value = this.keys[key]
+    if (value !== undefined) return last(value)
+    const pluralType = this.getPluralType(key)
+    if (pluralType !== undefined) {
+      pluralType.isPluralType = true
+      return pluralType
+    }
+    return this.parentEnvironment != null ? this.parentEnvironment.get(key) : undefined
+  }
+
+  getPluralType (key) {
+    return Object.keys(this.keys)
+      .map(key => last(this.keys[key]))
+      .filter(value => value.isType === true)
+      .find(type => type.value.pluralName === key)
+  }
+
+  set (key, object, isType = false) {
+    const value = {
+      key,
+      value: object,
+      isType,
+      isKey: !isType
+    }
+    if (this.keys[key] === undefined) this.keys[key] = []
+    this.keys[key].push(value)
+    return value
+  }
+
+  setBuildIns (obj, isType = false) {
+    Object.keys(obj).forEach(key => this.set(key, obj[key], isType))
   }
 }
 

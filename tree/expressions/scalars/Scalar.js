@@ -11,10 +11,9 @@ class Scalar extends Expression {
 
   evaluate (env) {
     if (this.shouldCast) {
-      const typeArray = env.getType(this.castToType.name)
-      if (typeArray == null) throw new Error (this.castToType + " is not an existing type")
-      const [type, isPlural] = typeArray
-      return this.castTo(type, isPlural).value
+      const type = env.get(this.castToType.name)
+      if (type === undefined || type.isType === false) throw new Error (this.castToType + " is not an existing type")
+      return this.castTo(type.value, type.isPluralType).value
     }
     return this.value
   }

@@ -29,7 +29,9 @@ describe("Identity", () => {
     test("existing in scope", () => {
       const number = new Number(5)
       const identity = new Identity("k")
-      expect(() => identity.evaluate(new Environment(null, { k: number }))).not.toThrow()
+      const environment = new Environment()
+      environment.set("k", number)
+      expect(() => identity.evaluate(environment)).not.toThrow()
     })
   })
 })

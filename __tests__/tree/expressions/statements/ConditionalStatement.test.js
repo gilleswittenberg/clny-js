@@ -1,7 +1,7 @@
 const ConditionalStatement = require("../../../../tree/expressions/statements/ConditionalStatement")
 const Number = require("../../../../tree/expressions/scalars/Number")
 const Boolean = require("../../../../tree/expressions/scalars/Boolean")
-const Scope = require("../../../../tree/expressions/Scope")
+const Scope = require("../../../../tree/expressions/scopes/Scope")
 
 describe("if", () => {
 

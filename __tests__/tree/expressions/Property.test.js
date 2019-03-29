@@ -1,8 +1,8 @@
 const Property = require("../../../tree/expressions/Property")
 const Number = require("../../../tree/expressions/scalars/Number")
-const FunctionScope = require("../../../tree/expressions/FunctionScope")
+const FunctionScope = require("../../../tree/expressions/scopes/FunctionScope")
 const Identity = require("../../../tree/expressions/Identity")
-const Environment = require("../../../tree/Environment")
+const Environment = require("../../../tree/expressions/scopes/Environment")
 
 describe("Property", () => {
 

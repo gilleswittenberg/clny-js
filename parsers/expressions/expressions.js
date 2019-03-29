@@ -19,7 +19,7 @@ const createPrecedenceParser = require("../createPrecedenceParser")
 
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
-const Application = require("../../tree/expressions/Application")
+const Application = require("../../tree/expressions/scopes/Application")
 const Property = require("../../tree/expressions/Property")
 const FunctionType = require("../../tree/FunctionType")
 const Expression = require("../../tree/expressions/Expression")

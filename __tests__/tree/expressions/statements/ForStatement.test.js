@@ -2,7 +2,7 @@ const ForStatement = require("../../../../tree/expressions/statements/ForStateme
 const Expression = require("../../../../tree/expressions/Expression")
 const Number = require("../../../../tree/expressions/scalars/Number")
 const Operation = require("../../../../tree/expressions/operations/Operation")
-const Scope = require("../../../../tree/expressions/Scope")
+const Scope = require("../../../../tree/expressions/scopes/Scope")
 
 describe("for statement", () => {
 

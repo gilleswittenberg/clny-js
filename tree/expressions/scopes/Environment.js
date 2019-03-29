@@ -1,5 +1,5 @@
-const buildInTypes = require("../buildins/types")
-const buildInKeys = require("../buildins/keys")
+const buildInTypes = require("../../../buildins/types")
+const buildInKeys = require("../../../buildins/keys")
 //const { produce } = require("immer")
 
 // @TODO: access parent environments (., .., ...)

@@ -1,12 +1,12 @@
 const Scope = require("./Scope")
-const Assignment = require("./Assignment")
+const Assignment = require("../Assignment")
 const Application = require("./Application")
-const Statement = require("./statements/Statement")
-const ConditionalStatement = require("./statements/ConditionalStatement")
-const Identity = require("./Identity")
-const Environment = require("../Environment")
+const Statement = require("../statements/Statement")
+const ConditionalStatement = require("../statements/ConditionalStatement")
+const Identity = require("../Identity")
+const Environment = require("./Environment")
 
-const toArray = require("../../utils/toArray")
+const toArray = require("../../../utils/toArray")
 
 const isScope = object => object instanceof Scope
 const isApplication = object => object instanceof Application

@@ -3,7 +3,7 @@ const {
   parse
 } = require("arcsecond")
 const parser = require("../../../parsers/expressions/expressions")
-const Application = require("../../../tree/expressions/Application")
+const Application = require("../../../tree/expressions/scopes/Application")
 const Identity = require("../../../tree/expressions/Identity")
 const Number = require("../../../tree/expressions/scalars/Number")
 const Expression = require("../../../tree/expressions/Expression")

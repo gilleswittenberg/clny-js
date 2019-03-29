@@ -5,7 +5,7 @@ const {
 const parser = require("../../parsers/assignment")
 const Assignment = require("../../tree/expressions/Assignment")
 const Number = require("../../tree/expressions/scalars/Number")
-const Application = require("../../tree/expressions/Application")
+const Application = require("../../tree/expressions/scopes/Application")
 
 describe("assignment", () => {
 

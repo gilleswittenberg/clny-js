@@ -4,7 +4,7 @@ const {
 } = require("arcsecond")
 const parser = require("../../../parsers/expressions/expressions")
 const Identity = require("../../../tree/expressions/Identity")
-const Application = require("../../../tree/expressions/Application")
+const Application = require("../../../tree/expressions/scopes/Application")
 
 test("if statement", () => {
 

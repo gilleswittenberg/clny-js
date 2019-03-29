@@ -4,13 +4,13 @@ const {
 } = require("arcsecond")
 const root = require("../../parsers/root")
 const rootScope = root(true)
-const Scope = require("../../tree/expressions/Scope")
+const Scope = require("../../tree/expressions/scopes/Scope")
 const Assignment = require("../../tree/expressions/Assignment")
 const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
 const Operation = require("../../tree/expressions/operations/Operation")
-const Application = require("../../tree/expressions/Application")
+const Application = require("../../tree/expressions/scopes/Application")
 const Type = require("../../tree/Type")
 
 describe("root scope", () => {

@@ -1,8 +1,8 @@
-const Expression = require("./Expression")
-const Identity = require("./Identity")
-const Statement = require("./statements/Statement")
-const toArray = require("../../utils/toArray")
-const { isFunction } = require("../../utils/is")
+const Expression = require("../Expression")
+const Identity = require("../Identity")
+const Statement = require("../statements/Statement")
+const toArray = require("../../../utils/toArray")
+const { isFunction } = require("../../../utils/is")
 
 const isStatement = object => object instanceof Statement
 const isApplication = object => object instanceof Application
@@ -16,6 +16,7 @@ class Application extends Expression {
 
   evaluate (env) {
 
+    // @TODO: Remove circulair reference
     const FunctionScope = require("./FunctionScope")
     const isFunctionScope = object => object instanceof FunctionScope
 

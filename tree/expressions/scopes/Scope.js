@@ -1,6 +1,6 @@
-const Expression = require("./Expression")
+const Expression = require("../Expression")
 
-const toArray = require("../../utils/toArray")
+const toArray = require("../../../utils/toArray")
 
 class Scope extends Expression {
 

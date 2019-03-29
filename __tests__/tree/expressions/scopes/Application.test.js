@@ -1,8 +1,8 @@
-const Application = require("../../../tree/expressions/Application")
-const Number = require("../../../tree/expressions/scalars/Number")
-const FunctionScope = require("../../../tree/expressions/FunctionScope")
-const Identity = require("../../../tree/expressions/Identity")
-const Environment = require("../../../tree/Environment")
+const Application = require("../../../../tree/expressions/scopes/Application")
+const Number = require("../../../../tree/expressions/scalars/Number")
+const FunctionScope = require("../../../../tree/expressions/scopes/FunctionScope")
+const Identity = require("../../../../tree/expressions/Identity")
+const Environment = require("../../../../tree/expressions/scopes/Environment")
 
 describe("Application", () => {
 

@@ -1,6 +1,6 @@
-const DataScope = require("../../../tree/expressions/DataScope")
-const Number = require("../../../tree/expressions/scalars/Number")
-const Assignment = require("../../../tree/expressions/Assignment")
+const DataScope = require("../../../../tree/expressions/scopes/DataScope")
+const Number = require("../../../../tree/expressions/scalars/Number")
+const Assignment = require("../../../../tree/expressions/Assignment")
 
 describe("data scope", () => {
 

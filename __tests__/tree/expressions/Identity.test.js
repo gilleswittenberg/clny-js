@@ -1,6 +1,6 @@
 const Identity = require("../../../tree/expressions/Identity")
 const Number = require("../../../tree/expressions/scalars/Number")
-const Environment = require("../../../tree/Environment")
+const Environment = require("../../../tree/expressions/scopes/Environment")
 
 describe("Identity", () => {
 

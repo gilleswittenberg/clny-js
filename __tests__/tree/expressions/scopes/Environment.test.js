@@ -1,5 +1,5 @@
-const Environment = require("../../tree/Environment")
-const Number = require("../../tree/expressions/scalars/Number")
+const Environment = require("../../../../tree/expressions/scopes/Environment")
+const Number = require("../../../../tree/expressions/scalars/Number")
 
 describe("constructor", () => {
 

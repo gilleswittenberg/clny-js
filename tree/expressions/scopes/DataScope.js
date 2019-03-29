@@ -1,4 +1,4 @@
-const Assignment = require("./Assignment")
+const Assignment = require("../Assignment")
 const Scope = require("./Scope")
 
 const isScope = object => object instanceof DataScope

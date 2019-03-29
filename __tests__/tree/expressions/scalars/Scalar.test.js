@@ -1,7 +1,7 @@
 const Number = require("../../../../tree/expressions/scalars/Number")
 const String = require("../../../../tree/expressions/scalars/String")
 const Type = require("../../../../tree/Type")
-const Environment = require("../../../../tree/Environment")
+const Environment = require("../../../../tree/expressions/scopes/Environment")
 
 describe("Scalar", () => {
 

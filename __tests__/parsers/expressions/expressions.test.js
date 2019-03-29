@@ -8,7 +8,7 @@ const Expression = require("../../../tree/expressions/Expression")
 const Number = require("../../../tree/expressions/scalars/Number")
 const String = require("../../../tree/expressions/scalars/String")
 const Type = require("../../../tree/Type")
-const Application = require("../../../tree/expressions/Application")
+const Application = require("../../../tree/expressions/scopes/Application")
 const Operation = require("../../../tree/expressions/operations/Operation")
 const Assignment = require("../../../tree/expressions/Assignment")
 

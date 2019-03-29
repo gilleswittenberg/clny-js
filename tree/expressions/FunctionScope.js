@@ -1,8 +1,8 @@
 const Scope = require("./Scope")
 const Assignment = require("./Assignment")
 const Application = require("./Application")
-const Statement = require("./Statement")
-const ConditionalStatement = require("./ConditionalStatement")
+const Statement = require("./statements/Statement")
+const ConditionalStatement = require("./statements/ConditionalStatement")
 const Identity = require("./Identity")
 const Environment = require("../Environment")
 

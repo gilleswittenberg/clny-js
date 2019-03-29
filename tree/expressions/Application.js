@@ -1,6 +1,6 @@
 const Expression = require("./Expression")
 const Identity = require("./Identity")
-const Statement = require("./Statement")
+const Statement = require("./statements/Statement")
 const toArray = require("../../utils/toArray")
 const { isFunction } = require("../../utils/is")
 
@@ -29,7 +29,7 @@ class Application extends Expression {
     if (isFunction(toEvaluate)) {
       toEvaluate = toEvaluate(this.arguments)
     }
-    
+
     if (isApplication(toEvaluate)) {
       toEvaluate = toEvaluate.evaluate(env)
     }

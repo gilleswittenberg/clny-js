@@ -3,8 +3,8 @@ const Number = require("../../../tree/expressions/scalars/Number")
 const Boolean = require("../../../tree/expressions/scalars/Boolean")
 const Assignment = require("../../../tree/expressions/Assignment")
 const Identity = require("../../../tree/expressions/Identity")
-const Statement = require("../../../tree/expressions/Statement")
-const ConditionalStatement = require("../../../tree/expressions/ConditionalStatement")
+const Statement = require("../../../tree/expressions/statements/Statement")
+const ConditionalStatement = require("../../../tree/expressions/statements/ConditionalStatement")
 
 describe("function scope", () => {
 

@@ -1,8 +1,8 @@
-const ForStatement = require("../../../tree/expressions/ForStatement")
-const Expression = require("../../../tree/expressions/Expression")
-const Number = require("../../../tree/expressions/scalars/Number")
-const Operation = require("../../../tree/expressions/operations/Operation")
-const Scope = require("../../../tree/expressions/Scope")
+const ForStatement = require("../../../../tree/expressions/statements/ForStatement")
+const Expression = require("../../../../tree/expressions/Expression")
+const Number = require("../../../../tree/expressions/scalars/Number")
+const Operation = require("../../../../tree/expressions/operations/Operation")
+const Scope = require("../../../../tree/expressions/Scope")
 
 describe("for statement", () => {
 

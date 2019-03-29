@@ -1,6 +1,6 @@
-const Statement = require("../tree/expressions/Statement")
-const ForStatement = require("../tree/expressions/ForStatement")
-const ConditionalStatement = require("../tree/expressions/ConditionalStatement")
+const Statement = require("../tree/expressions/statements/Statement")
+const ForStatement = require("../tree/expressions/statements/ForStatement")
+const ConditionalStatement = require("../tree/expressions/statements/ConditionalStatement")
 
 const keys = {
   return: expressions => new Statement ("return", expressions),

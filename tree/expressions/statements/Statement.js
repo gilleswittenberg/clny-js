@@ -1,4 +1,4 @@
-const Expression = require("./Expression")
+const Expression = require("../Expression")
 
 class Statement extends Expression {
 

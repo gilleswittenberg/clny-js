@@ -8,7 +8,7 @@ const Operation = require("../../../tree/expressions/operations/Operation")
 const Application = require("../../../tree/expressions/Application")
 const Identity = require("../../../tree/expressions/Identity")
 const Expression = require("../../../tree/expressions/Expression")
-//const ForStatement = require("../../../tree/expressions/ForStatement")
+//const ForStatement = require("../../../tree/expressions/statements/ForStatement")
 
 describe("for statement", () => {
 

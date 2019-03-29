@@ -1,1 +1,2 @@
-debug String 5
+s: String 5
+debug s

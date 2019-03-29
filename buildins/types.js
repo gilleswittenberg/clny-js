@@ -1,3 +1,4 @@
+const reduceStringsToObject = require("../utils/reduceStringsToObject")
 const Type = require("../tree/types/Type")
 
 const types = [
@@ -7,9 +8,6 @@ const types = [
   "String"
 ]
 
-const buildInTypes = types.reduce((acc, type) => {
-  acc[type] = new Type(type)
-  return acc
-}, {})
+const buildInTypes = reduceStringsToObject(types, type => new Type(type))
 
 module.exports = buildInTypes

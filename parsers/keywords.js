@@ -1,3 +1,5 @@
+const reduceStringsToObject = require("../utils/reduceStringsToObject")
+
 const {
   str
 } = require("arcsecond")
@@ -7,6 +9,5 @@ const keywords = [
   "key"
 ]
 
-// @TODO: Use Object.fromEntries when available in Node.js
-const parsers = keywords.reduce((acc, keyword) => { acc[keyword] = str(keyword); return acc }, {})
+const parsers = reduceStringsToObject(keywords, keyword => str(keyword))
 module.exports = parsers

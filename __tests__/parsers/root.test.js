@@ -74,14 +74,15 @@ describe("type", () => {
 
 describe("function", () => {
 
-  xtest("single line", () => {
+  test("single line", () => {
     const content = "f: n: Number, m: Number -> Number m + n"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].expressions.length).toBe(1)
-    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Operation)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Application)
+    expect(result.expressions[0].expressions[0].arguments[0]).toBeInstanceOf(Operation)
   })
 
   test("assignment", () => {

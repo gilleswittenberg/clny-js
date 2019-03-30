@@ -62,16 +62,17 @@ class Expression {
 
     // @TODO: get type from environment and only pass this to castTo
     if (this.shouldCast) {
-      const typeArray = env.get(this.castToType.name)
-      if (typeArray == null) throw new Error (this.castToType + " is not an existing type")
-      const [type, isPlural] = typeArray
-      this.castTo(type, isPlural)
+      const name = this.castToType.name
+      if (env.has(name) === false) throw new Error (name + " is not an existing type")
+      const type = env.get(name)
+      this.castTo(type.value, type.isPlural)
     }
 
     this.isEvaluated = true
     return this.value
   }
 
+  // @TODO: Use name vs Type
   setCastToType (type) {
     this.castToType = type
     this.shouldCast = true

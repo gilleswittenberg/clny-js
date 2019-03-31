@@ -4,7 +4,8 @@ const toArray = require("../../../utils/toArray")
 const isFunctionExpression = object => object instanceof Function
 
 const properties = {
-  apply: expression => args => expression.apply(args)
+  apply: expression => args => expression.apply(args),
+  arity: expression => expression.type != null ? expression.type.inputTypes.length : 0
 }
 
 class Function extends Expression {

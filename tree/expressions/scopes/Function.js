@@ -5,7 +5,9 @@ const isFunctionExpression = object => object instanceof Function
 
 const properties = {
   apply: expression => args => expression.apply(args),
-  arity: expression => expression.type != null ? expression.type.inputTypes.length : 0
+  arguments: expression => expression.type != null ? expression.type.inputTypes.map(type => type.fullName).join(", ") : "",
+  arity: expression => expression.type != null ? expression.type.inputTypes.length : 0,
+  returnType: expression => expression.type != null ? expression.type.types.map(type => type.fullName).join(", ") : "Any"
 }
 
 class Function extends Expression {

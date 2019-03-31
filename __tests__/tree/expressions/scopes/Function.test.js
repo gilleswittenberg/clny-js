@@ -37,11 +37,13 @@ describe("Function", () => {
       })
     })
 
-    describe("arity", () => {
+    describe("arguments, arity, returnType", () => {
 
       test("empty arguments", () => {
         const func = new Function(null, new Number(1))
+        expect(func.getProperty("arguments")).toBe("")
         expect(func.getProperty("arity")).toBe(0)
+        expect(func.getProperty("returnType")).toBe("Any")
       })
 
       test("function type", () => {
@@ -50,7 +52,9 @@ describe("Function", () => {
           new Type("Number", null, null, null, "n")
         ])
         const func = new Function(type, new Number(1))
+        expect(func.getProperty("arguments")).toBe("m: Number, n: Number")
         expect(func.getProperty("arity")).toBe(2)
+        expect(func.getProperty("returnType")).toBe("Number")
       })
     })
   })

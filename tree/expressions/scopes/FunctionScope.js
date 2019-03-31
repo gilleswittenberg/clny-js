@@ -22,10 +22,6 @@ class FunctionScope extends Scope {
 
   constructor (keys = [], expressions = []) {
     super(keys, expressions)
-
-    this.properties = {
-      apply: () => this.evaluateFunctionScope()
-    }
   }
 
   evaluate (env) {

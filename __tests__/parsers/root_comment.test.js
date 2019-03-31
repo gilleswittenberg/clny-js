@@ -15,7 +15,6 @@ describe("root comment", () => {
     const content = "# text \\# 5"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(5)
@@ -25,7 +24,6 @@ describe("root comment", () => {
     const content = "6 # text \\#"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(6)
@@ -35,7 +33,6 @@ describe("root comment", () => {
     const content = "# text \\#  # text2 \\# 56 # text3 \\#  , 6 # text \\## text2 \\#"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Expression)
     expect(result.expressions[0].isPlural).toBe(true)
@@ -46,7 +43,6 @@ describe("root comment", () => {
     const content = "22 # Five!"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Number)
     expect(result.expressions[0].value).toBe(22)
@@ -56,7 +52,6 @@ describe("root comment", () => {
     const content = "# only comment on line"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(0)
   })
 
@@ -66,7 +61,6 @@ describe("root comment", () => {
 "continue"`
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(String)
     expect(result.expressions[0].value).toBe("continue")
@@ -80,7 +74,6 @@ describe("root comment", () => {
   "continue"`
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Scope)
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(Number)

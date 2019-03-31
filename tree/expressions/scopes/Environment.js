@@ -1,10 +1,10 @@
 const buildInTypes = require("../../../buildins/types")
 const buildInKeys = require("../../../buildins/keys")
-//const { produce } = require("immer")
 
 // @TODO: access parent environments (., .., ...)
 // @TODO: numParentEnvironments
 
+// @TODO: Move to dir `/utils`
 const last = arr => arr[arr.length - 1]
 
 class Environment {
@@ -20,6 +20,14 @@ class Environment {
 
   clone () {
     return new Environment(this)
+  }
+
+  setArgs (obj) {
+    const environment = this.clone()
+    Object.keys(obj).forEach(key => {
+      environment.set(key, obj[key])
+    })
+    return environment
   }
 
   has (key) {

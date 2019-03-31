@@ -4,10 +4,9 @@ const toArray = require("../../../utils/toArray")
 
 class Scope extends Expression {
 
-  constructor (keys = [], expressions = [], isRoot = false) {
-    super("Scope", expressions)
+  constructor (keys = [], expressions = [], properties = {}) {
+    super("Scope", expressions, properties)
     this.keys = toArray(keys)
-    this.isRoot = isRoot
     this.types = {}
   }
 

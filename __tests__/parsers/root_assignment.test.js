@@ -15,7 +15,6 @@ describe("root assignment", () => {
     const content = "key: 5"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["key"])
@@ -26,7 +25,6 @@ describe("root assignment", () => {
     const content = "array: 6, 7"
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
-    expect(result.isRoot).toBe(true)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["array"])

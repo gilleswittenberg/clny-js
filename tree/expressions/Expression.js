@@ -34,10 +34,13 @@ class Expression {
     return this.properties[name] !== undefined
   }
 
-  getProperty (name) {
+  getProperty (name, environment) {
     if (this.hasProperty(name) === false) return undefined
     const property = this.properties[name]
-    if (isFunction(property)) return property(this.value)
+    // @TODO: Remove circulair reference
+    const Function = require("./scopes/Function")
+    const value = this instanceof Function ? this : this.value
+    if (isFunction(property)) return property(value, environment)
     return property
   }
 

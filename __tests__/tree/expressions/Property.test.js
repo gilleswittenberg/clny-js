@@ -1,6 +1,6 @@
 const Property = require("../../../tree/expressions/Property")
 const Number = require("../../../tree/expressions/scalars/Number")
-const FunctionScope = require("../../../tree/expressions/scopes/FunctionScope")
+const Function = require("../../../tree/expressions/scopes/Function")
 const Identity = require("../../../tree/expressions/Identity")
 const Environment = require("../../../tree/expressions/scopes/Environment")
 
@@ -14,18 +14,18 @@ describe("Property", () => {
 
   test("existing property", () => {
     const number = new Number(5)
-    const parent = new FunctionScope(null, number)
-    const chain = new Property("apply", parent)
     const environment = new Environment()
+    const parent = new Function(null, number, environment)
+    const chain = new Property("apply", parent)
     expect(chain.evaluate(environment)).toBe(5)
   })
 
   test("Identity", () => {
     const number = new Number(6)
-    const scope = new FunctionScope(null, number)
+    const environment = new Environment()
+    const scope = new Function(null, number, environment)
     const identity = new Identity("scope", scope)
     const chain = new Property("apply", identity)
-    const environment = new Environment()
     environment.set("scope", scope)
     expect(chain.evaluate(environment)).toBe(6)
   })

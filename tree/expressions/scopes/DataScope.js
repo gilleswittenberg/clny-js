@@ -1,5 +1,6 @@
 const Assignment = require("../Assignment")
 const Scope = require("./Scope")
+const Environment = require("./Environment")
 
 const isScope = object => object instanceof DataScope
 const isAssignment = object => object instanceof Assignment
@@ -7,17 +8,18 @@ const isScopeOrAssignment = object => isScope(object) || isAssignment(object)
 
 class DataScope extends Scope {
 
-  evaluate () {
+  evaluate (env) {
     if (this.isEmpty) return null
-    const key = this.keys != null ? this.keys[0] : null
-    this.value = this.evaluateDataScope()
+    const environment = env != null ? env.clone() : new Environment()
+    this.value = this.evaluateDataScope(environment)
     this.isEvaluated = true
+    const key = this.keys != null ? this.keys[0] : null
     return key != null ? { [key]: this.value } : this.value
   }
 
-  evaluateDataScope () {
+  evaluateDataScope (env) {
 
-    this.expressions.forEach(expression => expression.evaluate())
+    this.expressions.forEach(expression => expression.evaluate(env))
 
     const evaluateToMap = this.expressions.every(isScopeOrAssignment)
 

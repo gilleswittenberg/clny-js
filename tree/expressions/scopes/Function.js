@@ -15,7 +15,24 @@ class Function extends Expression {
   constructor (type, scope, environment) {
     super(type, scope, properties)
     this.environment = environment // lexical scope
+    this.isEvaluated = false
+  }
+
+  hasEnvironment () {
+    return this.environment != null
+  }
+
+  setEnvironment (environment) {
+    this.environment = environment
+    return this
+  }
+
+  evaluate (env) {
+    if (this.isEvaluated) return this.value
+    this.setEnvironment(env)
     this.isEvaluated = true
+    this.value = super.evaluate(env)
+    return this.value
   }
 
   apply (args) {

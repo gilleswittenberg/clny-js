@@ -5,6 +5,9 @@ const TypeScope = require("../tree/text/TypeScope")
 const TypeConstructor = require("../tree/types/TypeConstructor")
 const Type = require("../tree/types/Type")
 const Gibberish = require("../tree/text/Gibberish")
+const Function = require("../tree/expressions/scopes/Function")
+const FunctionScope = require("../tree/expressions/scopes/FunctionScope")
+const Assignment = require("../tree/expressions/Assignment")
 
 // @TODO: throw new Error ("Can only define type at root")
 // @TODO: throw new Error ("Can only add TypeConstructor as property to type")
@@ -110,7 +113,7 @@ const checkScopeOpeners = scopeLines => {
 
 const mapScopeLinesToScopes = (Scope, scopeLines) => {
 
-  const rootScope = new Scope(null, null, true)
+  const rootScope = new Scope()
 
   const addToScope = (scope, content) => {
     if (content instanceof TypeConstructor) {
@@ -145,9 +148,15 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
       return scope
     }
 
+    if (Scope == FunctionScope) {
+      const scope = new Scope()
+      const expressions = scopeLines.map(scopeLineToExpressionsOrScope)
+      expressions.forEach(expression => addToScope(scope, expression))
+      return new Assignment(content.key, new Function(content.functionType, scope))
+    }
+
     // new scope
     const scope = new Scope(content.key)
-    if (content.isFunction) scope.setCastToType(content.functionType)
     const expressions = scopeLines.map(scopeLineToExpressionsOrScope)
     expressions.forEach(expression => addToScope(scope, expression))
     return scope

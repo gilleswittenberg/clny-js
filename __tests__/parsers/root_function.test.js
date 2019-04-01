@@ -3,12 +3,13 @@ const {
   parse
 } = require("arcsecond")
 const root = require("../../parsers/root")
-const rootScope = root(true)
+const rootScope = root()
 const Scope = require("../../tree/expressions/scopes/Scope")
 const Assignment = require("../../tree/expressions/Assignment")
 const Operation = require("../../tree/expressions/operations/Operation")
 const Application = require("../../tree/expressions/scopes/Application")
-const Type = require("../../tree/types/Type")
+const Function = require("../../tree/expressions/scopes/Function")
+const FunctionScope = require("../../tree/expressions/scopes/FunctionScope")
 
 describe("root function", () => {
 
@@ -30,13 +31,12 @@ describe("root function", () => {
     const result = toValue(parse(rootScope)(content))
     expect(result).toBeInstanceOf(Scope)
     expect(result.expressions.length).toBe(1)
-    expect(result.expressions[0]).toBeInstanceOf(Scope)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys).toEqual(["concat"])
-    expect(result.expressions[0].shouldCast).toBe(true)
-    expect(result.expressions[0].castToType).toBeInstanceOf(Type)
-    expect(result.expressions[0].castToType.fullName).toBe("s: String, t: String -> String")
     expect(result.expressions[0].expressions.length).toBe(1)
-    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Operation)
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Function)
+    expect(result.expressions[0].expressions[0].expressions[0]).toBeInstanceOf(FunctionScope)
+    expect(result.expressions[0].expressions[0].expressions[0].expressions[0]).toBeInstanceOf(Operation)
 
   })
 })

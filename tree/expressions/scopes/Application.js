@@ -31,6 +31,7 @@ class Application extends Expression {
       toEvaluate = toEvaluate(this.arguments)
     }
 
+    // apply (partial application)
     if (isApplication(toEvaluate)) {
       toEvaluate = toEvaluate.evaluate(env)
     }
@@ -39,6 +40,10 @@ class Application extends Expression {
       this.value = this.arguments[0].setCastToType(toEvaluate).evaluate(env)
     }
     else if (isFunctionExpression(toEvaluate)) {
+      // set Environment, only for anonymous function declarations
+      if (toEvaluate.hasEnvironment() === false) {
+        toEvaluate.setEnvironment(env)
+      }
       this.value = toEvaluate.apply(this.arguments)
     }
     else if (isStatement(toEvaluate)) {

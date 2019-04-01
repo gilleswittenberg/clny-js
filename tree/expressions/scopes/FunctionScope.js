@@ -42,6 +42,7 @@ class FunctionScope extends Scope {
 
       if (scope.hasReturned) return scope
 
+      // Application
       if (isApplication(expression)) {
         const evaluated = expression.evaluate(scope.env)
         if (isStatement(evaluated)) {
@@ -49,39 +50,31 @@ class FunctionScope extends Scope {
         }
       }
 
-      if (!isScope(expression)) {
-
-        // conditional statements
-        if (isSecondaryConditionalStatement(expression)) {
-
-          const previousExpression = arr[index - 1]
-
-          if (!isPrimaryConditionalStatement(previousExpression))
-            throw new Error ("ConditionalStatement " + expression.name + " should be preceded by if Statement")
-
-          if (previousExpression.value[0] === false) {
-            expression.evaluate(scope.env)
-          } else {
-            expression.doNotEvaluate(previousExpression.value[1])
-          }
-        }
-
-        // expressions
-        else {
-          expression.evaluate(scope.env)
-        }
-      }
-
       // Assignment
       if (isScopeOrAssignment(expression)) {
-        const expressions = isScope(expression) ? expression : expression.expressions
+        const expressions = isScope(expression) ? expression :
+          expression.expressions.length === 1 ? expression.expressions[0] :
+            expression.expressions
+        toArray(expressions).forEach(expression => expression.evaluate(env))
         expression.keys.forEach(key => scope.env.set(key, expressions))
       }
+      // Conditional Statements
+      else if (isSecondaryConditionalStatement(expression)) {
 
-      // return
-      if (isReturnStatement(expression) || isLast(index, arr)) {
-        scope.returnValue = isScope(expression) ? expression : expression.value
-        scope.hasReturned = true
+        const previousExpression = arr[index - 1]
+
+        if (!isPrimaryConditionalStatement(previousExpression))
+          throw new Error ("ConditionalStatement " + expression.name + " should be preceded by if Statement")
+
+        if (previousExpression.value[0] === false) {
+          expression.evaluate(scope.env)
+        } else {
+          expression.doNotEvaluate(previousExpression.value[1])
+        }
+      }
+      // Expression
+      else {
+        expression.evaluate(scope.env)
       }
 
       // print
@@ -99,6 +92,12 @@ class FunctionScope extends Scope {
                 (() => { throw new Error ("Invalid Print Statement") })()
         // eslint-disable-next-line no-console
         console.log(value)
+      }
+
+      // return
+      if (isReturnStatement(expression) || isLast(index, arr)) {
+        scope.returnValue = isScope(expression) ? expression : expression.value
+        scope.hasReturned = true
       }
 
       return scope

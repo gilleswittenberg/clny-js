@@ -4,7 +4,7 @@ class Scalar extends Expression {
 
   constructor (type, properties, value, literal) {
     super(type, [], properties)
-    this.value = literal == null ? value : this.parse(literal)
+    this.value = value != null ? value : this.parse(literal)
     this.literal = literal
     this.isEvaluated = true
   }
@@ -28,7 +28,6 @@ class Scalar extends Expression {
     const Number = require("./Number")
     const String = require("./String")
 
-    // @TODO: Cast plural to array
     const literal = "" + this.value // cast to string
     let scalar
     switch (name) {

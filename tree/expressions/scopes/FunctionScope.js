@@ -27,6 +27,8 @@ class FunctionScope extends Scope {
   evaluate (env) {
     if (this.isEmpty) return null
     const environment = env != null ? env.clone() : new Environment()
+    // @TODO: Move to Environment
+    Object.keys(this.types).forEach(key => environment.set(key, this.types[key], true))
     this.value = this.evaluateFunctionScope(environment)
     this.isEvaluated = true
     return this.value

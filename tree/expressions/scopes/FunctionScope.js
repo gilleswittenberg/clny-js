@@ -7,6 +7,7 @@ const Identity = require("../Identity")
 const Environment = require("./Environment")
 
 const toArray = require("../../../utils/toArray")
+const { isLast } = require("../../../utils/arrayLast")
 
 const isScope = object => object instanceof Scope
 const isApplication = object => object instanceof Application
@@ -35,8 +36,6 @@ class FunctionScope extends Scope {
   }
 
   evaluateFunctionScope (env) {
-
-    const isLast = (index, arr) => arr.length - 1 === index
 
     const initialScope = { hasReturned: false, returnValue: null, env }
 

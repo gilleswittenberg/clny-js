@@ -1,11 +1,9 @@
 const buildInTypes = require("../../../buildins/types")
 const buildInKeys = require("../../../buildins/keys")
+const { last } = require("../../../utils/arrayLast")
 
 // @TODO: access parent environments (., .., ...)
 // @TODO: numParentEnvironments
-
-// @TODO: Move to dir `/utils`
-const last = arr => arr[arr.length - 1]
 
 class Environment {
 

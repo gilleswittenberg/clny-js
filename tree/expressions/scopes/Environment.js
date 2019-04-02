@@ -24,9 +24,7 @@ class Environment {
 
   setArgs (obj) {
     const environment = this.clone()
-    Object.keys(obj).forEach(key => {
-      environment.set(key, obj[key])
-    })
+    Object.keys(obj).forEach(key => environment.set(key, obj[key]))
     return environment
   }
 

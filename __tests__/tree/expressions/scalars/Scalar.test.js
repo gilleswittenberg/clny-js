@@ -16,7 +16,7 @@ describe("Scalar", () => {
       const number = new Number(3)
       const environment = new Environment()
       number.shouldCast = true
-      number.castToType = environment.get("String").value
+      number.castToType = "String"
       expect(number.evaluate(environment)).toBe("3")
     })
   })

@@ -65,7 +65,7 @@ class Expression {
 
     // @TODO: get type from environment and only pass this to castTo
     if (this.shouldCast) {
-      const name = this.castToType.name
+      const name = this.castToType
       if (env.has(name) === false) throw new Error (name + " is not an existing type")
       const type = env.get(name)
       this.castTo(type.value, type.isPlural)
@@ -76,8 +76,8 @@ class Expression {
   }
 
   // @TODO: Use name vs Type
-  setCastToType (type) {
-    this.castToType = type
+  setCastToType (name) {
+    this.castToType = name
     this.shouldCast = true
     return this
   }

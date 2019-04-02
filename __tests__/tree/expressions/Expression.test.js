@@ -44,7 +44,7 @@ describe("Expression", () => {
     test("casting", () => {
       const expression = new Expression("Number", new Number(4))
       const environment = new Environment()
-      expression.setCastToType(environment.get("String").value)
+      expression.setCastToType("String").value
       expression.evaluate(environment)
       expect(expression.type).toBe("String")
       //expect(expression.value).toBe("4")

@@ -37,7 +37,7 @@ class Application extends Expression {
     }
 
     if (isType(toEvaluate)) {
-      this.value = this.arguments[0].setCastToType(toEvaluate).evaluate(env)
+      this.value = this.arguments[0].setCastToType(toEvaluate.name).evaluate(env)
     }
     else if (isFunctionExpression(toEvaluate)) {
       // set Environment, only for anonymous function declarations

@@ -84,9 +84,10 @@ class FunctionScope extends Scope {
         // @TODO: Move logic into PrintStatement
         const name = expression.name
         const val = toArray(expression.value).join(", ")
-        // @TODO: Type for Plural
         const expression0 = expression.expressions[0]
-        const type = expression0 instanceof Identity ? expression0.expressions[0].type : expression0.type
+        // @TODO: Type for Plural
+        // Reading name from Application > Type
+        const type = expression0 instanceof Identity ? expression0.expressions[0].expressions[0].name : expression0.type
         const value =
           name === "print" ? val :
             name === "log" ? new Date().toLocaleString() + " " + val :

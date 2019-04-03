@@ -9,6 +9,10 @@ describe("Boolean", () => {
     expect(new Boolean(null, "true").literal).toBe("true")
   })
 
+  test("typeCheck", () => {
+    expect(new Boolean(false).typeCheck()).toBe("Boolean")
+  })
+
   describe("properties", () => {
 
     test("false isFalse, isTrue", () => {

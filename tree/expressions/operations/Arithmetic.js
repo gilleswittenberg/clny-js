@@ -8,6 +8,10 @@ class Arithmetic extends Operation {
     this.type = "Number"
   }
 
+  typeCheck () {
+    return this.type
+  }
+
   evaluate () {
     const operator = this.operator
     const left = this.operands[0]

@@ -7,6 +7,10 @@ class StringConcatenation extends Operation {
     this.type = "String"
   }
 
+  typeCheck () {
+    return this.type
+  }
+
   evaluate () {
     const left = this.operands[0]
     const right = this.operands[1]

@@ -9,6 +9,10 @@ describe("Null", () => {
     expect(new Null(null, "null").literal).toBe("null")
   })
 
+  test("typeCheck", () => {
+    expect(new Null().typeCheck()).toBe("Null")
+  })
+
   describe("properties", () => {
 
     test("is", () => {

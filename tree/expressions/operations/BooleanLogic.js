@@ -8,6 +8,10 @@ class BooleanLogic extends Operation {
     this.type = "Boolean"
   }
 
+  typeCheck () {
+    return this.type
+  }
+
   evaluate () {
     const operator = this.operator
     const left = this.operands[0]

@@ -22,6 +22,11 @@ describe("Number", () => {
     expect(new Number(null, "12E2").value).toBe(1200)
   })
 
+  test("typeCheck", () => {
+    expect(new Number(0).typeCheck()).toBe("Number")
+  })
+
+
   describe("properties", () => {
 
     test("equals", () => {

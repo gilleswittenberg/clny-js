@@ -5,6 +5,11 @@ class Range extends Operation {
 
   constructor (start, end) {
     super("INFIX", ",,", start, end)
+    this.type = "Numbers"
+  }
+
+  typeCheck () {
+    return this.type
   }
 
   evaluate (env) {
@@ -21,6 +26,7 @@ class Range extends Operation {
     this.isEvaluated = true
     return this.value
   }
+
 
   createRange (start, end) {
 

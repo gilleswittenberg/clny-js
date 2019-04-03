@@ -9,6 +9,10 @@ describe("String", () => {
     expect(new String(null, "Abcd").literal).toBe("Abcd")
   })
 
+  test("typeCheck", () => {
+    expect(new String("").typeCheck()).toBe("String")
+  })
+
   describe("properties", () => {
 
     test("concat", () => {

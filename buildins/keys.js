@@ -3,17 +3,17 @@ const ForStatement = require("../tree/expressions/statements/ForStatement")
 const ConditionalStatement = require("../tree/expressions/statements/ConditionalStatement")
 
 const keys = {
-  return: expressions => new Statement ("return", expressions),
+  return: function buildInStatement (expressions) { return new Statement ("return", expressions) },
 
-  for: expressions => new ForStatement (expressions),
+  for:    function buildInStatement (expressions) { return new ForStatement (expressions) },
 
-  if: expressions => new ConditionalStatement("if", expressions),
-  elseif: expressions => new ConditionalStatement("elseif", expressions),
-  else: expressions => new ConditionalStatement("else", expressions),
+  if:     function buildInStatement (expressions) { return new ConditionalStatement("if", expressions) },
+  elseif: function buildInStatement (expressions) { return new ConditionalStatement("elseif", expressions) },
+  else:   function buildInStatement (expressions) { return new ConditionalStatement("else", expressions) },
 
-  print: expressions => new Statement("print", expressions),
-  log: expressions => new Statement("log", expressions),
-  debug: expressions => new Statement("debug", expressions)
+  print:  function buildInStatement (expressions) { return new Statement("print", expressions) },
+  log:    function buildInStatement (expressions) { return new Statement("log", expressions) },
+  debug:  function buildInStatement (expressions) { return new Statement("debug", expressions) }
 }
 
 module.exports = keys

@@ -4,7 +4,6 @@ const Statement = require("../statements/Statement")
 const Type = require("../../types/Type")
 const Function = require("./Function")
 const toArray = require("../../../utils/toArray")
-const { isFunction } = require("../../../utils/is")
 
 const isStatement = object => object instanceof Statement
 const isApplication = object => object instanceof Application
@@ -19,6 +18,28 @@ class Application extends Expression {
     this.arguments = toArray(args)
   }
 
+  typeCheck (expression) {
+
+    if (isType(expression)) {
+      if (this.arguments.length !== 1)
+        throw new Error ("Invalid number of arguments for Type casting")
+    } else if (isFunctionExpression(expression)) {
+      const inputTypes = expression.type && expression.type.inputTypes || []
+      if (inputTypes.length > 0 && inputTypes.length !== this.arguments.length)
+        throw new Error ("Invalid number of arguments for function application")
+      inputTypes.map((inputType, index) => {
+        const argument = this.arguments[index]
+        if (argument === undefined)
+          throw new Error ("Invalid number of arguments for function application")
+        if (argument.type !== inputType)
+          throw new Error ("Invalid argument for function application")
+      })
+    }
+
+    // @TODO: Type check return type
+    return this.type
+  }
+
   evaluate (env) {
 
     if (this.isEvaluated) return this.value
@@ -26,8 +47,8 @@ class Application extends Expression {
     const expression = this.expressions[0]
     let toEvaluate = isIdentity(expression) ? env.get(expression.key).value : expression
 
-    // calling function to get buildin Statements
-    if (isFunction(toEvaluate)) {
+    // calling function to get buildins
+    if (toEvaluate.name === "buildInStatement") {
       toEvaluate = toEvaluate(this.arguments)
     }
 
@@ -36,6 +57,9 @@ class Application extends Expression {
       toEvaluate = toEvaluate.evaluate(env)
     }
 
+    this.typeCheck(toEvaluate)
+
+    // @TODO: Casting to Plural
     if (isType(toEvaluate)) {
       this.value = this.arguments[0].setCastToType(toEvaluate.name).evaluate(env)
     }
@@ -46,6 +70,7 @@ class Application extends Expression {
       }
       this.value = toEvaluate.apply(this.arguments)
     }
+    // @TODO: type check statement
     else if (isStatement(toEvaluate)) {
       this.value = toEvaluate
     }

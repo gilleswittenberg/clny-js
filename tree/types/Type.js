@@ -32,6 +32,10 @@ class Type {
     // Function type
     return this.inputTypes.map(type => type.fullName).join(", ") + " -> " + this.types.map(type => type.name).join(", ")
   }
+
+  fetch () {
+    return this
+  }
 }
 
 module.exports = Type

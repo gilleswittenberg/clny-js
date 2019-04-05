@@ -1,5 +1,4 @@
 const Expression = require("../Expression")
-const Identity = require("../Identity")
 const Statement = require("../statements/Statement")
 const Type = require("../../types/Type")
 const Function = require("./Function")
@@ -9,7 +8,6 @@ const isStatement = object => object instanceof Statement
 const isApplication = object => object instanceof Application
 const isType = object => object instanceof Type
 const isFunctionExpression = object => object instanceof Function
-const isIdentity = object => object instanceof Identity
 
 class Application extends Expression {
 
@@ -18,6 +16,7 @@ class Application extends Expression {
     this.arguments = toArray(args)
   }
 
+  // @TODO: Move to Function.apply / Type.apply
   typeCheck (expression) {
 
     if (isType(expression)) {
@@ -49,10 +48,12 @@ class Application extends Expression {
 
     if (this.isEvaluated) return this.value
 
-    const expression = this.expressions[0]
-    let toEvaluate = isIdentity(expression) ? env.get(expression.key).value : expression
+    const firstExpression = this.expressions[0]
+
+    let toEvaluate = firstExpression.fetch(env)
 
     // calling function to get buildins
+    // @TODO: buildin statements as Function
     if (toEvaluate.name === "buildInStatement") {
       toEvaluate = toEvaluate(this.arguments)
     }

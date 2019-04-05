@@ -56,6 +56,11 @@ class Expression {
     this.isPlural = length > 1
   }
 
+  // overridden in Identity
+  fetch () {
+    return this
+  }
+
   evaluate (env) {
 
     if (this.isEvaluated) return this.value
@@ -75,7 +80,6 @@ class Expression {
     return this.value
   }
 
-  // @TODO: Use name vs Type
   setCastToType (name) {
     this.castToType = name
     this.shouldCast = true

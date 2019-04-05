@@ -11,10 +11,16 @@ class Identity extends Expression {
     this.isEvaluated = false
   }
 
+  fetch (env) {
+    if (env.has(this.key) === false) throw new Error (this.key + " is not defined in environment")
+    return env.get(this.key).value
+  }
+
   evaluate (env) {
 
     if (this.isEvaluated) return this.value
 
+    // @TODO: Move Error to Environment
     if (env.has(this.key) === false) throw new Error (this.key + " is not defined in environment")
     const expressions = env.get(this.key).value
 

@@ -48,6 +48,10 @@
         "space-before-function-paren": [
             "error",
             "always"
+        ],
+        "spaced-comment": [
+          "error",
+          "always"
         ]
     }
 }

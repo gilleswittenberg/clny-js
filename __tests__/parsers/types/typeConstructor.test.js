@@ -23,5 +23,4 @@ test("sum", () => {
   const value = toValue(parse(typeConstructor)("Boolean: False | True"))
   expect(value).toBeInstanceOf(TypeConstructor)
   expect(value.name).toBe("Boolean")
-  //expect(value.type).toBe("False | True")
 })

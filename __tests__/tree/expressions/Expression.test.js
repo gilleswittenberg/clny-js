@@ -47,7 +47,6 @@ describe("Expression", () => {
       expression.setCastToType("String").value
       expression.evaluate(environment)
       expect(expression.type).toBe("String")
-      //expect(expression.value).toBe("4")
     })
   })
 })

@@ -21,8 +21,13 @@ class Application extends Expression {
   typeCheck (expression) {
 
     if (isType(expression)) {
-      if (this.arguments.length !== 1)
-        throw new Error ("Invalid number of arguments for Type casting")
+      if (expression.types.length > 0) {
+        if (expression.types.length !== this.arguments.length)
+          throw new Error ("Invalid number of arguments for Type / Compound casting")
+      } else {
+        if (this.arguments.length !== 1)
+          throw new Error ("Invalid number of arguments for Type casting")
+      }
     } else if (isFunctionExpression(expression)) {
       const inputTypes = expression.type && expression.type.inputTypes || []
       if (inputTypes.length > 0 && inputTypes.length !== this.arguments.length)
@@ -59,9 +64,12 @@ class Application extends Expression {
 
     this.typeCheck(toEvaluate)
 
-    // @TODO: Casting to Plural
+    // @TODO: Casting to Plural, Compound
     if (isType(toEvaluate)) {
-      this.value = this.arguments[0].setCastToType(toEvaluate.name).evaluate(env)
+
+      if (toEvaluate.isCompound === false) {
+        this.value = this.arguments[0].setCastToType(toEvaluate.name).evaluate(env)
+      }
     }
     else if (isFunctionExpression(toEvaluate)) {
       // set Environment, only for anonymous function declarations

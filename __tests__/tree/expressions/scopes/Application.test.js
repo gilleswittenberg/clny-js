@@ -1,5 +1,6 @@
 const Application = require("../../../../tree/expressions/scopes/Application")
 const Number = require("../../../../tree/expressions/scalars/Number")
+const String = require("../../../../tree/expressions/scalars/String")
 const FunctionScope = require("../../../../tree/expressions/scopes/FunctionScope")
 const Function = require("../../../../tree/expressions/scopes/Function")
 const Identity = require("../../../../tree/expressions/Identity")
@@ -32,7 +33,37 @@ describe("Application", () => {
     })
   })
 
-  describe("buildins", () => {
+  describe("Compound Type", () => {
+
+    test("Product", () => {
+      const environment = new Environment()
+      environment.set("Product", new Type ("Product", null, [new Type ("Number", null, null, null, "price"), new Type ("String", null, null, null, "name")]), true)
+      const number = new Number(99)
+      const string = new String("Shoe")
+      const application = new Application(new Identity("Product"), [number, string])
+      expect(() => application.evaluate(environment)).not.toThrow()
+    })
+
+    test("Product too many arguments", () => {
+      const environment = new Environment()
+      environment.set("Product", new Type ("Product", null, [new Type ("Number", null, null, null, "price"), new Type ("String", null, null, null, "name")]), true)
+      const number = new Number(99)
+      const string = new String("Shoe")
+      const stringExtra = new String("Extra")
+      const application = new Application(new Identity("Product"), [number, string, stringExtra])
+      expect(() => application.evaluate(environment)).toThrow("Invalid number of arguments for Type / Compound casting")
+    })
+
+    test("Product too few arguments", () => {
+      const environment = new Environment()
+      environment.set("Product", new Type ("Product", null, [new Type ("Number", null, null, null, "price"), new Type ("String", null, null, null, "name")]), true)
+      const number = new Number(99)
+      const application = new Application(new Identity("Product"), [number])
+      expect(() => application.evaluate(environment)).toThrow("Invalid number of arguments for Type / Compound casting")
+    })
+  })
+
+  describe("buildins Statement", () => {
 
     test("return", () => {
       const number = new Number(5)

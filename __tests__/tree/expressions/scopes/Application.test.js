@@ -96,7 +96,7 @@ describe("Application", () => {
     })
 
     test("Identity deep", () => {
-      // { { n } }()(n)
+      // { { n } }()()
       const n = new Number(13)
       const environment = new Environment()
       environment.set("n", n)
@@ -110,7 +110,7 @@ describe("Application", () => {
     })
 
     test("Identity deep 2", () => {
-      // { { n }() }(n)
+      // { { n }() }()
       const n = new Number(14)
       const environment = new Environment()
       environment.set("n", n)

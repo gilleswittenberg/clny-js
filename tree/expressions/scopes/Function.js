@@ -1,5 +1,4 @@
 const Expression = require("../Expression")
-const toArray = require("../../../utils/toArray")
 
 const isFunctionExpression = object => object instanceof Function
 
@@ -36,10 +35,9 @@ class Function extends Expression {
   }
 
   apply (args) {
-    const argsArray = toArray(args)
     const inputs = this.type != null ? this.type.inputTypes : []
     const argsObject = inputs.reduce((acc, type, index) => {
-      acc[type.keys[0]] = argsArray[index]
+      acc[type.keys[0]] = args[index]
       return acc
     }, {})
     const environment = this.environment.setArgs(argsObject)

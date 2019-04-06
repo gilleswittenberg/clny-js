@@ -33,7 +33,7 @@ describe("Function", () => {
         const environment = new Environment()
         const type = new Type(null, null, new Type("Number"), [new Type("Number", null, null, null, "m")])
         const func = new Function(type, functionScope, environment)
-        expect(func.getProperty("apply")(m)).toBe(15)
+        expect(func.getProperty("apply")([m])).toBe(15)
       })
     })
 

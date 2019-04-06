@@ -16,7 +16,6 @@ class Application extends Expression {
     this.arguments = toArray(args)
   }
 
-  // @TODO: Move to Function.apply / Type.apply
   typeCheck (expression) {
 
     if (isType(expression)) {
@@ -63,6 +62,7 @@ class Application extends Expression {
       toEvaluate = toEvaluate.evaluate(env)
     }
 
+    // @TODO: Move to Function.apply / Type.apply
     this.typeCheck(toEvaluate)
 
     // @TODO: Casting to Plural, Compound

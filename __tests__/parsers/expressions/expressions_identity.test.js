@@ -30,22 +30,22 @@ describe("properties", () => {
     const value = toValue(parse(parser)("a.apply"))
     expect(value).toBeInstanceOf(Property)
     expect(value.key).toBe("apply")
-    expect(value.parent).toBeInstanceOf(Identity)
+    expect(value.expressions[0]).toBeInstanceOf(Identity)
   })
 
   test("deep", () => {
     const value = toValue(parse(parser)("a.apply.snd"))
     expect(value).toBeInstanceOf(Property)
     expect(value.key).toBe("snd")
-    expect(value.parent).toBeInstanceOf(Property)
-    expect(value.parent.key).toBe("apply")
-    expect(value.parent.parent).toBeInstanceOf(Identity)
+    expect(value.expressions[0]).toBeInstanceOf(Property)
+    expect(value.expressions[0].key).toBe("apply")
+    expect(value.expressions[0].expressions[0]).toBeInstanceOf(Identity)
   })
 
   test("on expression", () => {
     const value = toValue(parse(parser)("5.equals"))
     expect(value).toBeInstanceOf(Property)
     expect(value.key).toBe("equals")
-    expect(value.parent).toBeInstanceOf(Number)
+    expect(value.expressions[0]).toBeInstanceOf(Number)
   })
 })

@@ -35,7 +35,8 @@ class Expression {
   }
 
   getProperty (name, environment) {
-    if (this.hasProperty(name) === false) return undefined
+    if (this.hasProperty(name) === false)
+      throw new Error (name + " is not a property of " + this.type)
     const property = this.properties[name]
     // @TODO: Remove circulair reference
     const Function = require("./scopes/Function")

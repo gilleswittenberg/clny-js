@@ -49,39 +49,39 @@ class Application extends Expression {
 
     const firstExpression = this.expressions[0]
 
-    let toEvaluate = firstExpression.fetch(env)
+    let applicative = firstExpression.fetch(env)
 
     // calling function to get buildins
     // @TODO: buildin statements as Function
-    if (toEvaluate.name === "buildInStatement") {
-      toEvaluate = toEvaluate(this.arguments)
+    if (applicative.name === "buildInStatement") {
+      applicative = applicative(this.arguments)
     }
 
     // apply (partial application)
-    if (isApplication(toEvaluate)) {
-      toEvaluate = toEvaluate.evaluate(env)
+    if (isApplication(applicative)) {
+      applicative = applicative.evaluate(env)
     }
 
     // @TODO: Move to Function.apply / Type.apply
-    this.typeCheck(toEvaluate)
+    this.typeCheck(applicative)
 
     // @TODO: Casting to Plural, Compound
-    if (isType(toEvaluate)) {
+    if (isType(applicative)) {
 
-      if (toEvaluate.isCompound === false) {
-        this.value = this.arguments[0].setCastToType(toEvaluate.name).evaluate(env)
+      if (applicative.isCompound === false) {
+        this.value = this.arguments[0].setCastToType(applicative.name).evaluate(env)
       }
     }
-    else if (isFunctionExpression(toEvaluate)) {
+    else if (isFunctionExpression(applicative)) {
       // set Environment, only for anonymous function declarations
-      if (toEvaluate.hasEnvironment() === false) {
-        toEvaluate.setEnvironment(env)
+      if (applicative.hasEnvironment() === false) {
+        applicative.setEnvironment(env)
       }
-      this.value = toEvaluate.apply(this.arguments)
+      this.value = applicative.apply(this.arguments)
     }
     // @TODO: type check statement
-    else if (isStatement(toEvaluate)) {
-      this.value = toEvaluate
+    else if (isStatement(applicative)) {
+      this.value = applicative
     }
     else {
       throw new Error ("Can only apply Type, Function or Statement")

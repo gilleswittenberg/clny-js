@@ -31,23 +31,11 @@ class Environment {
   }
 
   // @TODO: get (key, unwrap = true)
-  // @TODO: get (key, type = "Type" | "PluralType" | "Expression")
+  // @TODO: get (key, type = "Type" | "Expression")
   get (key) {
     const value = this.keys[key]
     if (value !== undefined) return last(value)
-    const pluralType = this.getPluralType(key)
-    if (pluralType !== undefined) {
-      pluralType.isPluralType = true
-      return pluralType
-    }
     return this.parentEnvironment != null ? this.parentEnvironment.get(key) : undefined
-  }
-
-  getPluralType (key) {
-    return Object.keys(this.keys)
-      .map(key => last(this.keys[key]))
-      .filter(value => value.isType === true)
-      .find(type => type.value.pluralName === key)
   }
 
   set (key, object, isType = false) {

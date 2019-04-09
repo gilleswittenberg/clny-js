@@ -34,7 +34,24 @@ class Function extends Expression {
     return this.value
   }
 
+  typeCheck (args) {
+    // type check
+    const inputTypes = this.type && this.type.inputTypes || []
+    if (inputTypes.length > 0 && inputTypes.length !== args.length)
+      throw new Error ("Invalid number of arguments for function application")
+    inputTypes.map((inputType, index) => {
+      const argument = args[index]
+      if (argument === undefined)
+        throw new Error ("Invalid number of arguments for function application")
+      if (argument.type !== inputType.name)
+        throw new Error ("Invalid argument for function application")
+    })
+  }
+
   apply (args) {
+
+    this.typeCheck(args)
+
     const inputs = this.type != null ? this.type.inputTypes : []
     const argsObject = inputs.reduce((acc, type, index) => {
       acc[type.keys[0]] = args[index]

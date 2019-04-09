@@ -16,32 +16,6 @@ class Application extends Expression {
     this.arguments = toArray(args)
   }
 
-  typeCheck (expression) {
-
-    if (isType(expression)) {
-      if (expression.types.length > 0) {
-        if (expression.types.length !== this.arguments.length)
-          throw new Error ("Invalid number of arguments for Type / Compound casting")
-      } else {
-        if (this.arguments.length !== 1)
-          throw new Error ("Invalid number of arguments for Type casting")
-      }
-    } else if (isFunctionExpression(expression)) {
-      const inputTypes = expression.type && expression.type.inputTypes || []
-      if (inputTypes.length > 0 && inputTypes.length !== this.arguments.length)
-        throw new Error ("Invalid number of arguments for function application")
-      inputTypes.map((inputType, index) => {
-        const argument = this.arguments[index]
-        if (argument === undefined)
-          throw new Error ("Invalid number of arguments for function application")
-        if (argument.type !== inputType)
-          throw new Error ("Invalid argument for function application")
-      })
-    }
-
-    return this.type
-  }
-
   evaluate (env) {
 
     if (this.isEvaluated) return this.value
@@ -61,10 +35,6 @@ class Application extends Expression {
       applicative = applicative.evaluate(env)
     }
 
-    // @TODO: Move to Function.apply / Type.apply
-    this.typeCheck(applicative)
-
-    // @TODO: Casting to Plural
     if (isType(applicative)) {
       this.value = applicative.apply(this.arguments).evaluate(env)
     }

@@ -47,14 +47,27 @@ class Type {
 
   apply (args) {
     const argsArray = toArray(args)
-    if (this.isCompound) {
+    if (this.isPlural) {
+      return castToPlural(this.name, this.types[0].name, argsArray)
+    }
+    else if (this.isCompound) {
+
+      if (this.types.length !== args.length)
+        throw new Error ("Invalid number of arguments for " + this.name)
+
+      this.types.map((type, index) => {
+        const argument = args[index]
+        if (argument.type !== type.name)
+          throw new Error ("Invalid argument for " + this.name)
+      })
+
       return castToCompound(this.name, argsArray)
     }
+    // @TODO: Return rest arguments
     else if (this.isScalar) {
+      if (args.length === 0)
+        throw new Error ("Invalid number of arguments for Type casting")
       return castToScalar(this.name, argsArray[0].evaluate())
-    }
-    else if (this.isPlural) {
-      return castToPlural(this.name, this.types[0].name, argsArray)
     }
   }
 }

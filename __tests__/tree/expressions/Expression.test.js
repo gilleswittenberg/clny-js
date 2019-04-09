@@ -1,6 +1,5 @@
 const Expression = require("../../../tree/expressions/Expression")
 const Number = require("../../../tree/expressions/scalars/Number")
-const Environment = require("../../../tree/expressions/scopes/Environment")
 
 describe("Expression", () => {
 
@@ -39,14 +38,6 @@ describe("Expression", () => {
       expression.evaluate()
       expect(expression.type).toBe("Number")
       expect(expression.value).toBe(4)
-    })
-
-    test("casting", () => {
-      const expression = new Expression("Number", new Number(4))
-      const environment = new Environment()
-      expression.setCastToType("String").value
-      expression.evaluate(environment)
-      expect(expression.type).toBe("String")
     })
   })
 })

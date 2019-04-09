@@ -19,7 +19,6 @@ class Expression {
     this.expressions = []
     this.addExpressions(expressions)
     this.isEvaluated = false
-    this.shouldCast = false
     this.setProperties(properties)
   }
 
@@ -68,30 +67,8 @@ class Expression {
 
     const values = this.expressions.map(expression => expression.evaluate(env))
     this.value = this.isEmpty ? null : this.isSingle ? values[0] : values
-
-    // @TODO: get type from environment and only pass this to castTo
-    if (this.shouldCast) {
-      const name = this.castToType
-      if (env.has(name) === false) throw new Error (name + " is not an existing type")
-      const type = env.get(name)
-      this.castTo(type.value, type.isPlural)
-    }
-
     this.isEvaluated = true
     return this.value
-  }
-
-  setCastToType (name) {
-    this.castToType = name
-    this.shouldCast = true
-    return this
-  }
-
-  castTo (type, pluralize = false) {
-    const name = pluralize ? type.pluralName : type.name
-    this.type = name
-    return this
-    // @TODO: Cast to non scalar
   }
 }
 

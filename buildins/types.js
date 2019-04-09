@@ -11,7 +11,11 @@ const types = [
 ]
 
 const buildInTypes = reduceStringsToObject(types, type => new Type(type, null, null, null, null, null, true))
-//const buildInPlurals = reduceStringsToObject(types, type => new Type(pluralize(type), null, buildInTypes[type], null, null, Infinity))
+const buildInPlurals = types.reduce((acc, name) => {
+  const plural = pluralize(name)
+  const type = new Type(plural, null, buildInTypes[name], null, null, Infinity)
+  acc[plural] = type
+  return acc
+}, {})
 
-//module.exports = { ...buildInTypes, ...buildInPlurals }
-module.exports = { ...buildInTypes }
+module.exports = { ...buildInTypes, ...buildInPlurals }

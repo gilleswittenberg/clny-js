@@ -31,7 +31,7 @@ describe("getPluralType", () => {
   test("Strings", () => {
     const environment = new Environment()
     expect(environment.has("Strings")).toBe(true)
-    expect(environment.get("String").isPluralType).toBe(true)
+    expect(environment.get("Strings").value.isPlural).toBe(true)
   })
 })
 

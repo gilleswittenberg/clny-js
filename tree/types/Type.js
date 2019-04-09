@@ -1,7 +1,6 @@
 const toArray = require("../../utils/toArray")
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
-const pluralize = str => str + "s"
 
 const Null = require("../expressions/scalars/Null")
 const Boolean = require("../expressions/scalars/Boolean")
@@ -11,7 +10,7 @@ const Expression = require("../expressions/Expression")
 
 class Type {
 
-  constructor (name, options, types, inputTypes, keys, isScalar = false) {
+  constructor (name, options, types, inputTypes, keys, depth = null, isScalar = false) {
 
     this.options = toArray(options)
     this.types = toArray(types)
@@ -22,9 +21,10 @@ class Type {
 
     this.keys = toArray(keys)
     this.name = name != null ? name : this.createName()
-    this.pluralName = name != null ? pluralize(name) : null
     this.fullName = this.createFullName()
 
+    this.depth = toArray(depth)
+    this.isPlural = this.depth.length > 0
     this.isScalar = isScalar
   }
 
@@ -53,6 +53,9 @@ class Type {
     else if (this.isScalar) {
       return castToScalar(this.name, argsArray[0].evaluate())
     }
+    else if (this.isPlural) {
+      return castToPlural(this.name, this.types[0].name, argsArray)
+    }
   }
 }
 
@@ -79,5 +82,10 @@ const castToScalar = (name, value) => {
 const castToCompound = (name, values) => {
   return new Expression (name, values)
 }
+
+const castToPlural = (name, type, values) => {
+  return new Expression (name, values.map(value => castToScalar(type, value.evaluate())))
+}
+
 
 module.exports = Type

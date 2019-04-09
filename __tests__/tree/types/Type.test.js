@@ -7,7 +7,6 @@ describe("Type", () => {
     test("Null", () => {
       const type = new Type("Null")
       expect(type.name).toBe("Null")
-      expect(type.pluralName).toBe("Nulls")
       expect(type.fullName).toBe("Null")
       expect(type.options).toEqual([])
       expect(type.types).toEqual([])
@@ -19,7 +18,6 @@ describe("Type", () => {
     test("True", () => {
       const type = new Type("True")
       expect(type.name).toBe("True")
-      expect(type.pluralName).toBe("Trues")
       expect(type.fullName).toBe("True")
       expect(type.options).toEqual([])
       expect(type.types).toEqual([])
@@ -31,7 +29,6 @@ describe("Type", () => {
     test("Bool", () => {
       const type = new Type("Bool", [new Type("False"), new Type("True")])
       expect(type.name).toBe("Bool")
-      expect(type.pluralName).toBe("Bools")
       expect(type.fullName).toBe("Bool")
       expect(type.options.length).toBe(2)
       expect(type.options[0] instanceof Type).toBeTruthy()
@@ -44,7 +41,6 @@ describe("Type", () => {
     test("sum", () => {
       const type = new Type(null, [new Type("String"), new Type("Bool")])
       expect(type.name).toBe("String | Bool")
-      expect(type.pluralName).toBe(null)
       expect(type.fullName).toBe("String | Bool")
     })
 
@@ -117,6 +113,23 @@ describe("Type", () => {
       expect(type.inputTypes[1].name).toBe("Number")
       expect(type.name).toBe("s: String, n: Number -> Bool")
       expect(type.fullName).toBe("s: String, n: Number -> Bool")
+    })
+
+    test("Plural", () => {
+      const type = new Type("Bools", null, new Type("Bool"), null, null, Infinity)
+      expect(type.name).toBe("Bools")
+      expect(type.fullName).toBe("Bools")
+      expect(type.types.length).toBe(1)
+      expect(type.types[0].name).toBe("Bool")
+      expect(type.isPlural).toBe(true)
+      expect(type.depth).toEqual([Infinity])
+    })
+
+    test("Scalar", () => {
+      const type = new Type("Bool", null, null, null, null, null, true)
+      expect(type.name).toBe("Bool")
+      expect(type.isPlural).toBe(false)
+      expect(type.isScalar).toBe(true)
     })
   })
 })

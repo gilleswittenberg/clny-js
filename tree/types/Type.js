@@ -3,9 +3,15 @@ const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
 const pluralize = str => str + "s"
 
+const Null = require("../expressions/scalars/Null")
+const Boolean = require("../expressions/scalars/Boolean")
+const Number = require("../expressions/scalars/Number")
+const String = require("../expressions/scalars/String")
+const Expression = require("../expressions/Expression")
+
 class Type {
 
-  constructor (name, options, types, inputTypes, keys) {
+  constructor (name, options, types, inputTypes, keys, isScalar = false) {
 
     this.options = toArray(options)
     this.types = toArray(types)
@@ -18,6 +24,8 @@ class Type {
     this.name = name != null ? name : this.createName()
     this.pluralName = name != null ? pluralize(name) : null
     this.fullName = this.createFullName()
+
+    this.isScalar = isScalar
   }
 
   createFullName () {
@@ -36,6 +44,40 @@ class Type {
   fetch () {
     return this
   }
+
+  apply (args) {
+    const argsArray = toArray(args)
+    if (this.isCompound) {
+      return castToCompound(this.name, argsArray)
+    }
+    else if (this.isScalar) {
+      return castToScalar(this.name, argsArray[0].evaluate())
+    }
+  }
+}
+
+const castToScalar = (name, value) => {
+  const str = value + ""
+  let ret
+  switch (name) {
+  case "Null":
+    ret = new Null (null, str)
+    break
+  case "Boolean":
+    ret = new Boolean (null, str)
+    break
+  case "Number":
+    ret = new Number (null, str)
+    break
+  case "String":
+    ret = new String (null, str)
+    break
+  }
+  return ret
+}
+
+const castToCompound = (name, values) => {
+  return new Expression (name, values)
 }
 
 module.exports = Type

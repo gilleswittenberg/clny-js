@@ -10,14 +10,53 @@ const Type = require("../../../../tree/types/Type")
 
 describe("Application", () => {
 
-  describe("Type cast", () => {
+  describe("Type", () => {
 
-    test("String", () => {
-      const number = new Number(5)
-      const string = new Type("String")
-      const application = new Application(string, number)
-      const environment = new Environment()
-      expect(application.evaluate(environment)).toBe("5")
+    describe("cast", () => {
+
+      test("Null", () => {
+        const number = new Number(3)
+        const type = new Type("Null", null, null, null, null, null, true)
+        const application = new Application(type, number)
+        const environment = new Environment()
+        expect(application.evaluate(environment)).toBe(null)
+      })
+
+      test("Boolean", () => {
+        const string = new String("true")
+        const type = new Type("Boolean", null, null, null, null, null, true)
+        const application = new Application(type, string)
+        const environment = new Environment()
+        expect(application.evaluate(environment)).toBe(true)
+      })
+
+      test("Number", () => {
+        const number = new String("5")
+        const type = new Type("Number", null, null, null, null, null, true)
+        const application = new Application(type, number)
+        const environment = new Environment()
+        expect(application.evaluate(environment)).toBe(5)
+      })
+
+      test("String", () => {
+        const number = new Number(5)
+        const type = new Type("String", null, null, null, null, null, true)
+        const application = new Application(type, number)
+        const environment = new Environment()
+        expect(application.evaluate(environment)).toBe("5")
+      })
+
+      test("Compound", () => {
+        const type = new Type("Product", null, [
+          new Type("String", null, null, null, "name", true),
+          new Type("Number", null, null, null, "price", true)
+        ])
+        const application = new Application(type, [new String("Shoe"), new Number(99)])
+        const environment = new Environment()
+        const product = application.evaluate(environment)
+        expect(product[0]).toBe("Shoe")
+        expect(product[1]).toBe(99)
+      })
     })
 
     describe("type check", () => {
@@ -25,7 +64,7 @@ describe("Application", () => {
       test("too many arguments", () => {
         const number = new Number(6)
         const number1 = new Number(7)
-        const string = new Type("String")
+        const string = new Type("String", null, null, null, null, null, true)
         const application = new Application(string, [number, number1])
         const environment = new Environment()
         expect(() => { application.evaluate(environment) }).toThrow("Invalid number of arguments for Type casting")

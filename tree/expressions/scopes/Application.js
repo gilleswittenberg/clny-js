@@ -39,7 +39,6 @@ class Application extends Expression {
       })
     }
 
-    // @TODO: Type check return type
     return this.type
   }
 
@@ -65,12 +64,9 @@ class Application extends Expression {
     // @TODO: Move to Function.apply / Type.apply
     this.typeCheck(applicative)
 
-    // @TODO: Casting to Plural, Compound
+    // @TODO: Casting to Plural
     if (isType(applicative)) {
-
-      if (applicative.isCompound === false) {
-        this.value = this.arguments[0].setCastToType(applicative.name).evaluate(env)
-      }
+      this.value = applicative.apply(this.arguments).evaluate(env)
     }
     else if (isFunctionExpression(applicative)) {
       // set Environment, only for anonymous function declarations
@@ -80,6 +76,7 @@ class Application extends Expression {
       this.value = applicative.apply(this.arguments)
     }
     // @TODO: type check statement
+    // @TODO: Statement.apply
     else if (isStatement(applicative)) {
       this.value = applicative
     }

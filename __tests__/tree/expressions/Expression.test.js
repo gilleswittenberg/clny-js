@@ -21,6 +21,7 @@ describe("Expression", () => {
       expression.evaluate()
       expect(expression.getProperty("is")).toBe(true)
       expect(expression.getProperty("isPlural")).toBe(false)
+      expect(expression.getProperty("size")).toBe(1)
     })
 
     test("plural", () => {
@@ -28,13 +29,18 @@ describe("Expression", () => {
       expression.evaluate()
       expect(expression.getProperty("is")).toBe(true)
       expect(expression.getProperty("isPlural")).toBe(true)
-      expect(expression.getProperty("size")()).toBe(2)
+      expect(expression.getProperty("size")).toBe(2)
     })
 
-    test("compound", () => {
+    test("keys", () => {
       const properties = { name: null, age: null }
       const expression = new Expression ("Product", null, setVisibilityProperties(properties, "DATA"))
       expect(expression.getProperty("keys")).toEqual(["name", "age"])
+    })
+
+    test("empty", () => {
+      const expression = new Expression("Null")
+      expect(expression.getProperty("size")).toBe(0)
     })
   })
 

@@ -17,7 +17,7 @@ describe("String", () => {
 
     test("concat", () => {
       const string = new String("A")
-      expect(typeof string.properties.concat).toBe("function")
+      expect(typeof string.getProperty("concat")).toBe("function")
       expect(string.getProperty("concat")("bc")).toBe("Abc")
     })
   })

@@ -19,6 +19,12 @@ describe("Type", () => {
         new Type("String", null, null, null, "name", true),
         new Type("Number", null, null, null, "age", true)
       ])
+      
+      const person = personType.apply([name, age])
+      person.evaluate()
+      expect(person.getProperty("name")).toEqual("John Doe")
+      expect(person.getProperty("age")).toEqual(35)
+
       expect(personType.apply([name, age]).evaluate()).toEqual(["John Doe", 35])
     })
 

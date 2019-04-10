@@ -31,7 +31,7 @@ describe("Number", () => {
 
     test("equals", () => {
       const number = new Number(5, "5")
-      expect(typeof number.properties.equals).toBe("function")
+      expect(typeof number.getProperty("equals")).toBe("function")
       expect(number.getProperty("equals")(5)).toBe(true)
       expect(number.getProperty("equals")(3)).toBe(false)
     })

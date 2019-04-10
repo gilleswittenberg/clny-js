@@ -1,3 +1,4 @@
+const setVisibilityProperties = require("./setVisibilityProperties")
 const toArray = require("../../utils/toArray")
 const isEmpty = arr => arr == null || arr.length === 0
 const notEmpty = arr => isEmpty(arr) === false
@@ -61,7 +62,7 @@ class Type {
           throw new Error ("Invalid argument for " + this.name)
       })
 
-      return castToCompound(this.name, argsArray)
+      return castToCompound(this.types, this.name, argsArray)
     }
     // @TODO: Return rest arguments
     else if (this.isScalar) {
@@ -93,8 +94,14 @@ const castToScalar = (name, value) => {
   return ret
 }
 
-const castToCompound = (name, values) =>
-  new Expression (name, values)
+const castToCompound = (types, name, values) => {
+  const properties = types.reduce((acc, type, index) => {
+    const key = type.keys[0]
+    acc[key] = value => value[index]
+    return acc
+  }, {})
+  return new Expression (name, values, setVisibilityProperties(properties, "DATA"))
+}
 
 const castToPlural = (name, type, values) =>
   new Expression (name, values.map(value => castToScalar(type, value.evaluate())))

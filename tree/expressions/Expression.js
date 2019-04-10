@@ -1,16 +1,16 @@
 const toArray = require("../../utils/toArray")
 const { isFunction } = require("../../utils/is")
+const setVisibilityProperties = require("../types/setVisibilityProperties")
 
-const propertiesAny = {
+const propertiesAny = setVisibilityProperties({
   is: true,
   isPlural: false
-}
+})
 
-const propertiesPlural = {
-  ...propertiesAny,
+const propertiesPlural = setVisibilityProperties({
   isPlural: true,
   size: value => () => value.length
-}
+})
 
 class Expression {
 
@@ -24,7 +24,7 @@ class Expression {
 
   setProperties (properties) {
     this.properties = {
-      ...this.isPlural ? propertiesPlural : propertiesAny,
+      ...this.isPlural ? { ...propertiesAny, ...propertiesPlural } : propertiesAny,
       ...properties
     }
   }
@@ -36,8 +36,8 @@ class Expression {
   getProperty (name, environment) {
     if (this.hasProperty(name) === false)
       throw new Error (name + " is not a property of " + this.type)
-    const property = this.properties[name]
-    // @TODO: Remove circulair reference
+    const property = this.properties[name].property
+    // @TODO: Remove circulair reference (Function.value)
     const Function = require("./scopes/Function")
     const value = this instanceof Function ? this : this.value
     if (isFunction(property)) return property(value, environment)

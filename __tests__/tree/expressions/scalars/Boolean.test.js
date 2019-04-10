@@ -17,8 +17,8 @@ describe("Boolean", () => {
 
     test("false isFalse, isTrue", () => {
       const boolean = new Boolean(false, "false")
-      expect(typeof boolean.properties.isFalse).toBe("function")
-      expect(typeof boolean.properties.isTrue).toBe("function")
+      expect(typeof boolean.getProperty("isFalse")).toBe("function")
+      expect(typeof boolean.getProperty("isTrue")).toBe("function")
       expect(boolean.getProperty("isFalse")()).toBe(true)
       expect(boolean.getProperty("isTrue")()).toBe(false)
     })

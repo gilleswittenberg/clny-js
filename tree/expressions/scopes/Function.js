@@ -1,13 +1,14 @@
 const Expression = require("../Expression")
+const setVisibilityProperties = require("../../types/setVisibilityProperties")
 
 const isFunctionExpression = object => object instanceof Function
 
-const properties = {
+const properties = setVisibilityProperties({
   apply: expression => args => expression.apply(args),
   parameters: expression => expression.type != null ? expression.type.inputTypes.map(type => type.fullName).join(", ") : "",
   arity: expression => expression.type != null ? expression.type.inputTypes.length : 0,
   returnType: expression => expression.type != null ? expression.type.types.map(type => type.fullName).join(", ") : "Any"
-}
+})
 
 class Function extends Expression {
 

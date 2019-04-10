@@ -120,11 +120,15 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
       scope.addType(content.name, content.type)
     }
     else if (content instanceof TypeScope) {
-      const type = new Type(content.name, null, content.types)
+      const type = new Type(content.name, null, content.types, null, null, content.properties)
       scope.addType(content.name, type)
     }
     else if (scope instanceof TypeScope) {
-      scope.addType(content)
+      if (content.expressions[0] instanceof Type) {
+        scope.addType(content)
+      } else {
+        scope.addProperty(content)
+      }
     }
     else {
       scope.addExpressions(content)
@@ -170,6 +174,7 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
 }
 
 const linesToScopes = (Scope, lines) => {
+  // @TODO: Improve chaining / composition
   return mapScopeLinesToScopes(
     Scope,
     checkScopeOpeners(

@@ -116,7 +116,7 @@ describe("Type", () => {
     })
 
     test("Plural", () => {
-      const type = new Type("Bools", null, new Type("Bool"), null, null, Infinity)
+      const type = new Type("Bools", null, new Type("Bool"), null, null, null, Infinity)
       expect(type.name).toBe("Bools")
       expect(type.fullName).toBe("Bools")
       expect(type.types.length).toBe(1)
@@ -126,7 +126,7 @@ describe("Type", () => {
     })
 
     test("Scalar", () => {
-      const type = new Type("Bool", null, null, null, null, null, true)
+      const type = new Type("Bool", null, null, null, null, null, null, true)
       expect(type.name).toBe("Bool")
       expect(type.isPlural).toBe(false)
       expect(type.isScalar).toBe(true)

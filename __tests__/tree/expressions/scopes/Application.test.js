@@ -14,7 +14,7 @@ describe("Application", () => {
 
     test("Null", () => {
       const number = new Number(3)
-      const type = new Type("Null", null, null, null, null, null, true)
+      const type = new Type("Null", null, null, null, null, null, null, true)
       const application = new Application(type, number)
       const environment = new Environment()
       expect(application.evaluate(environment)).toBe(null)
@@ -22,7 +22,7 @@ describe("Application", () => {
 
     test("Boolean", () => {
       const string = new String("true")
-      const type = new Type("Boolean", null, null, null, null, null, true)
+      const type = new Type("Boolean", null, null, null, null, null, null, true)
       const application = new Application(type, string)
       const environment = new Environment()
       expect(application.evaluate(environment)).toBe(true)
@@ -30,7 +30,7 @@ describe("Application", () => {
 
     test("Number", () => {
       const number = new String("5")
-      const type = new Type("Number", null, null, null, null, null, true)
+      const type = new Type("Number", null, null, null, null, null, null, true)
       const application = new Application(type, number)
       const environment = new Environment()
       expect(application.evaluate(environment)).toBe(5)
@@ -38,7 +38,7 @@ describe("Application", () => {
 
     test("String", () => {
       const number = new Number(5)
-      const type = new Type("String", null, null, null, null, null, true)
+      const type = new Type("String", null, null, null, null, null, null, true)
       const application = new Application(type, number)
       const environment = new Environment()
       expect(application.evaluate(environment)).toBe("5")
@@ -46,8 +46,8 @@ describe("Application", () => {
 
     test("Compound", () => {
       const type = new Type("Product", null, [
-        new Type("String", null, null, null, "name", true),
-        new Type("Number", null, null, null, "price", true)
+        new Type("String", null, null, null, "name", null, true),
+        new Type("Number", null, null, null, "price", null, true)
       ])
       const application = new Application(type, [new String("Shoe"), new Number(99)])
       const environment = new Environment()

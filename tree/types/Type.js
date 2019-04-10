@@ -11,7 +11,7 @@ const Expression = require("../expressions/Expression")
 
 class Type {
 
-  constructor (name, options, types, inputTypes, keys, depth = null, isScalar = false) {
+  constructor (name, options, types, inputTypes, keys, properties = null, depth = null, isScalar = false) {
 
     this.options = toArray(options)
     this.types = toArray(types)
@@ -24,13 +24,11 @@ class Type {
     this.name = name != null ? name : this.createName()
     this.fullName = this.createFullName()
 
+    this.setProperties(toArray(properties))
+
     this.depth = toArray(depth)
     this.isPlural = this.depth.length > 0
     this.isScalar = isScalar
-  }
-
-  createFullName () {
-    return this.keys.map(key => key + ": ").join("") + this.name
   }
 
   createName () {
@@ -40,6 +38,17 @@ class Type {
     if (isEmpty(this.inputTypes)) return this.types.map(type => type.fullName).join(", ")
     // Function type
     return this.inputTypes.map(type => type.fullName).join(", ") + " -> " + this.types.map(type => type.name).join(", ")
+  }
+
+  createFullName () {
+    return this.keys.map(key => key + ": ").join("") + this.name
+  }
+
+  setProperties (properties) {
+    this.properties = properties.reduce((acc, property) => {
+      acc[property.keys[0]] = property.expressions[0].value
+      return acc
+    }, {})
   }
 
   fetch () {
@@ -62,7 +71,7 @@ class Type {
           throw new Error ("Invalid argument for " + this.name)
       })
 
-      return castToCompound(this.types, this.name, argsArray)
+      return castToCompound(this.name, this.types, this.properties, argsArray)
     }
     else if (this.isScalar) {
       if (args.length === 0)
@@ -73,6 +82,7 @@ class Type {
   }
 }
 
+// @TODO: Rename to createScalar
 const castToScalar = (name, value) => {
   const str = value + ""
   let ret
@@ -93,17 +103,21 @@ const castToScalar = (name, value) => {
   return ret
 }
 
-const castToCompound = (types, name, values) => {
+// @TODO: Rename to createCompound
+const castToCompound = (name, types, properties, values) => {
   const privateProperties = setVisibilityProperties({ init: () => expressions => expressions }, "PRIVATE")
-  const properties = types.reduce((acc, type, index) => {
+  const convenienceProperties = setVisibilityProperties(properties)
+  const propertiesFromTypes = types.reduce((acc, type, index) => {
+    // @TODO: Multiple keys
     const key = type.keys[0]
     acc[key] = ({ value }) => value[index]
     return acc
   }, {})
-  const dataProperties = setVisibilityProperties(properties, "DATA")
-  return new Expression (name, values, { ...privateProperties, ...dataProperties })
+  const dataProperties = setVisibilityProperties(propertiesFromTypes, "DATA")
+  return new Expression (name, values, { ...privateProperties, ...convenienceProperties, ...dataProperties })
 }
 
+// @TODO: Rename to createPlural
 const castToPlural = (name, type, values) =>
   new Expression (name, values.map(value => castToScalar(type, value.evaluate())))
 

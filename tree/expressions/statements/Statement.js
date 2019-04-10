@@ -6,6 +6,11 @@ class Statement extends Expression {
     super("Statement", expressions)
     this.name = name
   }
+
+  apply (args) {
+    this.arguments = args
+    return this
+  }
 }
 
 module.exports = Statement

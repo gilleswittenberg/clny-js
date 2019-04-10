@@ -48,7 +48,7 @@ class Application extends Expression {
     // @TODO: type check statement
     // @TODO: Statement.apply
     else if (isStatement(applicative)) {
-      this.value = applicative
+      this.value = applicative.apply(this.arguments)
     }
     else {
       throw new Error ("Can only apply Type, Function or Statement")

@@ -2,7 +2,7 @@ const Scalar = require("./Scalar")
 const setVisibilityProperties = require("../../types/setVisibilityProperties")
 
 const properties = setVisibilityProperties({
-  concat: value => s => value + s
+  concat: ({ value }) => s => value + s
 })
 
 class String extends Scalar {

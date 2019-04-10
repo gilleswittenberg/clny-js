@@ -4,12 +4,17 @@ const setVisibilityProperties = require("../types/setVisibilityProperties")
 
 const propertiesAny = setVisibilityProperties({
   is: true,
-  isPlural: false
+  isPlural: false,
+  keys: ({ properties }) =>
+    Object.keys(properties)
+      .map(key => properties[key])
+      .filter(property => property.visibility === "DATA")
+      .map(property => property.key)
 })
 
 const propertiesPlural = setVisibilityProperties({
   isPlural: true,
-  size: value => () => value.length
+  size: ({ value }) => () => value.length
 })
 
 class Expression {
@@ -37,10 +42,7 @@ class Expression {
     if (this.hasProperty(name) === false)
       throw new Error (name + " is not a property of " + this.type)
     const property = this.properties[name].property
-    // @TODO: Remove circulair reference (Function.value)
-    const Function = require("./scopes/Function")
-    const value = this instanceof Function ? this : this.value
-    if (isFunction(property)) return property(value, environment)
+    if (isFunction(property)) return property(this, environment)
     return property
   }
 

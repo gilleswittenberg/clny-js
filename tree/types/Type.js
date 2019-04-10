@@ -97,7 +97,7 @@ const castToScalar = (name, value) => {
 const castToCompound = (types, name, values) => {
   const properties = types.reduce((acc, type, index) => {
     const key = type.keys[0]
-    acc[key] = value => value[index]
+    acc[key] = ({ value }) => value[index]
     return acc
   }, {})
   return new Expression (name, values, setVisibilityProperties(properties, "DATA"))

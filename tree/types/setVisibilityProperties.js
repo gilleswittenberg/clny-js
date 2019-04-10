@@ -1,7 +1,7 @@
-const setVisibilityProperties = (properties, visibilty = "CONVENIENCE") =>
+const setVisibilityProperties = (properties, visibility = "CONVENIENCE") =>
   Object.keys(properties).reduce((acc, key) => {
     const property = properties[key]
-    acc[key] = { visibilty, property }
+    acc[key] = { key, visibility, property }
     return acc
   }, {})
 

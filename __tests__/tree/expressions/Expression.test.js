@@ -1,5 +1,6 @@
 const Expression = require("../../../tree/expressions/Expression")
 const Number = require("../../../tree/expressions/scalars/Number")
+const setVisibilityProperties = require("../../../tree/types/setVisibilityProperties")
 
 describe("Expression", () => {
 
@@ -28,6 +29,12 @@ describe("Expression", () => {
       expect(expression.getProperty("is")).toBe(true)
       expect(expression.getProperty("isPlural")).toBe(true)
       expect(expression.getProperty("size")()).toBe(2)
+    })
+
+    test("compound", () => {
+      const properties = { name: null, age: null }
+      const expression = new Expression ("Product", null, setVisibilityProperties(properties, "DATA"))
+      expect(expression.getProperty("keys")).toEqual(["name", "age"])
     })
   })
 

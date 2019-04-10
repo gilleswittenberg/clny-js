@@ -5,9 +5,9 @@ const isFunctionExpression = object => object instanceof Function
 
 const properties = setVisibilityProperties({
   apply: expression => args => expression.apply(args),
-  parameters: expression => expression.type != null ? expression.type.inputTypes.map(type => type.fullName).join(", ") : "",
-  arity: expression => expression.type != null ? expression.type.inputTypes.length : 0,
-  returnType: expression => expression.type != null ? expression.type.types.map(type => type.fullName).join(", ") : "Any"
+  parameters: ({ type }) => type != null ? type.inputTypes.map(type => type.fullName).join(", ") : "",
+  arity: ({ type }) => type != null ? type.inputTypes.length : 0,
+  returnType: ({ type }) => type != null ? type.types.map(type => type.fullName).join(", ") : "Any"
 })
 
 class Function extends Expression {

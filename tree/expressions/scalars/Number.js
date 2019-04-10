@@ -2,7 +2,7 @@ const Scalar = require("./Scalar")
 const setVisibilityProperties = require("../../types/setVisibilityProperties")
 
 const properties = setVisibilityProperties({
-  equals: value => n => value === n
+  equals: ({ value }) => n => value === n
 })
 
 class Number extends Scalar {

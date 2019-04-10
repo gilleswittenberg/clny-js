@@ -2,8 +2,8 @@ const Scalar = require("./Scalar")
 const setVisibilityProperties = require("../../types/setVisibilityProperties")
 
 const properties = setVisibilityProperties({
-  isFalse: value => () => value === false,
-  isTrue: value => () =>  value === true
+  isFalse: ({ value }) => () => value === false,
+  isTrue: ({ value }) => () =>  value === true
 })
 
 class Boolean extends Scalar {

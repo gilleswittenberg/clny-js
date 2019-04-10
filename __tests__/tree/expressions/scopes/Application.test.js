@@ -64,6 +64,16 @@ describe("Application", () => {
       expect(strings[0]).toBe("81")
       expect(strings[1]).toBe("82")
     })
+
+    test("single plural", () => {
+      const type = new Identity("String")
+      const application = new Application(type, [new Number(81), new Number(82)])
+      const environment = new Environment()
+      const values = application.evaluate(environment)
+      expect(values.length).toBe(2)
+      expect(values[0]).toBe("81")
+      expect(values[1]).toBe(82)
+    })
   })
 
   describe("buildins Statement", () => {

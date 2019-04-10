@@ -67,7 +67,8 @@ class Type {
     else if (this.isScalar) {
       if (args.length === 0)
         throw new Error ("Invalid number of arguments for Type casting")
-      return castToScalar(this.name, argsArray[0].evaluate())
+      const arg0 = castToScalar(this.name, argsArray[0].evaluate())
+      return argsArray.length > 1 ? new Expression(null, [arg0, ...argsArray.slice(1)]) : arg0
     }
   }
 }

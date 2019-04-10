@@ -33,7 +33,7 @@ describe("Expression", () => {
 
   describe("evaluation", () => {
 
-    test("evaluation", () => {
+    test("single", () => {
       const expression = new Expression("Number", new Number(4))
       expression.evaluate()
       expect(expression.type).toBe("Number")

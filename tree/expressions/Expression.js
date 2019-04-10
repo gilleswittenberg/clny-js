@@ -9,7 +9,7 @@ const propertiesAny = {
 const propertiesPlural = {
   ...propertiesAny,
   isPlural: true,
-  length: value => () => value.length
+  size: value => () => value.length
 }
 
 class Expression {

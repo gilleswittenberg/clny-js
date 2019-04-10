@@ -27,7 +27,7 @@ describe("Expression", () => {
       expression.evaluate()
       expect(expression.getProperty("is")).toBe(true)
       expect(expression.getProperty("isPlural")).toBe(true)
-      expect(expression.getProperty("length")()).toBe(2)
+      expect(expression.getProperty("size")()).toBe(2)
     })
   })
 

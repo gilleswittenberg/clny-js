@@ -64,7 +64,6 @@ class Type {
 
       return castToCompound(this.types, this.name, argsArray)
     }
-    // @TODO: Return rest arguments
     else if (this.isScalar) {
       if (args.length === 0)
         throw new Error ("Invalid number of arguments for Type casting")
@@ -105,6 +104,5 @@ const castToCompound = (types, name, values) => {
 
 const castToPlural = (name, type, values) =>
   new Expression (name, values.map(value => castToScalar(type, value.evaluate())))
-
 
 module.exports = Type

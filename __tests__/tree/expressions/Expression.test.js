@@ -30,12 +30,14 @@ describe("Expression", () => {
       expect(expression.getProperty("is")).toBe(true)
       expect(expression.getProperty("isPlural")).toBe(true)
       expect(expression.getProperty("size")).toBe(2)
+      expect(expression.isCompound).toBe(false)
     })
 
     test("keys", () => {
       const properties = { name: null, age: null }
       const expression = new Expression ("Product", null, setVisibilityProperties(properties, "DATA"))
       expect(expression.getProperty("keys")).toEqual(["name", "age"])
+      expect(expression.isCompound).toBe(true)
     })
 
     test("empty", () => {

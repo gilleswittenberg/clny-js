@@ -4,22 +4,18 @@ const setVisibilityProperties = require("../types/setVisibilityProperties")
 
 const propertiesAny = setVisibilityProperties({
   is: true,
-  isPlural: false,
   keys: ({ properties }) => {
     return Object.keys(properties)
       .map(key => properties[key])
       .filter(property => property.visibility === "DATA")
       .map(property => property.key)
   },
+  isPlural: ({ isPlural }) => isPlural,
   size: ({ isEmpty, isSingle, value }) => {
     if (isEmpty) return 0
     if (isSingle) return 1
     return value.length
   }
-})
-
-const propertiesPlural = setVisibilityProperties({
-  isPlural: true
 })
 
 class Expression {
@@ -30,11 +26,12 @@ class Expression {
     this.addExpressions(expressions)
     this.isEvaluated = false
     this.setProperties(properties)
+    this.isCompound = this.getProperty("keys").length > 0
   }
 
   setProperties (properties) {
     this.properties = {
-      ...this.isPlural ? { ...propertiesAny, ...propertiesPlural } : propertiesAny,
+      ...propertiesAny,
       ...properties
     }
   }

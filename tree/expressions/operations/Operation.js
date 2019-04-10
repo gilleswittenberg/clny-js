@@ -40,8 +40,6 @@ class Operation extends Expression {
 
     const operands = this.operands.map(operand => operand.evaluate(env))
 
-    // @TODO: Check if operands types match
-    // @TODO: Check if operator is available for specific type
     const t = typeof operands[0]
     const type =
       t === "boolean" ? "Boolean" :

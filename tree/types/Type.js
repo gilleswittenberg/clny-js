@@ -94,12 +94,14 @@ const castToScalar = (name, value) => {
 }
 
 const castToCompound = (types, name, values) => {
+  const privateProperties = setVisibilityProperties({ init: () => expressions => expressions }, "PRIVATE")
   const properties = types.reduce((acc, type, index) => {
     const key = type.keys[0]
     acc[key] = ({ value }) => value[index]
     return acc
   }, {})
-  return new Expression (name, values, setVisibilityProperties(properties, "DATA"))
+  const dataProperties = setVisibilityProperties(properties, "DATA")
+  return new Expression (name, values, { ...privateProperties, ...dataProperties })
 }
 
 const castToPlural = (name, type, values) =>

@@ -22,11 +22,17 @@ class Expression {
 
   constructor (type, expressions, properties = {}) {
     this.type = type // string | Type
-    this.expressions = []
-    this.addExpressions(expressions)
     this.isEvaluated = false
+
+    // properties
     this.setProperties(properties)
     this.isCompound = this.getProperty("keys").length > 0
+
+    // expressions
+    const init = this.hasProperty("init", "PRIVATE") ? this.getProperty("init", "PRIVATE") : null
+    const parsedExpressions = init != null ? init(expressions) : expressions
+    this.expressions = []
+    this.addExpressions(parsedExpressions)
   }
 
   setProperties (properties) {
@@ -36,15 +42,20 @@ class Expression {
     }
   }
 
-  hasProperty (name) {
-    return this.properties[name] !== undefined
+  hasProperty (name, visibility) {
+    const property = this.properties[name]
+    if (property === undefined) return false
+    return visibility != null ? property.visibility === visibility : true
   }
 
-  getProperty (name, environment) {
-    if (this.hasProperty(name) === false)
+  getProperty (name, visibility) {
+    if (this.hasProperty(name, visibility) === false)
       throw new Error (name + " is not a property of " + this.type)
-    const property = this.properties[name].property
-    if (isFunction(property)) return property(this, environment)
+    const entry = this.properties[name]
+    if (visibility != null && entry.visibility !== visibility)
+      throw new Error (name + " does not have the correct visibility on " + this.type)
+    const property = entry.property
+    if (isFunction(property)) return property(this)
     return property
   }
 

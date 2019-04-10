@@ -1,4 +1,5 @@
 const Type = require("../../../tree/types/Type")
+const Key = require("../../../tree/Key")
 
 describe("Type", () => {
 
@@ -57,7 +58,7 @@ describe("Type", () => {
     })
 
     test("product", () => {
-      const type = new Type("Person", null, [new Type("String", null, null, null, "name"), new Type("Bool", null, null, null, "isPerson")])
+      const type = new Type("Person", null, [new Type("String", null, null, null, new Key("name")), new Type("Bool", null, null, null, new Key("isPerson"))])
       expect(type.name).toBe("Person")
       expect(type.options).toEqual([])
       expect(type.types.length).toBe(2)
@@ -68,7 +69,7 @@ describe("Type", () => {
     })
 
     test("unnamed product", () => {
-      const type = new Type(null, null, [new Type("String", null, null, null, "name"), new Type("Bool", null, null, null, "isPerson")])
+      const type = new Type(null, null, [new Type("String", null, null, null, new Key("name")), new Type("Bool", null, null, null, new Key("isPerson"))])
       expect(type.name).toBe("name: String, isPerson: Bool")
       expect(type.options).toEqual([])
       expect(type.types.length).toBe(2)
@@ -79,17 +80,18 @@ describe("Type", () => {
     })
 
     test("named", () => {
-      const type = new Type("String", null, null, null, "key")
+      const type = new Type("String", null, null, null, new Key("key"))
       expect(type.name).toBe("String")
       expect(type.fullName).toBe("key: String")
-      expect(type.keys).toEqual(["key"])
+      expect(type.keys[0].name).toBe("key")
     })
 
     test("aliased", () => {
-      const type = new Type("String", null, null, null, ["key", "alias"])
+      const type = new Type("String", null, null, null, [new Key("key"), new Key("alias")])
       expect(type.name).toBe("String")
       expect(type.fullName).toBe("key: alias: String")
-      expect(type.keys).toEqual(["key", "alias"])
+      expect(type.keys[0].name).toEqual("key")
+      expect(type.keys[1].name).toEqual("alias")
     })
 
     test("function", () => {
@@ -103,8 +105,8 @@ describe("Type", () => {
     })
 
     test("function named arguments", () => {
-      const arg0 = new Type ("String", null, null, null, "s")
-      const arg1 = new Type ("Number", null, null, null, "n")
+      const arg0 = new Type ("String", null, null, null, new Key("s"))
+      const arg1 = new Type ("Number", null, null, null, new Key("n"))
       const type = new Type(null, null, new Type("Bool"), [arg0, arg1])
       expect(type.inputTypes.length).toBe(2)
       expect(type.inputTypes[0]).toBeInstanceOf(Type)

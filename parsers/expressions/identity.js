@@ -14,14 +14,17 @@ const Identity = require("../../tree/expressions/Identity")
 
 const identity = pipeParsers([
   choice([
-    key,
+    pipeParsers([
+      key,
+      mapTo(key => key.name)
+    ]),
     pipeParsers([
       sequenceOf([dot, key]),
-      mapTo(([dot, key]) => dot + key)
+      mapTo(([dot, key]) => dot + key.name)
     ]),
     dot
   ]),
-  mapTo(key => new Identity(key))
+  mapTo(str => new Identity(str))
 ])
 
 module.exports = identity

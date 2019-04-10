@@ -32,7 +32,7 @@ describe("root function", () => {
     expect(result).toBeInstanceOf(Scope)
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
-    expect(result.expressions[0].keys).toEqual(["concat"])
+    expect(result.expressions[0].keys[0].name).toBe("concat")
     expect(result.expressions[0].expressions.length).toBe(1)
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(Function)
     expect(result.expressions[0].expressions[0].expressions[0]).toBeInstanceOf(FunctionScope)

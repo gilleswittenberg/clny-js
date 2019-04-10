@@ -41,12 +41,16 @@ class Type {
   }
 
   createFullName () {
-    return this.keys.map(key => key + ": ").join("") + this.name
+    return this.keys.map(key => key.name + ": ").join("") + this.name
   }
 
   setProperties (properties) {
     this.properties = properties.reduce((acc, property) => {
-      acc[property.keys[0]] = property.expressions[0].value
+      const key = property.keys[0]
+      acc[key.name] = {
+        property: property.expressions[0].value,
+        visibility: key.visibility
+      }
       return acc
     }, {})
   }
@@ -105,8 +109,13 @@ const castToScalar = (name, value) => {
 
 // @TODO: Rename to createCompound
 const castToCompound = (name, types, properties, values) => {
-  const privateProperties = setVisibilityProperties({ init: () => expressions => expressions }, "PRIVATE")
-  const convenienceProperties = setVisibilityProperties(properties)
+  const filterPropertiesByVisibility = (properties, visibility) => Object.keys(properties).reduce((acc, name) => {
+    const property = properties[name]
+    if (property.visibility === visibility) acc[name] = property
+    return acc
+  }, {})
+  const privateProperties = { ...setVisibilityProperties({ init: () => expressions => expressions }, "PRIVATE"), ...filterPropertiesByVisibility(properties, "PRIVATE") }
+  const convenienceProperties = filterPropertiesByVisibility(properties, "CONVENIENCE")
   const propertiesFromTypes = types.reduce((acc, type, index) => {
     // @TODO: Multiple keys
     const key = type.keys[0]

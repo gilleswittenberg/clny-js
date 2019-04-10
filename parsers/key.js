@@ -25,7 +25,7 @@ const key = pipeParsers([
     lowercase,
     possibly(letters)
   ]),
-  mapTo(([prefix, first, chars]) => charsToString(first, chars))
+  mapTo(([prefix, first, chars]) => new Key(charsToString(first, chars), prefix))
 ])
 
 module.exports = key

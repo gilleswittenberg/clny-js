@@ -4,6 +4,7 @@ const Number = require("../../../../tree/expressions/scalars/Number")
 const Identity = require("../../../../tree/expressions/Identity")
 const Environment = require("../../../../tree/expressions/scopes/Environment")
 const Type = require("../../../../tree/types/Type")
+const Key = require("../../../../tree/Key")
 
 describe("Function", () => {
 
@@ -48,8 +49,8 @@ describe("Function", () => {
 
       test("function type", () => {
         const type = new Type(null, null, new Type("Number"), [
-          new Type("Number", null, null, null, "m"),
-          new Type("Number", null, null, null, "n")
+          new Type("Number", null, null, null, new Key("m")),
+          new Type("Number", null, null, null, new Key("n"))
         ])
         const func = new Function(type, new Number(1))
         expect(func.getProperty("parameters")).toBe("m: Number, n: Number")

@@ -25,7 +25,7 @@ class Identity extends Expression {
     // @TODO: Move Error to Environment
     if (env.has(this.key) === false)
       throw new Error (this.key + " is not defined in environment")
-      
+
     const expressions = env.get(this.key).value
 
     this.addExpressions(expressions)

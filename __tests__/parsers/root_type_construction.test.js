@@ -33,12 +33,16 @@ describe("root type construction", () => {
   test("properties", () => {
     const content = `Person:
   name: String
-  prop: "a"
+  'prop: "a"
+  _private: "p"
 `
     const result = toValue(parse(rootScope)(content))
     expect(result.types.Person).toBeInstanceOf(Type)
     expect(result.types.Person.types.length).toBe(1)
-    expect(result.types.Person.properties).toEqual({ prop: "a" })
+    expect(result.types.Person.properties).toEqual({
+      prop: { property: "a", visibility: "CONVENIENCE" },
+      private: { property: "p", visibility: "PRIVATE" }
+    })
     expect(result.expressions.length).toBe(0)
   })
 })

@@ -34,6 +34,26 @@ describe("Type", () => {
       const type = new Type("Strings", null, stringType, null, null, null, Infinity)
       expect(type.apply([number, number1]).evaluate()).toEqual(["5", "6"])
     })
+
+    test("compound property", () => {
+      const personType = new Type("Product", null, [
+        new Type("String", null, null, null, "title", null, true),
+        new Type("Number", null, null, null, "price", null, true)
+      ])
+
+      const title = new String("Shoe")
+      const price = new Number(35)
+      const person = personType.apply([title, price])
+      const properties = {
+        show: {
+          property: "Show String",
+          visibility: "CONVENIENCE"
+        }
+      }
+      person.properties = properties
+      person.evaluate()
+      expect(person.getProperty("show")).toBe("Show String")
+    })
   })
 
   describe("type check", () => {

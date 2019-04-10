@@ -84,7 +84,7 @@ test("parentheses deep", () => {
 test("single assignment", () => {
   const value = toValue(parse(parser)("k: 5"))
   expect(value).toBeInstanceOf(Assignment)
-  expect(value.keys[0]).toBe("k")
+  expect(value.keys[0].name).toBe("k")
   expect(value.expressions[0]).toBeInstanceOf(Number)
   expect(value.expressions[0].literal).toBe("5")
 })
@@ -92,7 +92,7 @@ test("single assignment", () => {
 test("single assignment plural", () => {
   const value = toValue(parse(parser)("arr: (6, 7)"))
   expect(value).toBeInstanceOf(Assignment)
-  expect(value.keys[0]).toBe("arr")
+  expect(value.keys[0].name).toBe("arr")
   expect(value.expressions[0].isPlural).toBe(true)
   expect(value.expressions[0].expressions[0]).toBeInstanceOf(Number)
   expect(value.expressions[0].expressions[0].literal).toBe("6")
@@ -111,9 +111,9 @@ test("plural assignments", () => {
 test("alias assignments", () => {
   const value = toValue(parse(parser)("key: alias: 8"))
   expect(value).toBeInstanceOf(Assignment)
-  expect(value.keys).toEqual(["key"])
+  expect(value.keys[0].name).toBe("key")
   expect(value.expressions[0]).toBeInstanceOf(Assignment)
-  expect(value.expressions[0].keys).toEqual(["alias"])
+  expect(value.expressions[0].keys[0].name).toBe("alias")
 })
 
 test("plural assignment, expression, assignment", () => {

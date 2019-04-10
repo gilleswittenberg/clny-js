@@ -11,6 +11,7 @@ const boolean = require("./scalars/boolean")
 const number = require("./scalars/number")
 const string = require("./scalars/string")
 const identity = require("./identity")
+const empty = require("./empty")
 
 const keyPrefix = require("../keyPrefix")
 const keyPostfix = require("../keyPostfix")
@@ -35,7 +36,8 @@ const basic = choice([
   number,
   string,
   identity,
-  type
+  type,
+  empty
 ])
 
 // @TODO: Merge mapPostfixToApplication, mapToApplication

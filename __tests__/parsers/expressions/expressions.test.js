@@ -16,6 +16,11 @@ test("single", () => {
   expect(toValue(parse(parser)("(6)"))).toBeInstanceOf(Number)
 })
 
+test("empty", () => {
+  expect(toValue(parse(parser)("()"))).toBeInstanceOf(Expression)
+  expect(toValue(parse(parser)("(  )"))).toBeInstanceOf(Expression)
+})
+
 test("arithmetic", () => {
   const value = toValue(parse(parser)("x + y"))
   expect(value).toBeInstanceOf(Operation)

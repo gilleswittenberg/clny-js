@@ -93,13 +93,11 @@ const castToScalar = (name, value) => {
   return ret
 }
 
-const castToCompound = (name, values) => {
-  return new Expression (name, values)
-}
+const castToCompound = (name, values) =>
+  new Expression (name, values)
 
-const castToPlural = (name, type, values) => {
-  return new Expression (name, values.map(value => castToScalar(type, value.evaluate())))
-}
+const castToPlural = (name, type, values) =>
+  new Expression (name, values.map(value => castToScalar(type, value.evaluate())))
 
 
 module.exports = Type

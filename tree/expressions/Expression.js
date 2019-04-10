@@ -15,7 +15,7 @@ const propertiesPlural = {
 class Expression {
 
   constructor (type, expressions, properties = {}) {
-    this.type = type // string
+    this.type = type // string | Type
     this.expressions = []
     this.addExpressions(expressions)
     this.isEvaluated = false

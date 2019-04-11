@@ -13,7 +13,7 @@ class Property extends Expression {
     if (this.isEvaluated) return this.value
 
     const expression = this.expressions[0].fetch(env)
-    const property = expression.getProperty(this.key)
+    const property = expression.getProperty(this.key.name)
 
     // @TODO: Move calling function to getProperty
     this.value = typeof property === "function" ? property() : property

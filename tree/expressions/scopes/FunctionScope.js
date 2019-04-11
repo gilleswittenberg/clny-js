@@ -57,7 +57,7 @@ class FunctionScope extends Scope {
           expression.expressions.length === 1 ? expression.expressions[0] :
             expression.expressions
         toArray(expressions).forEach(expression => expression.evaluate(env))
-        expression.keys.forEach(key => scope.env.set(key, expressions))
+        expression.keys.forEach(key => scope.env.set(key.name, expressions))
       }
       // Conditional Statements
       else if (isSecondaryConditionalStatement(expression)) {

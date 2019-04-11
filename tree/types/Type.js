@@ -55,8 +55,11 @@ class Type {
     }, {})
   }
 
-  fetch () {
-    return this
+  fetch (env) {
+    const value = env.get(this.name)
+    if (value === undefined || value.isType === false)
+      throw new Error (this.name + " is not a Type")
+    return value.value
   }
 
   apply (args) {
@@ -66,11 +69,11 @@ class Type {
     }
     else if (this.isCompound) {
 
-      if (this.types.length !== args.length)
+      if (this.types.length !== argsArray.length)
         throw new Error ("Invalid number of arguments for " + this.name)
 
       this.types.map((type, index) => {
-        const argument = args[index]
+        const argument = argsArray[index]
         if (argument.type !== type.name)
           throw new Error ("Invalid argument for " + this.name)
       })

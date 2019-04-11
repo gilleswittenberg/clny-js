@@ -5,8 +5,9 @@ const Assignment = require("../../../../tree/expressions/Assignment")
 const Identity = require("../../../../tree/expressions/Identity")
 const Statement = require("../../../../tree/expressions/statements/Statement")
 const ConditionalStatement = require("../../../../tree/expressions/statements/ConditionalStatement")
+const Key = require("../../../../tree/Key")
 
-describe("function scope", () => {
+describe("FunctionScope", () => {
 
   test("return statement", () => {
     const expression = new Number(8)
@@ -23,14 +24,16 @@ describe("function scope", () => {
   })
 
   test("assignment", () => {
-    const assignment = new Assignment("a", new Number(11))
+    const key = new Key("a")
+    const assignment = new Assignment(key, new Number(11))
     const identity = new Identity("a")
     const scope = new FunctionScope(null, [assignment, identity])
     expect(scope.evaluate()).toEqual(11)
   })
 
   test("scope identity", () => {
-    const scope = new FunctionScope("scope", new Number(12))
+    const key = new Key("scope")
+    const scope = new FunctionScope(key, new Number(12))
     const identity = new Identity("scope")
     const scopeOuter = new FunctionScope(null, [scope, identity])
     expect(scopeOuter.evaluate()).toEqual(12)

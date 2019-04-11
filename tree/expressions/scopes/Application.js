@@ -23,11 +23,12 @@ class Application extends Expression {
     const firstExpression = this.expressions[0]
 
     let applicative = firstExpression.fetch(env)
+    const args = this.arguments[0] && this.arguments[0].isPlural ? this.arguments[0].expressions : this.arguments
 
     // calling function to get buildins
     // @TODO: buildin statements as Function
     if (applicative.name === "buildInStatement") {
-      applicative = applicative(this.arguments)
+      applicative = applicative(args)
     }
 
     // apply (partial application)
@@ -36,19 +37,19 @@ class Application extends Expression {
     }
 
     if (isType(applicative)) {
-      this.value = applicative.apply(this.arguments).evaluate(env)
+      this.value = applicative.apply(args).evaluate(env)
     }
     else if (isFunctionExpression(applicative)) {
       // set Environment, only for anonymous function declarations
       if (applicative.hasEnvironment() === false) {
         applicative.setEnvironment(env)
       }
-      this.value = applicative.apply(this.arguments)
+      this.value = applicative.apply(args)
     }
     // @TODO: type check statement
     // @TODO: Statement.apply
     else if (isStatement(applicative)) {
-      this.value = applicative.apply(this.arguments)
+      this.value = applicative.apply(args)
     }
     else {
       throw new Error ("Can only apply Type, Function or Statement")

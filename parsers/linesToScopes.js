@@ -125,7 +125,8 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
     }
     else if (scope instanceof TypeScope) {
       if (content.expressions[0] instanceof Type) {
-        scope.addType(content)
+        // @TODO: Set keys from Assignment => Type
+        scope.addType(content.expressions[0])
       } else {
         scope.addProperty(content)
       }

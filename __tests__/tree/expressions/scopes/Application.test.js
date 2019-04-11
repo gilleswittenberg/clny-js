@@ -49,8 +49,10 @@ describe("Application", () => {
         new Type("String", null, null, null, "name", null, true),
         new Type("Number", null, null, null, "price", null, true)
       ])
-      const application = new Application(type, [new String("Shoe"), new Number(99)])
       const environment = new Environment()
+      environment.set("Product", type, true)
+      const identity = new Identity("Product")
+      const application = new Application(identity, [new String("Shoe"), new Number(99)])
       const product = application.evaluate(environment)
       expect(product[0]).toBe("Shoe")
       expect(product[1]).toBe(99)

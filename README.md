@@ -3,9 +3,10 @@
 Syntax implementation using parser combinator library (https://github.com/francisrstokes/arcsecond)
 
 ## commands
-- `node index.js json  { path }`
-- `node index.js run   { path }`
-- `node index.js parse { path }`
+- `node cli.js run   { path }`
+- `node cli.js json  { path }`
+- `node cli.js parse { path }`
+- `node repl.js`
 
 ## development
 - `npm test`

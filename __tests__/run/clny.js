@@ -1,6 +1,6 @@
 const { execSync } = require("child_process")
 
-const runFile = file => execSync("node index.js run sources/run/" + file).toString()
+const runFile = file => execSync("node cli.js run sources/run/" + file).toString()
 const outputToLinesAndResult = output => {
   const splitted = output.split("\n").slice(0, -1)
   const lines = splitted.slice(0, -1)

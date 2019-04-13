@@ -1,35 +1,19 @@
-const fs = require("fs")
-const assert = require("assert").strict
-
-const scripts = ["json", "run", "parse"]
-const scriptsString = scripts.join(" / ")
-const message = "Fail!, documentation: `node index.js (" + scriptsString + ") --file`"
-
-const script = process.argv[2]
-assert.ok(scripts.includes(script), message)
-
-const path = process.argv[3]
-assert.ok(path, message)
-
-// @TODO: Error handling
-const fileContent = fs.readFileSync(path).toString()
-
-
-// evaluation
-
 const { parse, toPromise } = require("arcsecond")
 const root = require("./parsers/root")
-const util = require("util")
-const asData = script === scripts[0] ? true : false // argument "json"
 
-const rootScope = root(asData)
+// mode: "run" | "json" | "parse"
+const clny = async (content, mode = "run") => {
 
-const evaluate = rootScope => rootScope.evaluate()
-const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
+  const asData = mode === "json"
+  const shouldEvaluate = mode !== "parse"
+  
+  const rootScope = root(asData)
+  try {
+    const ast = await toPromise(parse(rootScope)(content))
+    return shouldEvaluate ? ast.evaluate() : ast
+  } catch (err) {
+    return new Error (err)
+  }
+}
 
-const onSuccess = rootScope => script === "parse" ? output(rootScope) : output(evaluate(rootScope))
-const onError = err => console.error(err)
-
-toPromise(parse(rootScope)(fileContent))
-  .then(onSuccess)
-  .catch(onError)
+module.exports = clny

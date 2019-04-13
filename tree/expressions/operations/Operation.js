@@ -40,6 +40,7 @@ class Operation extends Expression {
 
     const operands = this.operands.map(operand => operand.evaluate(env))
 
+    let operation
     const t = typeof operands[0]
     const type =
       t === "boolean" ? "Boolean" :
@@ -49,13 +50,23 @@ class Operation extends Expression {
 
     switch (type) {
     case "Boolean":
-      return (new BooleanLogic(this.operator, ...operands)).evaluate()
+      operation = new BooleanLogic(this.operator, ...operands)
+      break
     case "Number":
-      if (this.operator === ",,") return (new Range(...operands)).evaluate()
-      return (new Arithmetic(this.operator, ...operands)).evaluate()
+      if (this.operator === ",,") {
+        operation = new Range(...operands)
+      } else {
+        operation = new Arithmetic(this.operator, ...operands)
+      }
+      break
     case "String":
-      return (new StringConcatenation(...operands)).evaluate()
+      operation = new StringConcatenation(...operands)
+      break
     }
+    const value = operation.evaluate()
+    this.value = value
+    this.isEvaluated = true
+    return this.value
   }
 }
 

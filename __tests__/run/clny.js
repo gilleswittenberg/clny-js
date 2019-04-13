@@ -33,4 +33,9 @@ describe("run", () => {
     const [,lines] = await run("type-constructor.clny")
     expect(lines.length).toBe(1)
   })
+
+  test("arithmetic", async () => {
+    const [result] = await run("arithmetic.clny")
+    expect(result).toBe(3)
+  })
 })

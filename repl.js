@@ -6,7 +6,7 @@ const output = result => console.info(util.inspect(result, { showHidden: false, 
 
 const run = async (cmd, callback) => {
   try {
-    const result = await clny(cmd)
+    const [result] = await clny(cmd)
     callback(output(result))
   } catch (err) {
     callback(err)

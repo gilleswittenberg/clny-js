@@ -21,7 +21,7 @@ const fileContent = fs.readFileSync(path).toString()
 const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
 const main = async () => {
   try {
-    const result = await clny(fileContent, script)
+    const [result] = await clny(fileContent, script)
     output(result)
   } catch (err) {
     console.error(err)

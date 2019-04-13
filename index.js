@@ -1,16 +1,20 @@
 const { parse, toPromise } = require("arcsecond")
 const root = require("./parsers/root")
+const Output = require("./tree/Output")
 
 // mode: "run" | "json" | "parse"
-const clny = async (content, mode = "run") => {
+const clny = async (content, mode = "run", shouldLog = true) => {
+
+  Output.setShouldLog(shouldLog)
 
   const asData = mode === "json"
   const shouldEvaluate = mode !== "parse"
-  
+
   const rootScope = root(asData)
   try {
     const ast = await toPromise(parse(rootScope)(content))
-    return shouldEvaluate ? ast.evaluate() : ast
+    const result = shouldEvaluate ? ast.evaluate() : ast
+    return [result, Output.read()]
   } catch (err) {
     return new Error (err)
   }

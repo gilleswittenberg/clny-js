@@ -5,6 +5,7 @@ const Statement = require("../statements/Statement")
 const ConditionalStatement = require("../statements/ConditionalStatement")
 const Identity = require("../Identity")
 const Environment = require("./Environment")
+const Output = require("../../Output")
 
 const toArray = require("../../../utils/toArray")
 const { isLast } = require("../../../utils/arrayLast")
@@ -80,20 +81,13 @@ class FunctionScope extends Scope {
 
       // print
       if (isPrintStatement(expression)) {
-        // @TODO: Move logic into PrintStatement
         const name = expression.name
         const val = toArray(expression.value).join(", ")
         const expression0 = expression.expressions[0]
         // @TODO: Type for Plural
         // Reading name from Application > Type
         const type = expression0 instanceof Identity ? expression0.expressions[0].expressions[0].name : expression0.type
-        const value =
-          name === "print" ? val :
-            name === "log" ? new Date().toLocaleString() + " " + val :
-              name === "debug" ? type + " " + val :
-                (() => { throw new Error ("Invalid Print Statement") })()
-        // eslint-disable-next-line no-console
-        console.log(value)
+        Output.print(name, val, type)
       }
 
       // return

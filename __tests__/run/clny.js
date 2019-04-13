@@ -1,37 +1,36 @@
-const { execSync } = require("child_process")
+const fs = require("fs")
+const { promisify } = require("util")
+const readFile = promisify(fs.readFile)
+const clny = require("../../index")
 
-const runFile = file => execSync("node cli.js run sources/run/" + file).toString()
-const outputToLinesAndResult = output => {
-  const splitted = output.split("\n").slice(0, -1)
-  const lines = splitted.slice(0, -1)
-  // 5 is length of quotes around output
-  const result = splitted[splitted.length - 1].slice(5, -5)
-  return [lines, result]
+const run = async file => {
+  const path = "sources/run/" + file
+  const content = await readFile(path)
+  return await clny(content.toString(), null, false)
 }
-const run = file => outputToLinesAndResult(runFile(file))
 
 describe("run", () => {
 
-  test("cast-to-string", () => {
-    const [lines, result] = run("cast-to-string.clny")
+  test("cast-to-string", async () => {
+    const [result, lines] = await run("cast-to-string.clny")
     expect(lines.length).toBe(0)
-    expect(result).toBe("'5'")
-  })
-
-  test("functions", () => {
-    const [lines, result] = run("functions.clny")
-    expect(lines.length).toBe(5)
-    expect(result).toBe("'G'")
-  })
-
-  test("output", () => {
-    const [lines, result] = run("output.clny")
-    expect(lines.length).toBe(3)
     expect(result).toBe("5")
   })
 
-  test("type-constructor", () => {
-    const [lines] = run("type-constructor.clny")
+  test("functions", async () => {
+    const [result, lines] = await run("functions.clny")
+    expect(lines.length).toBe(5)
+    expect(result).toBe("G")
+  })
+
+  test("output", async () => {
+    const [result, lines] = await run("output.clny")
+    expect(lines.length).toBe(3)
+    expect(result).toBe(5)
+  })
+
+  test("type-constructor", async () => {
+    const [,lines] = await run("type-constructor.clny")
     expect(lines.length).toBe(1)
   })
 })

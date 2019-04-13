@@ -5,7 +5,7 @@ const Output = require("./tree/Output")
 // mode: "run" | "json" | "parse"
 const clny = async (content, mode = "run", shouldLog = true) => {
 
-  Output.setShouldLog(shouldLog)
+  Output.clear().setShouldLog(shouldLog)
 
   const asData = mode === "json"
   const shouldEvaluate = mode !== "parse"
@@ -14,7 +14,7 @@ const clny = async (content, mode = "run", shouldLog = true) => {
   try {
     const ast = await toPromise(parse(rootScope)(content))
     const result = shouldEvaluate ? ast.evaluate() : ast
-    return [result, Output.read()]
+    return [result, Output.lines]
   } catch (err) {
     return new Error (err)
   }

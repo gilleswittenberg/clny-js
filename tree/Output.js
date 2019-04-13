@@ -2,11 +2,12 @@ class Output {
 
   constructor () {
     this.shouldLog = false
-    this.lines = []
+    this.clear()
   }
 
   setShouldLog (shouldLog) {
     this.shouldLog = shouldLog
+    return this
   }
 
   print (verbosity, value, type = "UNKNOWN TYPE") {
@@ -25,6 +26,11 @@ class Output {
 
   read () {
     return this.lines.join("\n") + "\n"
+  }
+
+  clear () {
+    this.lines = []
+    return this
   }
 }
 

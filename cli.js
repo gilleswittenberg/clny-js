@@ -4,12 +4,12 @@ const util = require("util")
 const clny = require(".")
 
 // cli arguments
-const scripts = ["json", "run", "parse"]
-const scriptsString = scripts.join(" / ")
-const message = "Fail!, documentation: `node index.js (" + scriptsString + ") --file`"
+const modes = ["json", "run", "parse"]
+const modesString = modes.join(" / ")
+const message = "Fail!, documentation: `node index.js (" + modesString + ") --file`"
 
-const script = process.argv[2]
-assert.ok(scripts.includes(script), message)
+const mode = process.argv[2]
+assert.ok(modes.includes(mode), message)
 
 const path = process.argv[3]
 assert.ok(path, message)
@@ -21,7 +21,7 @@ const fileContent = fs.readFileSync(path).toString()
 const output = result => console.info(util.inspect(result, { showHidden: false, depth: null, colors: true }))
 const main = async () => {
   try {
-    const [result] = await clny(fileContent, script)
+    const [result] = await clny(fileContent, mode)
     output(result)
   } catch (err) {
     throw err

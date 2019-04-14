@@ -86,7 +86,7 @@ class FunctionScope extends Scope {
         const expression0 = expression.expressions[0]
         // @TODO: Type for Plural
         // Reading name from Application > Type
-        const type = expression0 instanceof Identity ? expression0.expressions[0].expressions[0].name : expression0.type
+        const type = expression0 instanceof Identity ? expression0.expressions[0].name : expression0.type
         Output.print(name, val, type)
       }
 

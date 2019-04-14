@@ -16,7 +16,7 @@ const clny = async (content, mode = "run", shouldLog = true) => {
     const result = shouldEvaluate ? ast.evaluate() : ast
     return [result, Output.lines]
   } catch (err) {
-    return new Error (err)
+    throw new Error (err)
   }
 }
 

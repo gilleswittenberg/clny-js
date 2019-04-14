@@ -1,0 +1,9 @@
+# comment
+
+print "Hello World"
+
+message: "a"
+
+print message
+
+1 + 2 * 3

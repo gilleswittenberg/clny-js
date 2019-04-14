@@ -3,6 +3,7 @@ const Statement = require("../statements/Statement")
 const Type = require("../../types/Type")
 const Function = require("./Function")
 const toArray = require("../../../utils/toArray")
+const { isFunction } = require("../../../utils/is")
 
 const isStatement = object => object instanceof Statement
 const isApplication = object => object instanceof Application
@@ -27,7 +28,7 @@ class Application extends Expression {
 
     // calling function to get buildins
     // @TODO: buildin statements as Function
-    if (applicative.name === "buildInStatement") {
+    if (isFunction(applicative)) {
       applicative = applicative(args)
     }
 

@@ -24,7 +24,7 @@ const main = async () => {
     const [result] = await clny(fileContent, script)
     output(result)
   } catch (err) {
-    console.error(err)
+    throw err
   }
 }
 

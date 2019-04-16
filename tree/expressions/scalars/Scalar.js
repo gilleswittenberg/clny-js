@@ -16,6 +16,10 @@ class Scalar extends Expression {
   evaluate () {
     return this.value
   }
+
+  printTree () {
+    return [this.type, this.value]
+  }
 }
 
 module.exports = Scalar

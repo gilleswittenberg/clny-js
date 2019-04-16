@@ -86,6 +86,10 @@ class Expression {
     this.isEvaluated = true
     return this.value
   }
+
+  printTree () {
+    return [this.type, ...this.expressions.map(expression => expression.printTree())]
+  }
 }
 
 module.exports = Expression

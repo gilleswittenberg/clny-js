@@ -13,7 +13,7 @@ const clny = async (content, mode = "run", shouldLog = true) => {
   const rootScope = root(asData)
   try {
     const ast = await toPromise(parse(rootScope)(content))
-    const result = shouldEvaluate ? ast.evaluate() : ast
+    const result = shouldEvaluate ? ast.evaluate() : ast.printTree()
     return [result, Output.lines]
   } catch (err) {
     throw err

@@ -6,7 +6,7 @@ class Range extends Operation {
 
   constructor (start, end) {
     super("INFIX", ",,", start, end)
-    this.type = "Numbers"
+    this.type = "Range"
   }
 
   typeCheck () {
@@ -21,6 +21,7 @@ class Range extends Operation {
     const range = this.createRange(start, end)
 
     const expressions = range.map(n => new Number(n))
+    this.expressions = []
     this.addExpressions(expressions)
 
     this.value = this.expressions.map(expression => expression.evaluate(env))

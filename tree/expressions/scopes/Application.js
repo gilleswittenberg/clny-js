@@ -60,6 +60,11 @@ class Application extends Expression {
     this.isEvaluated = true
     return this.value
   }
+
+  printTree () {
+    // @TODO: Show name of applicative
+    return [this.type, ...this.arguments.map(argument => argument.printTree())]
+  }
 }
 
 module.exports = Application

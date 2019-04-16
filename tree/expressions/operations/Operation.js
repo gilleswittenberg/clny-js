@@ -4,7 +4,7 @@ const TypeError = require("../../errors/TypeError")
 class Operation extends Expression {
 
   constructor (fix, operator, ...operands) {
-    super("Operation")
+    super("Operation", operands)
     this.fix = fix
     this.operator = operator
     this.operands = operands
@@ -68,6 +68,12 @@ class Operation extends Expression {
     this.value = value
     this.isEvaluated = true
     return this.value
+  }
+
+  printTree () {
+    const tree = super.printTree()
+    tree.splice(1, 0, this.operator)
+    return tree
   }
 }
 

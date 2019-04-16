@@ -1,4 +1,9 @@
 const Expression = require("./Expression")
+const EvaluationError = require("../errors/EvaluationError")
+
+const throwEvaluationError = (lineNumber, key) => {
+  throw new EvaluationError (null, key + " is not defined in environment")
+}
 
 class Identity extends Expression {
 
@@ -12,8 +17,10 @@ class Identity extends Expression {
   }
 
   fetch (env) {
+
+    // @TODO: Move Error to Environment
     if (env.has(this.key) === false)
-      throw new Error (this.key + " is not defined in environment")
+      throwEvaluationError(null, this.key)
 
     return env.get(this.key).value
   }
@@ -24,7 +31,7 @@ class Identity extends Expression {
 
     // @TODO: Move Error to Environment
     if (env.has(this.key) === false)
-      throw new Error (this.key + " is not defined in environment")
+      throwEvaluationError(null, this.key)
 
     const expressions = env.get(this.key).value
 

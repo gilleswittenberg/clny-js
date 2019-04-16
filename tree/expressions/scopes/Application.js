@@ -2,6 +2,7 @@ const Expression = require("../Expression")
 const Statement = require("../statements/Statement")
 const Type = require("../../types/Type")
 const Function = require("./Function")
+const EvaluationError = require("../../errors/EvaluationError")
 const toArray = require("../../../utils/toArray")
 const { isFunction } = require("../../../utils/is")
 
@@ -53,7 +54,7 @@ class Application extends Expression {
       this.value = applicative.apply(args)
     }
     else {
-      throw new Error ("Can only apply Type, Function or Statement")
+      throw new EvaluationError (null, "Can only apply Type, Function or Statement")
     }
 
     this.isEvaluated = true

@@ -1,3 +1,4 @@
+const TypeError = require("../errors/TypeError")
 const toArray = require("../../utils/toArray")
 const { isFunction } = require("../../utils/is")
 const setVisibilityProperties = require("../types/setVisibilityProperties")
@@ -50,10 +51,10 @@ class Expression {
 
   getProperty (name, visibility) {
     if (this.hasProperty(name, visibility) === false)
-      throw new Error (name + " is not a property of " + this.type)
+      throw new TypeError (null, name + " is not a property of " + this.type)
     const entry = this.properties[name]
     if (visibility != null && entry.visibility !== visibility)
-      throw new Error (name + " does not have the correct visibility on " + this.type)
+      throw new TypeError (null, name + " does not have the correct visibility on " + this.type)
     const property = entry.property
     if (isFunction(property)) return property(this)
     return property

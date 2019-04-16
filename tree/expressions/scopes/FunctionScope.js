@@ -6,6 +6,7 @@ const ConditionalStatement = require("../statements/ConditionalStatement")
 const Identity = require("../Identity")
 const Environment = require("./Environment")
 const Output = require("../../Output")
+const TypeError = require("../../errors/TypeError")
 
 const toArray = require("../../../utils/toArray")
 const { isLast } = require("../../../utils/arrayLast")
@@ -66,7 +67,7 @@ class FunctionScope extends Scope {
         const previousExpression = arr[index - 1]
 
         if (!isPrimaryConditionalStatement(previousExpression))
-          throw new Error ("ConditionalStatement " + expression.name + " should be preceded by if Statement")
+          throw new TypeError (null, "ConditionalStatement " + expression.name + " should be preceded by if Statement")
 
         if (previousExpression.value[0] === false) {
           expression.evaluate(scope.env)

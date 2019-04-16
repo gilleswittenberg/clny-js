@@ -9,6 +9,8 @@ const Number = require("../expressions/scalars/Number")
 const String = require("../expressions/scalars/String")
 const Expression = require("../expressions/Expression")
 
+const TypeError = require("../errors/TypeError")
+
 class Type {
 
   constructor (name, options, types, inputTypes, keys, properties = null, depth = null, isScalar = false) {
@@ -58,7 +60,7 @@ class Type {
   fetch (env) {
     const value = env.get(this.name)
     if (value === undefined || value.isType === false)
-      throw new Error (this.name + " is not a Type")
+      throw new TypeError (null, this.name + " is not a Type")
     return value.value
   }
 
@@ -70,19 +72,19 @@ class Type {
     else if (this.isCompound) {
 
       if (this.types.length !== argsArray.length)
-        throw new Error ("Invalid number of arguments for " + this.name)
+        throw new TypeError (null, "Invalid number of arguments for " + this.name)
 
       this.types.map((type, index) => {
         const argument = argsArray[index]
         if (argument.type !== type.name)
-          throw new Error ("Invalid argument for " + this.name)
+          throw new TypeError (null, "Invalid argument for " + this.name)
       })
 
       return castToCompound(this.name, this.types, this.properties, argsArray)
     }
     else if (this.isScalar) {
       if (args.length === 0)
-        throw new Error ("Invalid number of arguments for Type casting")
+        throw new TypeError (null, "Invalid number of arguments for Type casting")
       const arg0 = castToScalar(this.name, argsArray[0].evaluate())
       return argsArray.length > 1 ? new Expression(null, [arg0, ...argsArray.slice(1)]) : arg0
     }

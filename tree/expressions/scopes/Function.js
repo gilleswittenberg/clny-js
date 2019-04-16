@@ -1,4 +1,5 @@
 const Expression = require("../Expression")
+const TypeError = require("../../errors/TypeError")
 const setVisibilityProperties = require("../../types/setVisibilityProperties")
 
 const isFunctionExpression = object => object instanceof Function
@@ -39,13 +40,13 @@ class Function extends Expression {
     // type check
     const inputTypes = this.type && this.type.inputTypes || []
     if (inputTypes.length > 0 && inputTypes.length !== args.length)
-      throw new Error ("Invalid number of arguments for function application")
+      throw new TypeError (null, "Invalid number of arguments for function application")
     inputTypes.map((inputType, index) => {
       const argument = args[index]
       if (argument === undefined)
-        throw new Error ("Invalid number of arguments for function application")
+        throw new TypeError (null, "Invalid number of arguments for function application")
       if (argument.type !== inputType.name)
-        throw new Error ("Invalid argument for function application")
+        throw new TypeError (null, "Invalid argument for function application")
     })
   }
 

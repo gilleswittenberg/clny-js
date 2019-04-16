@@ -8,6 +8,7 @@ const Scope = require("../../tree/expressions/scopes/Scope")
 const Expression = require("../../tree/expressions/Expression")
 const Number = require("../../tree/expressions/scalars/Number")
 const String = require("../../tree/expressions/scalars/String")
+const ParseError = require("../../tree/errors/ParseError")
 
 describe("root comment", () => {
 
@@ -86,6 +87,6 @@ describe("root comment", () => {
     const content = `# text
 ~giberish@!abc~
 5`
-    expect(() => toValue(parse(rootScope)(content))).toThrow("Invalid characters at line: 2")
+    expect(() => toValue(parse(rootScope)(content))).toThrowError(new ParseError(2, "Invalid characters"))
   })
 })

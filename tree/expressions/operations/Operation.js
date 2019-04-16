@@ -1,4 +1,5 @@
 const Expression = require("../Expression")
+const TypeError = require("../../errors/TypeError")
 
 class Operation extends Expression {
 
@@ -23,7 +24,7 @@ class Operation extends Expression {
     // @TODO: Check number of operands (1 or 2 depending on operator)
     const equals = s => t => s === t
     if (!operators.includes(this.operator) || !operands.every(equals(firstOperand)))
-      throw new Error ("Invalid operands for Operation")
+      throw new TypeError (null, "Invalid operands for Operation")
 
     return firstOperand
   }
@@ -46,7 +47,7 @@ class Operation extends Expression {
       t === "boolean" ? "Boolean" :
         t === "string" ? "String" :
           t === "number" ? "Number" :
-            (() => { throw new Error ("Invalid operand type") })()
+            (() => { throw new TypeError ("Invalid operand type") })()
 
     switch (type) {
     case "Boolean":

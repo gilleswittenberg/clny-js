@@ -8,6 +8,7 @@ const Gibberish = require("../tree/text/Gibberish")
 const Function = require("../tree/expressions/scopes/Function")
 const FunctionScope = require("../tree/expressions/scopes/FunctionScope")
 const Assignment = require("../tree/expressions/Assignment")
+const ParseError = require("../tree/errors/ParseError")
 
 // @TODO: throw new Error ("Can only define type at root")
 // @TODO: throw new Error ("Can only add TypeConstructor as property to type")
@@ -73,7 +74,7 @@ const checkGibberish = scopeLines => {
     const line = scopeLine.line
     const scopeLines = scopeLine.scopeLines
     if (line.parsedContent instanceof Gibberish) {
-      throw new Error ("Invalid characters at line: " + line.lineNumber)
+      throw new ParseError (line.lineNumber, "Invalid characters")
     }
     scopeLines.forEach(check)
   }
@@ -88,7 +89,7 @@ const checkIndention = scopeLines => {
     const scopeLines = scopeLine.scopeLines
     scopeLines.forEach(scopeLine => {
       if (scopeLine.line.indents > indents + 1)
-        throw new Error ("Invalid indention at line: " + scopeLine.line.lineNumber)
+        throw new ParseError (scopeLine.line.lineNumber, "Invalid indention")
       checkIndents(scopeLine)
     })
   }
@@ -101,9 +102,9 @@ const checkScopeOpeners = scopeLines => {
     const line = scopeLine.line
     const scopeLines = scopeLine.scopeLines
     if (scopeLines.length > 0 && line.canOpenScope === false)
-      throw new Error ("Can not open scope at line:" + line.lineNumber)
+      throw new ParseError (line.lineNumber, "Can not open scope")
     if (scopeLines.length === 0 && line.parsedContent instanceof ScopeOpener) {
-      throw new Error ("Scope opened without adding expressions")
+      throw new ParseError (scopeLine.line.lineNumber, "Scope opened without adding expressions")
     }
     scopeLines.forEach(checkScopeOpener)
   }

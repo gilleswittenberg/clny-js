@@ -1,5 +1,6 @@
 const Operation = require("./Operation")
 const Number = require("../scalars/Number")
+const TypeError = require("../../errors/TypeError")
 
 class Range extends Operation {
 
@@ -30,7 +31,7 @@ class Range extends Operation {
 
   createRange (start, end) {
 
-    if (start == null || end == null) throw new Error ("Invalid Range start or end")
+    if (start == null || end == null) throw new TypeError (null, "Invalid Range start or end")
 
     const isAscending = start <= end ? true : false
     const next = n => isAscending ? n + 1 : n - 1

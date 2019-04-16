@@ -1,4 +1,5 @@
 const Statement = require("./Statement")
+const TypeError = require("../../errors/TypeError")
 
 class ForStatement extends Statement {
 
@@ -6,10 +7,10 @@ class ForStatement extends Statement {
 
     if (this.isEvaluated) return this.value
 
-    if (this.expressions.length !== 2) throw new Error ("for statement should have 2 arguments")
+    if (this.expressions.length !== 2) throw new TypeError (null, "for statement should have 2 arguments")
 
     const loop = this.expressions[1]
-    if (loop.type !== "Scope") throw new Error ("for statement's second argument should be a Scope")
+    if (loop.type !== "Scope") throw new TypeError (null, "for statement's second argument should be a Scope")
 
     const expression = this.expressions[0]
     const value = expression.evaluate(env)

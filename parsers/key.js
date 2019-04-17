@@ -13,6 +13,7 @@ const {
   quote
 } = require("./convenience/tokens")
 
+const { embellishment } = require("./types/embellishments")
 const charsToString = require("../utils/charsToString")
 
 const Key = require("../tree/Key")
@@ -23,9 +24,10 @@ const key = pipeParsers([
   sequenceOf([
     possibly(prefix),
     lowercase,
-    possibly(letters)
+    possibly(letters),
+    possibly(embellishment)
   ]),
-  mapTo(([prefix, first, chars]) => new Key(charsToString(first, chars), prefix))
+  mapTo(([prefix, first, chars, embellishment]) => new Key(charsToString(first, chars), prefix, embellishment))
 ])
 
 module.exports = key

@@ -24,6 +24,12 @@ const leftParens = char("(")
 const rightParens = char(")")
 const pipe = char("|")
 
+const exclamationMark = char("!")
+const questionMark = char("?")
+const caret = char("^")
+const atSign = char("@")
+const dollarSign = char("$")
+
 // multchar tokens
 const escapedBackslash = str("\\")
 const arrow = str("->")
@@ -48,6 +54,12 @@ module.exports = {
   leftParens,
   rightParens,
   pipe,
+
+  exclamationMark,
+  questionMark,
+  caret,
+  atSign,
+  dollarSign,
 
   escapedBackslash,
   arrow,

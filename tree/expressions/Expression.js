@@ -77,6 +77,11 @@ class Expression {
     return this
   }
 
+  typeCheck () {
+    this.expressions.forEach(expression => expression.typeCheck())
+    return this.type
+  }
+
   evaluate (env) {
 
     if (this.isEvaluated) return this.value

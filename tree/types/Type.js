@@ -13,7 +13,7 @@ const TypeError = require("../errors/TypeError")
 
 class Type {
 
-  constructor (name, options, types, inputTypes, keys, properties = null, depth = null, isScalar = false) {
+  constructor (name, options, types, inputTypes, keys, embellishments = null, properties = null, depth = null, isScalar = false) {
 
     this.options = toArray(options)
     this.types = toArray(types)
@@ -21,6 +21,8 @@ class Type {
 
     this.inputTypes = toArray(inputTypes)
     this.isFunction = this.inputTypes.length > 0
+
+    this.embellishments = toArray(embellishments)
 
     this.keys = toArray(keys)
     this.name = name != null ? name : this.createName()
@@ -55,6 +57,10 @@ class Type {
       }
       return acc
     }, {})
+  }
+
+  addEmbellishment (embellishment) {
+    this.embellishments.push(embellishment)
   }
 
   fetch (env) {

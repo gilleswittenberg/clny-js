@@ -121,7 +121,7 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
       scope.addType(content.name, content.type)
     }
     else if (content instanceof TypeScope) {
-      const type = new Type(content.name, null, content.types, null, null, content.properties)
+      const type = new Type(content.name, null, content.types, null, null, null, content.properties)
       scope.addType(content.name, type)
     }
     else if (scope instanceof TypeScope) {

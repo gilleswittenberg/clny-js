@@ -5,9 +5,10 @@ const visibilityMap = {
 
 class Key {
 
-  constructor (name, prefix) {
+  constructor (name, prefix, embellishment) {
     this.name = name
     this.visibility = visibilityMap[prefix] || "DATA"
+    this.embellishment = embellishment
   }
 }
 

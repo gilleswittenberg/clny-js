@@ -8,7 +8,7 @@ describe("Type", () => {
 
     test("scalar", () => {
       const number = new Number(5)
-      const stringType = new Type("String", null, null, null, null, null, null, true)
+      const stringType = new Type("String", null, null, null, null, null, null, null, true)
       expect(stringType.apply(number).value).toBe("5")
     })
 
@@ -16,8 +16,8 @@ describe("Type", () => {
       const name = new String("John Doe")
       const age = new Number(35)
       const personType = new Type("Person", null, [
-        new Type("String", null, null, null, "name", null, true),
-        new Type("Number", null, null, null, "age", null, true)
+        new Type("String", null, null, null, "name", null, null, true),
+        new Type("Number", null, null, null, "age", null, null, true)
       ])
 
       const person = personType.apply([name, age])
@@ -30,15 +30,15 @@ describe("Type", () => {
     test("plural", () => {
       const number = new Number(5)
       const number1 = new Number(6)
-      const stringType = new Type("String", null, null, null, null, null, null, true)
-      const type = new Type("Strings", null, stringType, null, null, null, Infinity)
+      const stringType = new Type("String", null, null, null, null, null, null, null, true)
+      const type = new Type("Strings", null, stringType, null, null, null, null, Infinity)
       expect(type.apply([number, number1]).evaluate()).toEqual(["5", "6"])
     })
 
     test("compound property", () => {
       const personType = new Type("Product", null, [
-        new Type("String", null, null, null, "title", null, true),
-        new Type("Number", null, null, null, "price", null, true)
+        new Type("String", null, null, null, "title", null, null, true),
+        new Type("Number", null, null, null, "price", null, null, true)
       ])
 
       const title = new String("Shoe")
@@ -61,8 +61,8 @@ describe("Type", () => {
     test("Product too few arguments", () => {
       const name = new String("John Doe")
       const personType = new Type("Person", null, [
-        new Type("String", null, null, null, "name", null, true),
-        new Type("Number", null, null, null, "age", null, true)
+        new Type("String", null, null, null, "name", null, null, true),
+        new Type("Number", null, null, null, "age", null, null, true)
       ])
       expect(() => { personType.apply([name]) }).toThrow("Invalid number of arguments for Person")
     })
@@ -72,8 +72,8 @@ describe("Type", () => {
       const price = new Number(99)
       const extra = new String("extra")
       const personType = new Type("Person", null, [
-        new Type("String", null, null, null, "name", null, true),
-        new Type("Number", null, null, null, "age", null, true)
+        new Type("String", null, null, null, "name", null, null, true),
+        new Type("Number", null, null, null, "age", null, null, true)
       ])
       expect(() => { personType.apply([name, price, extra]) }).toThrow("Invalid number of arguments for Person")
     })
@@ -82,8 +82,8 @@ describe("Type", () => {
       const n = new Number(1)
       const price = new Number(99)
       const personType = new Type("Person", null, [
-        new Type("String", null, null, null, "name", null, true),
-        new Type("Number", null, null, null, "age", null, true)
+        new Type("String", null, null, null, "name", null, null, true),
+        new Type("Number", null, null, null, "age", null, null, true)
       ])
       expect(() => { personType.apply([n, price]) }).toThrow("Invalid argument for Person")
     })

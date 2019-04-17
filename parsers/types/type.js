@@ -25,14 +25,20 @@ const {
 
 const key = require("../key")
 const typeLiteral = require("./typeLiteral")
+const { embellish } = require("./embellishments")
 
 const Type = require("../../tree/types/Type")
+const Embellishment = require("../../tree/types/Embellishment")
 
-
-const wrappedTypeLiteral = pipeParsers([
-  optionalWrappedInParentheses(typeLiteral),
-  mapTo(type => new Type (type))
+const embellishedType = pipeParsers([
+  embellish(typeLiteral),
+  mapTo(([typeLiteral, embellishmentPostfix]) => {
+    const embellishment = embellishmentPostfix != null ? new Embellishment(embellishmentPostfix) : null
+    return new Type (typeLiteral, null, null, null, null, embellishment)
+  })
 ])
+
+const wrappedTypeLiteral = optionalWrappedInParentheses(embellishedType)
 
 const sumType = pipeParsers([
   optionalWrappedInParentheses(
@@ -60,10 +66,7 @@ const namedType = type => pipeParsers([
   ]),
   mapTo(([key, type]) => {
     if (key == null) return type
-    const name = type.name
-    const options = type.options
-    const types = type.types
-    const inputTypes = type.inputTypes
+    const { name, options, types, inputTypes } = type
     return new Type (name, options, types, inputTypes, key)
   })
 ])

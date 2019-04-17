@@ -49,7 +49,6 @@ class Application extends Expression {
       this.value = applicative.apply(args)
     }
     // @TODO: type check statement
-    // @TODO: Statement.apply
     else if (isStatement(applicative)) {
       this.value = applicative.apply(args)
     }

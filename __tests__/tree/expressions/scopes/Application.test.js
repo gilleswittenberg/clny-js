@@ -7,6 +7,7 @@ const Identity = require("../../../../tree/expressions/Identity")
 const Statement = require("../../../../tree/expressions/statements/Statement")
 const Environment = require("../../../../tree/expressions/scopes/Environment")
 const Type = require("../../../../tree/types/Type")
+const Key = require("../../../../tree/Key")
 
 describe("Application", () => {
 
@@ -51,7 +52,7 @@ describe("Application", () => {
       ])
       const environment = new Environment()
       environment.set("Product", type, true)
-      const identity = new Identity("Product")
+      const identity = new Identity(new Key("Product"))
       const application = new Application(identity, [new String("Shoe"), new Number(99)])
       const product = application.evaluate(environment)
       expect(product[0]).toBe("Shoe")
@@ -59,7 +60,7 @@ describe("Application", () => {
     })
 
     test("Plural", () => {
-      const type = new Identity("Strings")
+      const type = new Identity(new Key("Strings"))
       const application = new Application(type, [new Number(81), new Number(82)])
       const environment = new Environment()
       const strings = application.evaluate(environment)
@@ -68,7 +69,7 @@ describe("Application", () => {
     })
 
     test("single plural", () => {
-      const type = new Identity("String")
+      const type = new Identity(new Key("String"))
       const application = new Application(type, [new Number(81), new Number(82)])
       const environment = new Environment()
       const values = application.evaluate(environment)
@@ -82,7 +83,7 @@ describe("Application", () => {
 
     test("return", () => {
       const number = new Number(5)
-      const application = new Application(new Identity("return"), number)
+      const application = new Application(new Identity(new Key("return")), number)
       const environment = new Environment()
       expect(application.evaluate(environment)).toBeInstanceOf(Statement)
     })
@@ -104,7 +105,7 @@ describe("Application", () => {
       const environment = new Environment()
       const functionScope = new FunctionScope(null, number)
       const func = new Function(null, functionScope, environment)
-      const identity = new Identity("func", func)
+      const identity = new Identity(new Key("func"))
       const application = new Application(identity)
       environment.set("func", func)
       expect(application.evaluate(environment)).toBe(6)
@@ -115,7 +116,7 @@ describe("Application", () => {
       const n = new Number(13)
       const environment = new Environment()
       environment.set("n", n)
-      const identity = new Identity("n")
+      const identity = new Identity(new Key("n"))
       const functionScope = new FunctionScope(null, identity)
       const func = new Function(null, functionScope, environment)
       const funcOuter = new Function(null, func, new Environment())
@@ -129,7 +130,7 @@ describe("Application", () => {
       const n = new Number(14)
       const environment = new Environment()
       environment.set("n", n)
-      const identity = new Identity("n")
+      const identity = new Identity(new Key("n"))
       const functionScope = new FunctionScope(null, identity)
       const func = new Function(null, functionScope, environment)
       const application = new Application(func)

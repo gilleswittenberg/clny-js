@@ -16,15 +16,18 @@ const identity = pipeParsers([
   choice([
     pipeParsers([
       key,
-      mapTo(key => key.name)
+      mapTo(key => [key, false])
     ]),
     pipeParsers([
       sequenceOf([dot, key]),
-      mapTo(([dot, key]) => dot + key.name)
+      mapTo(([,key]) => [key, true])
     ]),
-    dot
+    pipeParsers([
+      dot,
+      mapTo(() => [null, true])
+    ])
   ]),
-  mapTo(str => new Identity(str))
+  mapTo(([key, isSelf]) => new Identity(key, isSelf))
 ])
 
 module.exports = identity

@@ -20,7 +20,7 @@ describe("Function", () => {
       })
 
       test("apply environment", () => {
-        const identity = new Identity("n")
+        const identity = new Identity(new Key("n"))
         const functionScope = new FunctionScope(null, identity)
         const environment = new Environment()
         environment.set("n", new Number(14))
@@ -29,7 +29,7 @@ describe("Function", () => {
       })
 
       test("apply arguments", () => {
-        const functionScope = new FunctionScope(null, new Identity("m"))
+        const functionScope = new FunctionScope(null, new Identity(new Key("m")))
         const m = new Number(15)
         const environment = new Environment()
         const type = new Type(null, null, new Type("Number"), [new Type("Number", null, new Type("Number"), null, "m")])

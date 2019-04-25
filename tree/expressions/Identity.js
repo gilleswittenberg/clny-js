@@ -7,33 +7,36 @@ const throwEvaluationError = (lineNumber, key) => {
 
 class Identity extends Expression {
 
-  constructor (str) {
-    super()
-    const self = str[0] === "."
-    const key = str.replace(/^\./, "")
-    this.key = key !== "" ? key : null
-    this.self = self
+  constructor (key, isSelf = false) {
+    super("Identity")
+    this.key = key
+    this.self = isSelf
     this.isEvaluated = false
   }
 
   fetch (env) {
 
-    // @TODO: Move Error to Environment
-    if (env.has(this.key) === false)
-      throwEvaluationError(null, this.key)
+    // @TODO: Self .
+    // @TODO: Key for Type
 
-    return env.get(this.key).value
+    // @TODO: Move Error to Environment
+    if (env.has(this.key.name) === false)
+      throwEvaluationError(null, this.key.name)
+
+    return env.get(this.key.name).value
   }
 
   evaluate (env) {
 
     if (this.isEvaluated) return this.value
 
-    // @TODO: Move Error to Environment
-    if (env.has(this.key) === false)
-      throwEvaluationError(null, this.key)
+    // @TODO: Self .
 
-    const expressions = env.get(this.key).value
+    // @TODO: Move Error to Environment
+    if (env.has(this.key.name) === false)
+      throwEvaluationError(null, this.key.name)
+
+    const expressions = env.get(this.key.name).value
 
     this.addExpressions(expressions)
 

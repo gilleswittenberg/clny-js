@@ -25,7 +25,7 @@ describe("Property", () => {
     const number = new Number(6)
     const environment = new Environment()
     const scope = new Function(null, number, environment)
-    const identity = new Identity("scope", scope)
+    const identity = new Identity(new Key("scope"), scope)
     const chain = new Property(new Key("apply"), identity)
     environment.set("scope", scope)
     expect(chain.evaluate(environment)).toBe(6)

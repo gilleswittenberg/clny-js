@@ -10,8 +10,15 @@ describe("identity", () => {
   test("key", () => {
     const value = toValue(parse(parser)("camelCasedName"))
     expect(value).toBeInstanceOf(Identity)
-    expect(value.key).toBe("camelCasedName")
+    expect(value.key.name).toBe("camelCasedName")
     expect(value.self).toBe(false)
+  })
+
+  test("embellishment", () => {
+    const value = toValue(parse(parser)("divideByZero^"))
+    expect(value).toBeInstanceOf(Identity)
+    expect(value.key.name).toBe("divideByZero")
+    expect(value.key.embellishment).toBe("^")
   })
 
   test("self", () => {
@@ -24,7 +31,7 @@ describe("identity", () => {
   test("self key", () => {
     const value = toValue(parse(parser)(".key"))
     expect(value).toBeInstanceOf(Identity)
-    expect(value.key).toBe("key")
+    expect(value.key.name).toBe("key")
     expect(value.self).toBe(true)
   })
 })

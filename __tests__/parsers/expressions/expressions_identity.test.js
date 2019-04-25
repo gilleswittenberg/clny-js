@@ -20,7 +20,7 @@ describe("identity", () => {
     const value = toValue(parse(parser)(".prop"))
     expect(value).toBeInstanceOf(Identity)
     expect(value.self).toBe(true)
-    expect(value.key).toBe("prop")
+    expect(value.key.name).toBe("prop")
   })
 })
 

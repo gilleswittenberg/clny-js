@@ -26,7 +26,7 @@ describe("FunctionScope", () => {
   test("assignment", () => {
     const key = new Key("a")
     const assignment = new Assignment(key, new Number(11))
-    const identity = new Identity("a")
+    const identity = new Identity(key)
     const scope = new FunctionScope(null, [assignment, identity])
     expect(scope.evaluate()).toEqual(11)
   })
@@ -34,7 +34,7 @@ describe("FunctionScope", () => {
   test("scope identity", () => {
     const key = new Key("scope")
     const scope = new FunctionScope(key, new Number(12))
-    const identity = new Identity("scope")
+    const identity = new Identity(key)
     const scopeOuter = new FunctionScope(null, [scope, identity])
     expect(scopeOuter.evaluate()).toEqual(12)
   })

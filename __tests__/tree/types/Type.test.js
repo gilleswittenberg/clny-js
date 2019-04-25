@@ -1,5 +1,8 @@
 const Type = require("../../../tree/types/Type")
 const Key = require("../../../tree/Key")
+const String = require("../../../tree/expressions/scalars/String")
+const Number = require("../../../tree/expressions/scalars/Number")
+const Assignment = require("../../../tree/expressions/Assignment")
 
 describe("Type", () => {
 
@@ -132,6 +135,22 @@ describe("Type", () => {
       expect(type.name).toBe("Bool")
       expect(type.isPlural).toBe(false)
       expect(type.isScalar).toBe(true)
+    })
+
+    test("compound properties", () => {
+      const key = new Key("show", "'")
+      const expression = new String("Show String")
+      const assignment = new Assignment(key, expression)
+      const personType = new Type("Product", null, [
+        new Type("String", null, null, null, "title", null, null, true),
+        new Type("Number", null, null, null, "price", null, null, true)
+      ], null, null, null, assignment)
+
+      const title = new String("Shoe")
+      const price = new Number(35)
+      const person = personType.apply([title, price])
+      person.evaluate()
+      expect(person.getProperty("show")).toBe("Show String")
     })
   })
 })

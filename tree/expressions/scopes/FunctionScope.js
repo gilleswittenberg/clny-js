@@ -3,7 +3,6 @@ const Assignment = require("../Assignment")
 const Application = require("./Application")
 const Statement = require("../statements/Statement")
 const ConditionalStatement = require("../statements/ConditionalStatement")
-const Identity = require("../Identity")
 const Environment = require("./Environment")
 const Output = require("../../Output")
 const TypeError = require("../../errors/TypeError")
@@ -84,10 +83,11 @@ class FunctionScope extends Scope {
       if (isPrintStatement(expression)) {
         const name = expression.name
         const val = toArray(expression.value).join(", ")
-        const expression0 = expression.expressions[0]
+        const expression0 = expression.expressions[0].fetch(env)
         // @TODO: Type for Plural
+        // @TODO: Return type for non Type function
         // Reading name from Application > Type
-        const type = expression0 instanceof Identity ? expression0.expressions[0].name : expression0.type
+        const type = isApplication(expression0) ? expression0.expressions[0].name : expression0.type
         Output.print(name, val, type)
       }
 

@@ -30,8 +30,16 @@ describe("run", () => {
   })
 
   test("type-constructor", async () => {
-    const [,lines] = await run("type-constructor.clny")
+    const [result, lines] = await run("type-constructor.clny")
+
+    // lines
     expect(lines.length).toBe(1)
+    expect(lines[0]).toBe("Product Shoe, 99")
+
+    // result
+    expect(result.length).toBe(2)
+    expect(result[0]).toBe("Shoe")
+    expect(result[1]).toBe(99)
   })
 
   test("arithmetic", async () => {

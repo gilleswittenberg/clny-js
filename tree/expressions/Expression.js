@@ -3,6 +3,8 @@ const toArray = require("../../utils/toArray")
 const { isFunction } = require("../../utils/is")
 const setVisibilityProperties = require("../types/setVisibilityProperties")
 
+const isExpression = object => object instanceof Expression
+
 const propertiesAny = setVisibilityProperties({
   is: true,
   keys: ({ properties }) => {
@@ -86,7 +88,7 @@ class Expression {
 
     if (this.isEvaluated) return this.value
 
-    const values = this.expressions.map(expression => expression.evaluate(env))
+    const values = this.expressions.map(expression => isExpression(expression) ? expression.evaluate(env) : expression)
     this.value = this.isEmpty ? null : this.isSingle ? values[0] : values
     this.isEvaluated = true
     return this.value

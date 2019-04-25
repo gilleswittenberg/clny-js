@@ -6,10 +6,12 @@ const ConditionalStatement = require("../statements/ConditionalStatement")
 const Environment = require("./Environment")
 const Output = require("../../Output")
 const TypeError = require("../../errors/TypeError")
+const Type = require("../../types/Type")
 
 const toArray = require("../../../utils/toArray")
 const { isLast } = require("../../../utils/arrayLast")
 
+const isType = object => object instanceof Type
 const isScope = object => object instanceof Scope
 const isApplication = object => object instanceof Application
 const isStatement = object => object instanceof Statement
@@ -81,13 +83,23 @@ class FunctionScope extends Scope {
 
       // print
       if (isPrintStatement(expression)) {
+
         const name = expression.name
-        const val = toArray(expression.value).join(", ")
         const expression0 = expression.expressions[0].fetch(env)
-        // @TODO: Type for Plural
-        // @TODO: Return type for non Type function
-        // Reading name from Application > Type
-        const type = isApplication(expression0) ? expression0.expressions[0].name : expression0.type
+
+        let val, type
+
+        if (isType(expression0)) {
+          val = "(Type)"
+          type = expression0.name
+        } else {
+          // @TODO: Type for Plural
+          // @TODO: Return type for non Type function
+          val = toArray(expression.value).join(", ")
+          // Reading name from Application > Type
+          type = isApplication(expression0) ? expression0.expressions[0].name : expression0.type
+        }
+
         Output.print(name, val, type)
       }
 

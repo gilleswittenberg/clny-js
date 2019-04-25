@@ -33,8 +33,9 @@ describe("run", () => {
     const [result, lines] = await run("type-constructor.clny")
 
     // lines
-    expect(lines.length).toBe(1)
-    expect(lines[0]).toBe("Product Shoe, 99")
+    expect(lines.length).toBe(2)
+    expect(lines[0]).toBe("Product (Type)")
+    expect(lines[1]).toBe("Product Shoe, 99")
 
     // result
     expect(result.length).toBe(2)

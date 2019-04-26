@@ -13,7 +13,7 @@ const TypeError = require("../errors/TypeError")
 
 class Type {
 
-  constructor (name, options, types, inputTypes, keys, embellishments = null, properties = null, depth = null, isScalar = false) {
+  constructor (name, options, types, inputTypes, keys, embellishments = null, properties = null, depth = null, isScalar = false, defaultValue = null) {
 
     this.options = toArray(options)
     this.types = toArray(types)
@@ -33,6 +33,9 @@ class Type {
     this.depth = toArray(depth)
     this.isPlural = this.depth.length > 0
     this.isScalar = isScalar
+
+    this.defaultValue = defaultValue
+    this.hasDefaultValue = this.defaultValue != null
   }
 
   createName () {
@@ -77,12 +80,16 @@ class Type {
     }
     else if (this.isCompound) {
 
-      if (this.types.length !== argsArray.length)
+      if (this.types.length < argsArray.length)
+        throw new TypeError (null, "Invalid number of arguments for " + this.name)
+
+
+      if (this.types.filter(type => type.hasDefaultValue === false).length > argsArray.length)
         throw new TypeError (null, "Invalid number of arguments for " + this.name)
 
       this.types.map((type, index) => {
         const argument = argsArray[index]
-        if (argument.type !== type.name)
+        if (argument && argument.type !== type.name)
           throw new TypeError (null, "Invalid argument for " + this.name)
       })
 
@@ -134,6 +141,15 @@ const castToCompound = (name, types, properties, values) => {
     return acc
   }, {})
   const dataProperties = setVisibilityProperties(propertiesFromTypes, "DATA")
+
+  // set default values
+  while (types.length > values.length) {
+    const type = types[values.length]
+    const name = type.name
+    const value = type.defaultValue
+    values.push(castToScalar(name, value))
+  }
+
   return new Expression (name, values, { ...privateProperties, ...convenienceProperties, ...dataProperties })
 }
 

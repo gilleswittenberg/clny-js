@@ -148,9 +148,9 @@ describe("Type", () => {
 
       const title = new String("Shoe")
       const price = new Number(35)
-      const person = personType.apply([title, price])
-      person.evaluate()
-      expect(person.getProperty("show")).toBe("Show String")
+      const product = personType.apply([title, price])
+      product.evaluate()
+      expect(product.getProperty("show")).toBe("Show String")
     })
   })
 })

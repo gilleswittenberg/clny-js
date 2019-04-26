@@ -3,7 +3,7 @@ const {
   parse
 } = require("arcsecond")
 const root = require("../../parsers/root")
-const rootScope = root(true)
+const rootScope = root()
 const Scope = require("../../tree/expressions/scopes/Scope")
 const Assignment = require("../../tree/expressions/Assignment")
 const Number = require("../../tree/expressions/scalars/Number")
@@ -39,6 +39,15 @@ describe("root assignment", () => {
     expect(result.expressions.length).toBe(1)
     expect(result.expressions[0]).toBeInstanceOf(Assignment)
     expect(result.expressions[0].keys[0].name).toBe("b")
+    expect(result.expressions[0].expressions[0]).toBeInstanceOf(Application)
+  })
+
+  test("function", () => {
+    const content = "f: String -> Number 1"
+    const result = toValue(parse(rootScope)(content))
+    expect(result.expressions.length).toBe(1)
+    expect(result.expressions[0]).toBeInstanceOf(Assignment)
+    expect(result.expressions[0].keys[0].name).toBe("f")
     expect(result.expressions[0].expressions[0]).toBeInstanceOf(Application)
   })
 })

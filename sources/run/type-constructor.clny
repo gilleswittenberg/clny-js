@@ -1,7 +1,6 @@
 Product:
   title: String
   price: Number
-  'toString: .price + .title
 
 product: Product "Shoe", 99
 

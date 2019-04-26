@@ -121,7 +121,20 @@ const mapScopeLinesToScopes = (Scope, scopeLines) => {
       scope.addType(content.name, content.type)
     }
     else if (content instanceof TypeScope) {
-      const type = new Type(content.name, null, content.types, null, null, null, content.properties)
+      const name = content.name
+      const types = content.types
+      const typeProperties = content.properties.filter(property => property.keys[0].visibility === "DATA")
+      typeProperties.forEach(property => {
+        // @TODO: Plural, Compound types
+        const firstExpression = property.expressions[0]
+        const name = firstExpression.type
+        const keys = property.keys
+        const defaultValue = firstExpression
+        const type = new Type(name, null, null, null, keys, null, null, null, true, defaultValue)
+        types.push(type)
+      })
+      const properties = content.properties.filter(property => property.keys[0].visibility !== "DATA")
+      const type = new Type(name, null, types, null, null, null, properties)
       scope.addType(content.name, type)
     }
     else if (scope instanceof TypeScope) {

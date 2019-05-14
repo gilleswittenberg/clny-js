@@ -35,6 +35,7 @@ const typeLiteral = require("./types/typeLiteral")
 const assignment = require("./assignment")
 const typeConstructor = require("./types/typeConstructor")
 const { type, functionType } = require("./types/type")
+// @TODO: Move to convenience/whitespace
 const eol = char("\n")
 
 const linesToScopes = require("./linesToScopes")
